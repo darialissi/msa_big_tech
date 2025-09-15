@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.users;
+
+import "api/proto/messages.proto";
+
+option go_package = "msa_big_tech/pkg/api/proto;users";
+
+
+service UsersService {
+    // Создание профиля
+    rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse) {}
+    // Обновление профиля
+    rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {}
+    // Получение профиля по id
+    rpc GetProfileByID(GetProfileByIDRequest) returns (GetProfileByIDResponse) {}
+    // Получение профиля по nickname
+    rpc GetProfileByNickname(GetProfileByNicknameRequest) returns (GetProfileByNicknameResponse) {}
+    // Поиск профилей по query
+    rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {}
+}

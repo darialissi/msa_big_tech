@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.social;
+
+import "api/proto/messages.proto";
+
+option go_package = "msa_big_tech/pkg/api/proto;social";
+
+
+service SocialService {
+    // Отправление запроса "В Друзья"
+    rpc SendFriendRequest(SendFriendRequestRequest) returns (SendFriendRequestResponse) {}
+    // Получение списка входящих запросов
+    rpc ListRequests(ListRequestsRequest) returns (ListRequestsResponse) {}
+    // Принятие заявки
+    rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {}
+    // Отклонение заявки
+    rpc DeclineFriendRequest(DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {}
+    // Удаление из "Друзей"
+    rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse) {}
+    // Получение списка "Друзей"
+    rpc ListFriends(ListFriendsRequest) returns (ListFriendsResponse) {}
+}

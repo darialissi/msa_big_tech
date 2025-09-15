@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.chat;
+
+import "api/proto/messages.proto";
+
+option go_package = "msa_big_tech/pkg/api/proto;chat";
+
+
+service ChatService {
+    // Создание личного чата
+    rpc CreateDirectChat(CreateDirectChatRequest) returns (CreateDirectChatResponse) {}
+    // Получение информации о чате
+    rpc GetChat(GetChatRequest) returns (GetChatResponse) {}
+    // Получение списка чатов пользователя
+    rpc ListUserChats(ListUserChatsRequest) returns (ListUserChatsResponse) {}
+    // Получение списка участников чата
+    rpc ListChatMembers(ListChatMembersRequest) returns (ListChatMembersResponse) {}
+    // Отправление сообщения
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {}
+    // Получение истории сообщений чата
+    rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse) {}
+    // Серверный стрим новых сообщений
+    rpc StreamMessages(StreamMessagesRequest) returns (StreamMessagesResponse) {}
+}

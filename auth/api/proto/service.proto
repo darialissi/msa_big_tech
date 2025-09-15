@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.auth;
+
+import "api/proto/messages.proto";
+import "google/api/annotations.proto";
+
+option go_package = "msa_big_tech/pkg/api/proto;auth";
+
+
+service AuthService {
+    // Регистрация
+    rpc Register(RegisterRequest) returns (RegisterResponse) {
+        option (google.api.http) = {
+        post: "/api/v1/register"
+        body: "*"
+        };
+    }
+    // Авторизация
+    rpc Login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+        post: "/api/v1/login"
+        body: "*"
+        };
+    }
+    // Обновление токена
+    rpc Refresh(RefreshRequest) returns (RefreshResponse) {}
+}

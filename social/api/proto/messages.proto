@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.social;
+
+option go_package = "msa_big_tech/pkg/api/proto;social";
+
+
+// Отправление запроса "В Друзья"
+message SendFriendRequestRequest {
+  uint64 user_id = 1;
+}
+
+message SendFriendRequestResponse {
+  FriendRequest friend_request = 1;
+}
+
+// Получение списка входящих запросов
+message ListRequestsRequest {
+  uint64 user_id = 1;
+}
+
+message ListRequestsResponse {
+  repeated FriendRequest requests = 1;
+}
+
+// Принятие заявки
+message AcceptFriendRequestRequest {
+  uint64 request_id = 1;
+}
+
+message AcceptFriendRequestResponse {
+  FriendRequest friend_request = 1;
+}
+
+// Отклонение заявки
+message DeclineFriendRequestRequest {
+  uint64 request_id = 1;
+}
+
+message DeclineFriendRequestResponse {
+  FriendRequest friend_request = 1;
+}
+
+// Удаление из "Друзей"
+message RemoveFriendRequest {
+  uint64 user_id = 1;
+}
+
+message RemoveFriendResponse {
+}
+
+// Получение списка "Друзей"
+message ListFriendsRequest {
+  uint64 user_id = 1;
+  uint64 limit = 2;
+}
+
+message ListFriendsResponse {
+  repeated uint64 friend_user_ids = 1;
+}
+
+// Объекты
+message FriendRequest {
+  uint64 request_id = 1;
+  Status status = 2;
+}
+
+enum Status {
+  STATUS_PENDING = 0;
+  STATUS_APPROVED = 1;
+  STATUS_DECLINED = 2;
+}
