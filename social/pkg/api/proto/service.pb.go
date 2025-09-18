@@ -7,6 +7,7 @@
 package social
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,9 +25,9 @@ var File_api_proto_service_proto protoreflect.FileDescriptor
 
 const file_api_proto_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17api/proto/service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\x18api/proto/messages.proto2\xc0\a\n" +
-	"\rSocialService\x12\xa0\x01\n" +
-	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\"\x00\x12\x91\x01\n" +
+	"\x17api/proto/service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\x18api/proto/messages.proto\x1a\x1cgoogle/api/annotations.proto2\xe9\a\n" +
+	"\rSocialService\x12\xc9\x01\n" +
+	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\")\x82\xd3\xe4\x93\x02#\x12!/api/v1/friends/{user_id}/request\x12\x91\x01\n" +
 	"\fListRequests\x12>.github.com.darialissi.msa_big_tech.social.ListRequestsRequest\x1a?.github.com.darialissi.msa_big_tech.social.ListRequestsResponse\"\x00\x12\xa6\x01\n" +
 	"\x13AcceptFriendRequest\x12E.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest\x1aF.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse\"\x00\x12\xa9\x01\n" +
 	"\x14DeclineFriendRequest\x12F.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest\x1aG.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse\"\x00\x12\x91\x01\n" +

@@ -147,12 +147,21 @@ func request_ChatService_SendMessage_0(ctx context.Context, marshaler runtime.Ma
 	var (
 		protoReq SendMessageRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Uint64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
 	}
 	msg, err := client.SendMessage(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -162,9 +171,18 @@ func local_request_ChatService_SendMessage_0(ctx context.Context, marshaler runt
 	var (
 		protoReq SendMessageRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Uint64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
 	}
 	msg, err := server.SendMessage(ctx, &protoReq)
 	return msg, metadata, err
@@ -316,7 +334,7 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage", runtime.WithHTTPPathPattern("/api/v1/chats/{chat_id}/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -482,7 +500,7 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.chat.ChatService/SendMessage", runtime.WithHTTPPathPattern("/api/v1/chats/{chat_id}/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -537,7 +555,7 @@ var (
 	pattern_ChatService_GetChat_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "GetChat"}, ""))
 	pattern_ChatService_ListUserChats_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "ListUserChats"}, ""))
 	pattern_ChatService_ListChatMembers_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "ListChatMembers"}, ""))
-	pattern_ChatService_SendMessage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "SendMessage"}, ""))
+	pattern_ChatService_SendMessage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "chats", "chat_id", "message"}, ""))
 	pattern_ChatService_ListMessages_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "ListMessages"}, ""))
 	pattern_ChatService_StreamMessages_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.chat.ChatService", "StreamMessages"}, ""))
 )

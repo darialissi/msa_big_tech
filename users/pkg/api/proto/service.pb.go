@@ -7,6 +7,7 @@
 package users
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,13 +25,13 @@ var File_api_proto_service_proto protoreflect.FileDescriptor
 
 const file_api_proto_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17api/proto/service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x18api/proto/messages.proto2\x98\x06\n" +
+	"\x17api/proto/service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x18api/proto/messages.proto\x1a\x1cgoogle/api/annotations.proto2\xd5\x06\n" +
 	"\fUsersService\x12\x92\x01\n" +
 	"\rCreateProfile\x12>.github.com.darialissi.msa_big_tech.users.CreateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.CreateProfileResponse\"\x00\x12\x92\x01\n" +
-	"\rUpdateProfile\x12>.github.com.darialissi.msa_big_tech.users.UpdateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.UpdateProfileResponse\"\x00\x12\x95\x01\n" +
-	"\x0eGetProfileByID\x12?.github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest\x1a@.github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse\"\x00\x12\xa7\x01\n" +
-	"\x14GetProfileByNickname\x12E.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest\x1aF.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse\"\x00\x12\x9b\x01\n" +
-	"\x10SearchByNickname\x12A.github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest\x1aB.github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse\"\x00B\"Z msa_big_tech/pkg/api/proto;usersb\x06proto3"
+	"\rUpdateProfile\x12>.github.com.darialissi.msa_big_tech.users.UpdateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.UpdateProfileResponse\"\x00\x12\xb6\x01\n" +
+	"\x0eGetProfileByID\x12?.github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest\x1a@.github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/profile/{user_id}\x12\xa7\x01\n" +
+	"\x14GetProfileByNickname\x12E.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest\x1aF.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse\"\x00\x12\xb7\x01\n" +
+	"\x10SearchByNickname\x12A.github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest\x1aB.github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/users/searchB\"Z msa_big_tech/pkg/api/proto;usersb\x06proto3"
 
 var file_api_proto_service_proto_goTypes = []any{
 	(*CreateProfileRequest)(nil),         // 0: github.com.darialissi.msa_big_tech.users.CreateProfileRequest

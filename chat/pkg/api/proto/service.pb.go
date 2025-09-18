@@ -7,6 +7,7 @@
 package chat
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,13 +25,13 @@ var File_api_proto_service_proto protoreflect.FileDescriptor
 
 const file_api_proto_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17api/proto/service.proto\x12'github.com.darialissi.msa_big_tech.chat\x1a\x18api/proto/messages.proto2\x88\b\n" +
+	"\x17api/proto/service.proto\x12'github.com.darialissi.msa_big_tech.chat\x1a\x18api/proto/messages.proto\x1a\x1cgoogle/api/annotations.proto2\xb2\b\n" +
 	"\vChatService\x12\x99\x01\n" +
 	"\x10CreateDirectChat\x12@.github.com.darialissi.msa_big_tech.chat.CreateDirectChatRequest\x1aA.github.com.darialissi.msa_big_tech.chat.CreateDirectChatResponse\"\x00\x12~\n" +
 	"\aGetChat\x127.github.com.darialissi.msa_big_tech.chat.GetChatRequest\x1a8.github.com.darialissi.msa_big_tech.chat.GetChatResponse\"\x00\x12\x90\x01\n" +
 	"\rListUserChats\x12=.github.com.darialissi.msa_big_tech.chat.ListUserChatsRequest\x1a>.github.com.darialissi.msa_big_tech.chat.ListUserChatsResponse\"\x00\x12\x96\x01\n" +
-	"\x0fListChatMembers\x12?.github.com.darialissi.msa_big_tech.chat.ListChatMembersRequest\x1a@.github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse\"\x00\x12\x8a\x01\n" +
-	"\vSendMessage\x12;.github.com.darialissi.msa_big_tech.chat.SendMessageRequest\x1a<.github.com.darialissi.msa_big_tech.chat.SendMessageResponse\"\x00\x12\x8d\x01\n" +
+	"\x0fListChatMembers\x12?.github.com.darialissi.msa_big_tech.chat.ListChatMembersRequest\x1a@.github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse\"\x00\x12\xb4\x01\n" +
+	"\vSendMessage\x12;.github.com.darialissi.msa_big_tech.chat.SendMessageRequest\x1a<.github.com.darialissi.msa_big_tech.chat.SendMessageResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/v1/chats/{chat_id}/message\x12\x8d\x01\n" +
 	"\fListMessages\x12<.github.com.darialissi.msa_big_tech.chat.ListMessagesRequest\x1a=.github.com.darialissi.msa_big_tech.chat.ListMessagesResponse\"\x00\x12\x93\x01\n" +
 	"\x0eStreamMessages\x12>.github.com.darialissi.msa_big_tech.chat.StreamMessagesRequest\x1a?.github.com.darialissi.msa_big_tech.chat.StreamMessagesResponse\"\x00B!Z\x1fmsa_big_tech/pkg/api/proto;chatb\x06proto3"
 

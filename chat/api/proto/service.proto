@@ -3,6 +3,7 @@ syntax = "proto3";
 package github.com.darialissi.msa_big_tech.chat;
 
 import "api/proto/messages.proto";
+import "google/api/annotations.proto";
 
 option go_package = "msa_big_tech/pkg/api/proto;chat";
 
@@ -17,7 +18,12 @@ service ChatService {
     // Получение списка участников чата
     rpc ListChatMembers(ListChatMembersRequest) returns (ListChatMembersResponse) {}
     // Отправление сообщения
-    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {}
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {
+        option (google.api.http) = {
+        post: "/api/v1/chats/{chat_id}/message"
+        body: "*"
+        };
+    }
     // Получение истории сообщений чата
     rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse) {}
     // Серверный стрим новых сообщений
