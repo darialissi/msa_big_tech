@@ -15,7 +15,7 @@ import (
 func main() {
 	implementation := grpc_hd.NewServer() // наша реализация сервера
 
-	lis, err := net.Listen("tcp", ":8082")
+	lis, err := net.Listen("tcp", ":8085")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

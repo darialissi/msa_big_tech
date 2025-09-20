@@ -1,0 +1,47 @@
+services:
+
+  auth:
+    container_name: auth_service
+    build:
+      context: ./
+      dockerfile: ./auth/Dockerfile
+    ports:
+      - "8083:50053"
+    networks:
+      - app-network
+
+  chat:
+    container_name: chat_service
+    build:
+      context: ./
+      dockerfile: ./chat/Dockerfile
+    ports:
+      - "8084:50054"
+    networks:
+      - app-network
+
+  social:
+    container_name: social_service
+    build:
+      context: ./
+      dockerfile: ./social/Dockerfile
+    ports:
+      - "8085:50055"
+    networks:
+      - app-network
+
+  users:
+    container_name: users_service
+    build:
+      context: ./
+      dockerfile: ./users/Dockerfile
+    ports:
+      - "8086:50056"
+    networks:
+      - app-network
+
+
+# Определяем общую сеть
+networks:
+  app-network:
+    driver: bridge

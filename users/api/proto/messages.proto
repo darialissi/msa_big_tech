@@ -2,19 +2,13 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.users;
 
-import "buf/validate/validate.proto";
-
 option go_package = "msa_big_tech/pkg/api/proto;users";
 
 
 // Создание профиля
 message CreateProfileRequest {
   uint64 user_id = 1;
-  string nickname = 2 [
-    (buf.validate.field).string = {
-      pattern: "^[a-z0-9_]{3,20}$"
-    }
-  ];
+  string nickname = 2;
   string bio = 3;
   string avatar_url = 4;
 }
@@ -26,11 +20,7 @@ message CreateProfileResponse {
 // Обновление профиля
 message UpdateProfileRequest {
   uint64 user_id = 1;
-  string nickname = 2 [
-    (buf.validate.field).string = {
-      pattern: "^[a-z0-9_]{3,20}$"
-    }
-  ];
+  string nickname = 2;
   string bio = 3;
   string avatar_url = 4;
 }
@@ -50,11 +40,7 @@ message GetProfileByIDResponse {
 
 // Получение профиля по nickname
 message GetProfileByNicknameRequest {
-  string nickname = 1 [
-    (buf.validate.field).string = {
-      pattern: "^[a-z0-9_]{3,20}$"
-    }
-  ];
+  string nickname = 1;
 }
 
 message GetProfileByNicknameResponse {
@@ -73,9 +59,5 @@ message SearchByNicknameResponse {
 
 // Объекты
 message UserProfile {
-  string nickname = 1 [
-    (buf.validate.field).string = {
-      pattern: "^[a-z0-9_]{3,20}$"
-    }
-  ];
+  string nickname = 1;
 }

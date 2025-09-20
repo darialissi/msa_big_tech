@@ -15,7 +15,7 @@ import (
 func main() {
 	implementation := grpc_hd.NewServer() // наша реализация сервера
 
-	lis, err := net.Listen("tcp", ":8082")
+	lis, err := net.Listen("tcp", ":8083")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -30,5 +30,5 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 	// Register:
-	// grpcurl -plaintext -d '{"Email": "hi", "Password": "buy"}' localhost:8082 AuthService/Register
+	// grpcurl -plaintext -d '{"Email": "hi", "Password": "bye"}' localhost:8083 AuthService/Register
 }

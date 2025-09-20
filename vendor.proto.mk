@@ -2,7 +2,7 @@
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
 # vendor
-vendor:	.vendor-reset .vendor-googleapis .vendor-google-protobuf .vendor-protovalidate .vendor-protoc-gen-openapiv2 .vendor-tidy
+vendor:	.vendor-reset .vendor-googleapis .vendor-google-protobuf .vendor-protoc-gen-openapiv2 .vendor-tidy
 
 # delete VENDOR_PROTO_PATH
 .vendor-reset:

@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	conn, err := grpc.NewClient("localhost:8082",
+	conn, err := grpc.NewClient("localhost:8084",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {

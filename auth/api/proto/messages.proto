@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.auth;
 
-
 option go_package = "msa_big_tech/pkg/api/proto;auth";
 
 
