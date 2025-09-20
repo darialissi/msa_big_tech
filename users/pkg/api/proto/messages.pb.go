@@ -7,6 +7,7 @@
 package users
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -571,18 +572,18 @@ var File_api_proto_messages_proto protoreflect.FileDescriptor
 
 const file_api_proto_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/proto/messages.proto\x12(github.com.darialissi.msa_big_tech.users\"|\n" +
+	"\x18api/proto/messages.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x1bbuf/validate/validate.proto\"\x96\x01\n" +
 	"\x14CreateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\x124\n" +
+	"\bnickname\x18\x02 \x01(\tB\x18\xbaH\x15r\x132\x11^[a-z0-9_]{3,20}$R\bnickname\x12\x10\n" +
 	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15CreateProfileResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"|\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\x96\x01\n" +
 	"\x14UpdateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\x124\n" +
+	"\bnickname\x18\x02 \x01(\tB\x18\xbaH\x15r\x132\x11^[a-z0-9_]{3,20}$R\bnickname\x12\x10\n" +
 	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
@@ -591,18 +592,18 @@ const file_api_proto_messages_proto_rawDesc = "" +
 	"\x15GetProfileByIDRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x04R\x06userId\"r\n" +
 	"\x16GetProfileByIDResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"9\n" +
-	"\x1bGetProfileByNicknameRequest\x12\x1a\n" +
-	"\bnickname\x18\x01 \x01(\tR\bnickname\"x\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"S\n" +
+	"\x1bGetProfileByNicknameRequest\x124\n" +
+	"\bnickname\x18\x01 \x01(\tB\x18\xbaH\x15r\x132\x11^[a-z0-9_]{3,20}$R\bnickname\"x\n" +
 	"\x1cGetProfileByNicknameResponse\x12X\n" +
 	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"E\n" +
 	"\x17SearchByNicknameRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\tR\x05limit\"m\n" +
 	"\x18SearchByNicknameResponse\x12Q\n" +
-	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\")\n" +
-	"\vUserProfile\x12\x1a\n" +
-	"\bnickname\x18\x01 \x01(\tR\bnicknameB\"Z msa_big_tech/pkg/api/proto;usersb\x06proto3"
+	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\"C\n" +
+	"\vUserProfile\x124\n" +
+	"\bnickname\x18\x01 \x01(\tB\x18\xbaH\x15r\x132\x11^[a-z0-9_]{3,20}$R\bnicknameB\"Z msa_big_tech/pkg/api/proto;usersb\x06proto3"
 
 var (
 	file_api_proto_messages_proto_rawDescOnce sync.Once

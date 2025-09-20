@@ -43,13 +43,13 @@ vendor:	.vendor-reset .vendor-googleapis .vendor-google-protobuf .vendor-protova
 	rm -rf $(VENDOR_PROTO_PATH)/grpc-gateway
 
 # Устанавливаем proto описания buf/validate/validate.proto
-# .vendor-protovalidate:
-# 	git clone -b main --single-branch --depth=1 --filter=tree:0 \
-# 		https://github.com/bufbuild/protovalidate $(VENDOR_PROTO_PATH)/protovalidate && \
-# 	cd $(VENDOR_PROTO_PATH)/protovalidate
-# 	git checkout
-# 	mv $(VENDOR_PROTO_PATH)/protovalidate/proto/protovalidate/buf $(VENDOR_PROTO_PATH)
-# 	rm -rf $(VENDOR_PROTO_PATH)/protovalidate
+.vendor-protovalidate:
+	git clone -b main --single-branch --depth=1 --filter=tree:0 \
+		https://github.com/bufbuild/protovalidate $(VENDOR_PROTO_PATH)/protovalidate && \
+	cd $(VENDOR_PROTO_PATH)/protovalidate
+	git checkout
+	mv $(VENDOR_PROTO_PATH)/protovalidate/proto/protovalidate/buf $(VENDOR_PROTO_PATH)
+	rm -rf $(VENDOR_PROTO_PATH)/protovalidate
 
 # delete all non .proto files
 .vendor-tidy:
@@ -61,9 +61,9 @@ vendor:	.vendor-reset .vendor-googleapis .vendor-google-protobuf .vendor-protova
 # интсрументируем Makefile не искать изменения в файловой системе
 .PHONY: \
 	.vendor-reset \
+	.vendor-protovalidate \
 	.vendor-google-protobuf \
 	.vendor-googleapis \
 	.vendor-protoc-gen-openapiv2 \
 	.vendor-tidy \
 	vendor
-# 	.vendor-protovalidate \

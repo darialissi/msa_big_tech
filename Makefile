@@ -24,6 +24,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	go install github.com/bufbuild/buf/cmd/buf@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
@@ -35,10 +36,14 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
 	$(PROTO_PATH)/service.proto \
 	$(PROTO_PATH)/messages.proto
-	
+
 	$(PROTOC) -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--openapiv2_out=$(CURDIR) --openapiv2_opt logtostderr=true \
 	$(PROTO_PATH)/service.proto
+
+	$(PROTOC) -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
+	--validate_out="lang=go,paths=source_relative:$(PKG_PROTO_PATH)" \
+	$(PROTO_PATH)/messages.proto
 
 # go mod tidy
 .tidy:
@@ -57,8 +62,8 @@ build:
 .PHONY: \
 	.bin-deps \
 	.protoc-generate \
-	.tidy \
 	.vendor-protovalidate \
+	.tidy \
 	vendor \
 	generate \
 	build

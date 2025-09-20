@@ -50,7 +50,7 @@ func main() {
 
 		resp, err := cli.UpdateProfile(ctx, &users.UpdateProfileRequest{
 			UserId:   0,
-			Nickname: "new_client_nickname",
+			Nickname: "???",
 			Bio: "I'm client",
 			AvatarUrl: "http://avatar",
 		})

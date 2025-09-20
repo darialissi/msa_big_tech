@@ -16,11 +16,17 @@ func NewServer() *server {
 }
 
 func (s *server) CreateProfile(ctx context.Context, req *users.CreateProfileRequest) (*users.CreateProfileResponse, error) {
+	if err := req.Validate(); err != nil { // не генерится правило валидации в pb :((
+		return nil, err
+	}
 
 	return &users.CreateProfileResponse{UserProfile: &users.UserProfile{Nickname: req.Nickname}}, nil
 }
 
 func (s *server) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequest) (*users.UpdateProfileResponse, error) {
+	if err := req.Validate(); err != nil {
+		return nil, err
+	}
 
 	return &users.UpdateProfileResponse{UserProfile: &users.UserProfile{Nickname: req.Nickname}}, nil
 }
