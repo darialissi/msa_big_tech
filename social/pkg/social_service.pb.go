@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.9
 // 	protoc        (unknown)
-// source: service.proto
+// source: social_service.proto
 
 package social
 
@@ -21,21 +21,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_service_proto protoreflect.FileDescriptor
+var File_social_service_proto protoreflect.FileDescriptor
 
-const file_service_proto_rawDesc = "" +
+const file_social_service_proto_rawDesc = "" +
 	"\n" +
-	"\rservice.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\x0emessages.proto\x1a\x1cgoogle/api/annotations.proto2\xe9\a\n" +
+	"\x14social_service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\fsocial.proto\x1a\x1cgoogle/api/annotations.proto2\xe9\a\n" +
 	"\rSocialService\x12\xc9\x01\n" +
 	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\")\x82\xd3\xe4\x93\x02#\x12!/api/v1/friends/{user_id}/request\x12\x91\x01\n" +
 	"\fListRequests\x12>.github.com.darialissi.msa_big_tech.social.ListRequestsRequest\x1a?.github.com.darialissi.msa_big_tech.social.ListRequestsResponse\"\x00\x12\xa6\x01\n" +
 	"\x13AcceptFriendRequest\x12E.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest\x1aF.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse\"\x00\x12\xa9\x01\n" +
 	"\x14DeclineFriendRequest\x12F.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest\x1aG.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse\"\x00\x12\x91\x01\n" +
 	"\fRemoveFriend\x12>.github.com.darialissi.msa_big_tech.social.RemoveFriendRequest\x1a?.github.com.darialissi.msa_big_tech.social.RemoveFriendResponse\"\x00\x12\x8e\x01\n" +
-	"\vListFriends\x12=.github.com.darialissi.msa_big_tech.social.ListFriendsRequest\x1a>.github.com.darialissi.msa_big_tech.social.ListFriendsResponse\"\x00B\x9f\x02\n" +
-	"-com.github.com.darialissi.msa_big_tech.socialB\fServiceProtoP\x01Z\x1emsa_big_tech/social/pkg;social\xa2\x02\x05GCDMS\xaa\x02'Github.Com.Darialissi.MsaBigTech.Social\xca\x02'Github\\Com\\Darialissi\\MsaBigTech\\Social\xe2\x023Github\\Com\\Darialissi\\MsaBigTech\\Social\\GPBMetadata\xea\x02+Github::Com::Darialissi::MsaBigTech::Socialb\x06proto3"
+	"\vListFriends\x12=.github.com.darialissi.msa_big_tech.social.ListFriendsRequest\x1a>.github.com.darialissi.msa_big_tech.social.ListFriendsResponse\"\x00B\xbb\x02\n" +
+	"-com.github.com.darialissi.msa_big_tech.socialB\x12SocialServiceProtoP\x01Z4github.com/darialissi/msa_big_tech/social/pkg;social\xa2\x02\x05GCDMS\xaa\x02'Github.Com.Darialissi.MsaBigTech.Social\xca\x02'Github\\Com\\Darialissi\\MsaBigTech\\Social\xe2\x023Github\\Com\\Darialissi\\MsaBigTech\\Social\\GPBMetadata\xea\x02+Github::Com::Darialissi::MsaBigTech::Socialb\x06proto3"
 
-var file_service_proto_goTypes = []any{
+var file_social_service_proto_goTypes = []any{
 	(*SendFriendRequestRequest)(nil),     // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
 	(*ListRequestsRequest)(nil),          // 1: github.com.darialissi.msa_big_tech.social.ListRequestsRequest
 	(*AcceptFriendRequestRequest)(nil),   // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
@@ -49,7 +49,7 @@ var file_service_proto_goTypes = []any{
 	(*RemoveFriendResponse)(nil),         // 10: github.com.darialissi.msa_big_tech.social.RemoveFriendResponse
 	(*ListFriendsResponse)(nil),          // 11: github.com.darialissi.msa_big_tech.social.ListFriendsResponse
 }
-var file_service_proto_depIdxs = []int32{
+var file_social_service_proto_depIdxs = []int32{
 	0,  // 0: github.com.darialissi.msa_big_tech.social.SocialService.SendFriendRequest:input_type -> github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
 	1,  // 1: github.com.darialissi.msa_big_tech.social.SocialService.ListRequests:input_type -> github.com.darialissi.msa_big_tech.social.ListRequestsRequest
 	2,  // 2: github.com.darialissi.msa_big_tech.social.SocialService.AcceptFriendRequest:input_type -> github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
@@ -69,26 +69,26 @@ var file_service_proto_depIdxs = []int32{
 	0,  // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_service_proto_init() }
-func file_service_proto_init() {
-	if File_service_proto != nil {
+func init() { file_social_service_proto_init() }
+func file_social_service_proto_init() {
+	if File_social_service_proto != nil {
 		return
 	}
-	file_messages_proto_init()
+	file_social_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_proto_rawDesc), len(file_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_social_service_proto_rawDesc), len(file_social_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_proto_goTypes,
-		DependencyIndexes: file_service_proto_depIdxs,
+		GoTypes:           file_social_service_proto_goTypes,
+		DependencyIndexes: file_social_service_proto_depIdxs,
 	}.Build()
-	File_service_proto = out.File
-	file_service_proto_goTypes = nil
-	file_service_proto_depIdxs = nil
+	File_social_service_proto = out.File
+	file_social_service_proto_goTypes = nil
+	file_social_service_proto_depIdxs = nil
 }

@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.auth;
 
-import "messages.proto";
+import "auth.proto";
 import "google/api/annotations.proto";
 
-option go_package = "msa_big_tech/auth/pkg;auth";
+option go_package = "github.com/darialissi/msa_big_tech/auth/pkg;auth";
 
 
 service AuthService {

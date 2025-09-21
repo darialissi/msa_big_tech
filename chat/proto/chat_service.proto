@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.chat;
 
-import "messages.proto";
+import "chat.proto";
 import "google/api/annotations.proto";
 
-option go_package = "msa_big_tech/chat/pkg;chat";
+option go_package = "github.com/darialissi/msa_big_tech/chat/pkg;chat";
 
 
 service ChatService {

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.users;
 
-option go_package = "msa_big_tech/users/pkg;users";
+option go_package = "github.com/darialissi/msa_big_tech/users/pkg;users";
 
 
 // Создание профиля

@@ -9,6 +9,10 @@ COPY ./auth/go.mod ./auth/
 COPY ./auth/pkg/ ./auth/pkg/
 COPY ./chat/go.mod ./chat/
 COPY ./chat/pkg/ ./chat/pkg/
+COPY ./social/go.mod ./social/
+COPY ./social/pkg/ ./social/pkg/
+COPY ./users/go.mod ./users/
+COPY ./users/pkg/ ./users/pkg/
 
 RUN cd gateway && go build -o ./bin/ ./cmd/server
 

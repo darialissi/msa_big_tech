@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.social;
 
-option go_package = "msa_big_tech/social/pkg;social";
+option go_package = "github.com/darialissi/msa_big_tech/social/pkg;social";
 
 
 // Отправление запроса "В Друзья"

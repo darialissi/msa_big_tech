@@ -49,6 +49,11 @@ services:
       - "8087:50057"
     networks:
       - app-network
+    depends_on:
+      - auth
+      - chat
+      - social
+      - users
 
 
 # Определяем общую сеть

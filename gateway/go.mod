@@ -7,10 +7,14 @@ require (
 	google.golang.org/grpc v1.75.1
 	msa_big_tech/auth v0.1.0
 	msa_big_tech/chat v0.1.0
+	msa_big_tech/users v0.1.0
+	msa_big_tech/social v0.1.0
 )
 
 replace msa_big_tech/auth => ../auth
 replace msa_big_tech/chat => ../chat
+replace msa_big_tech/users => ../users
+replace msa_big_tech/social => ../social
 
 require (
 	golang.org/x/net v0.41.0 // indirect

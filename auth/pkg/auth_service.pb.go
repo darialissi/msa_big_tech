@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.9
 // 	protoc        (unknown)
-// source: service.proto
+// source: auth_service.proto
 
 package auth
 
@@ -21,18 +21,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var File_service_proto protoreflect.FileDescriptor
+var File_auth_service_proto protoreflect.FileDescriptor
 
-const file_service_proto_rawDesc = "" +
+const file_auth_service_proto_rawDesc = "" +
 	"\n" +
-	"\rservice.proto\x12'github.com.darialissi.msa_big_tech.auth\x1a\x0emessages.proto\x1a\x1cgoogle/api/annotations.proto2\xbf\x03\n" +
+	"\x12auth_service.proto\x12'github.com.darialissi.msa_big_tech.auth\x1a\n" +
+	"auth.proto\x1a\x1cgoogle/api/annotations.proto2\xbf\x03\n" +
 	"\vAuthService\x12\x9c\x01\n" +
 	"\bRegister\x128.github.com.darialissi.msa_big_tech.auth.RegisterRequest\x1a9.github.com.darialissi.msa_big_tech.auth.RegisterResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/register\x12\x90\x01\n" +
 	"\x05Login\x125.github.com.darialissi.msa_big_tech.auth.LoginRequest\x1a6.github.com.darialissi.msa_big_tech.auth.LoginResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/login\x12~\n" +
-	"\aRefresh\x127.github.com.darialissi.msa_big_tech.auth.RefreshRequest\x1a8.github.com.darialissi.msa_big_tech.auth.RefreshResponse\"\x00B\x91\x02\n" +
-	"+com.github.com.darialissi.msa_big_tech.authB\fServiceProtoP\x01Z\x1amsa_big_tech/auth/pkg;auth\xa2\x02\x05GCDMA\xaa\x02%Github.Com.Darialissi.MsaBigTech.Auth\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Auth\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Auth\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Authb\x06proto3"
+	"\aRefresh\x127.github.com.darialissi.msa_big_tech.auth.RefreshRequest\x1a8.github.com.darialissi.msa_big_tech.auth.RefreshResponse\"\x00B\xab\x02\n" +
+	"+com.github.com.darialissi.msa_big_tech.authB\x10AuthServiceProtoP\x01Z0github.com/darialissi/msa_big_tech/auth/pkg;auth\xa2\x02\x05GCDMA\xaa\x02%Github.Com.Darialissi.MsaBigTech.Auth\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Auth\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Auth\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Authb\x06proto3"
 
-var file_service_proto_goTypes = []any{
+var file_auth_service_proto_goTypes = []any{
 	(*RegisterRequest)(nil),  // 0: github.com.darialissi.msa_big_tech.auth.RegisterRequest
 	(*LoginRequest)(nil),     // 1: github.com.darialissi.msa_big_tech.auth.LoginRequest
 	(*RefreshRequest)(nil),   // 2: github.com.darialissi.msa_big_tech.auth.RefreshRequest
@@ -40,7 +41,7 @@ var file_service_proto_goTypes = []any{
 	(*LoginResponse)(nil),    // 4: github.com.darialissi.msa_big_tech.auth.LoginResponse
 	(*RefreshResponse)(nil),  // 5: github.com.darialissi.msa_big_tech.auth.RefreshResponse
 }
-var file_service_proto_depIdxs = []int32{
+var file_auth_service_proto_depIdxs = []int32{
 	0, // 0: github.com.darialissi.msa_big_tech.auth.AuthService.Register:input_type -> github.com.darialissi.msa_big_tech.auth.RegisterRequest
 	1, // 1: github.com.darialissi.msa_big_tech.auth.AuthService.Login:input_type -> github.com.darialissi.msa_big_tech.auth.LoginRequest
 	2, // 2: github.com.darialissi.msa_big_tech.auth.AuthService.Refresh:input_type -> github.com.darialissi.msa_big_tech.auth.RefreshRequest
@@ -54,26 +55,26 @@ var file_service_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_service_proto_init() }
-func file_service_proto_init() {
-	if File_service_proto != nil {
+func init() { file_auth_service_proto_init() }
+func file_auth_service_proto_init() {
+	if File_auth_service_proto != nil {
 		return
 	}
-	file_messages_proto_init()
+	file_auth_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_proto_rawDesc), len(file_service_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_service_proto_rawDesc), len(file_auth_service_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_proto_goTypes,
-		DependencyIndexes: file_service_proto_depIdxs,
+		GoTypes:           file_auth_service_proto_goTypes,
+		DependencyIndexes: file_auth_service_proto_depIdxs,
 	}.Build()
-	File_service_proto = out.File
-	file_service_proto_goTypes = nil
-	file_service_proto_depIdxs = nil
+	File_auth_service_proto = out.File
+	file_auth_service_proto_goTypes = nil
+	file_auth_service_proto_depIdxs = nil
 }

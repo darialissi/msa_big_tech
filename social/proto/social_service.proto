@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.social;
 
-import "messages.proto";
+import "social.proto";
 import "google/api/annotations.proto";
 
-option go_package = "msa_big_tech/social/pkg;social";
+option go_package = "github.com/darialissi/msa_big_tech/social/pkg;social";
 
 
 service SocialService {
