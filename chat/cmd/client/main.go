@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"    
 	"google.golang.org/protobuf/encoding/protojson"           
 
-	"msa_big_tech/chat/pkg/api/proto"                                              
+	"msa_big_tech/chat/pkg"                                              
 )
 
 func main() {

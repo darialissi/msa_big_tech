@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.auth;
+
+option go_package = "msa_big_tech/auth/pkg;auth";
+
+
+// Регистрация
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  uint64 user_id = 1;
+}
+
+// Авторизация
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  uint64 user_id = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+}
+
+// Обновление токена
+message RefreshRequest {
+  string refresh_token = 1;
+}
+
+message RefreshResponse {
+  uint64 user_id = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+}

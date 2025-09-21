@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"msa_big_tech/auth/pkg/api/proto"
+	"msa_big_tech/auth/pkg"
 )
 
 func main() {
@@ -22,14 +22,14 @@ func main() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
 	// Регистрируем обработчики для gRPC-Gateway
-	err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "localhost:8082", opts)
+	err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "localhost:8083", opts)
 	if err != nil {
 		log.Fatalf("failed to start gateway: %v", err)
 	}
 
 	// Запускаем HTTP-сервер
-	log.Println("gRPC-Gateway server listening on :8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	log.Println("gRPC-Gateway server listening on :8087")
+	if err := http.ListenAndServe(":8087", mux); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

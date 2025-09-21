@@ -1,0 +1,374 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "messages.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SocialService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/friends/{userId}/request": {
+      "get": {
+        "summary": "Отправление запроса \"В Друзья\"",
+        "operationId": "SocialService_SendFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialSendFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/AcceptFriendRequest": {
+      "post": {
+        "summary": "Принятие заявки",
+        "operationId": "SocialService_AcceptFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialAcceptFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialAcceptFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/DeclineFriendRequest": {
+      "post": {
+        "summary": "Отклонение заявки",
+        "operationId": "SocialService_DeclineFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialDeclineFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialDeclineFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriends": {
+      "post": {
+        "summary": "Получение списка \"Друзей\"",
+        "operationId": "SocialService_ListFriends",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialListFriendsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialListFriendsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests": {
+      "post": {
+        "summary": "Получение списка входящих запросов",
+        "operationId": "SocialService_ListRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialListRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialListRequestsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/RemoveFriend": {
+      "post": {
+        "summary": "Удаление из \"Друзей\"",
+        "operationId": "SocialService_RemoveFriend",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialRemoveFriendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialRemoveFriendRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "msa_big_techsocialStatus": {
+      "type": "string",
+      "enum": [
+        "STATUS_PENDING",
+        "STATUS_APPROVED",
+        "STATUS_DECLINED"
+      ],
+      "default": "STATUS_PENDING"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "socialAcceptFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Принятие заявки"
+    },
+    "socialAcceptFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "friendRequest": {
+          "$ref": "#/definitions/socialFriendRequest"
+        }
+      }
+    },
+    "socialDeclineFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Отклонение заявки"
+    },
+    "socialDeclineFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "friendRequest": {
+          "$ref": "#/definitions/socialFriendRequest"
+        }
+      }
+    },
+    "socialFriendRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "status": {
+          "$ref": "#/definitions/msa_big_techsocialStatus"
+        }
+      },
+      "title": "Объекты"
+    },
+    "socialListFriendsRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "limit": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Получение списка \"Друзей\""
+    },
+    "socialListFriendsResponse": {
+      "type": "object",
+      "properties": {
+        "friendUserIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        }
+      }
+    },
+    "socialListRequestsRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Получение списка входящих запросов"
+    },
+    "socialListRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/socialFriendRequest"
+          }
+        }
+      }
+    },
+    "socialRemoveFriendRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Удаление из \"Друзей\""
+    },
+    "socialRemoveFriendResponse": {
+      "type": "object"
+    },
+    "socialSendFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "friendRequest": {
+          "$ref": "#/definitions/socialFriendRequest"
+        }
+      }
+    }
+  }
+}

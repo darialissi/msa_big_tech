@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package github.com.darialissi.msa_big_tech.users;
+
+option go_package = "msa_big_tech/users/pkg;users";
+
+
+// Создание профиля
+message CreateProfileRequest {
+  uint64 user_id = 1;
+  string nickname = 2;
+  string bio = 3;
+  string avatar_url = 4;
+}
+
+message CreateProfileResponse {
+  UserProfile user_profile = 1;
+}
+
+// Обновление профиля
+message UpdateProfileRequest {
+  uint64 user_id = 1;
+  string nickname = 2;
+  string bio = 3;
+  string avatar_url = 4;
+}
+
+message UpdateProfileResponse {
+  UserProfile user_profile = 1;
+}
+
+// Получение профиля по id
+message GetProfileByIDRequest {
+  uint64 user_id = 1;
+}
+
+message GetProfileByIDResponse {
+  UserProfile user_profile = 1;
+}
+
+// Получение профиля по nickname
+message GetProfileByNicknameRequest {
+  string nickname = 1;
+}
+
+message GetProfileByNicknameResponse {
+  UserProfile user_profile = 1;
+}
+
+// Поиск профилей по query
+message SearchByNicknameRequest {
+  string query = 1;
+  string limit = 2;
+}
+
+message SearchByNicknameResponse {
+  repeated UserProfile profiles = 1;
+}
+
+// Объекты
+message UserProfile {
+  string nickname = 1;
+}

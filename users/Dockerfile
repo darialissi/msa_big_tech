@@ -1,27 +1,15 @@
 FROM golang:1.25-alpine AS builder
 
-# Устанавливаем необходимые утилиты
-RUN apk add --no-cache make git protoc protobuf-dev
-
 WORKDIR /build
 
-# Копируем только файлы, необходимые для установки зависимостей
-COPY Makefile vendor.proto.mk ./       
-COPY ./users/go.mod ./users/go.sum ./users/
+COPY ./users/ ./
 
-# Скачиваем зависимости (кешируемый слой)
-RUN make vendor
-
-# Копируем остальные файлы
-COPY ./users/ ./users/
-
-# Генерируем сервисы и собираем бинарник
-RUN SERVICEDIR=users make generate build
+RUN go build -o ./bin/ ./cmd/server
 
 FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /build/users/bin/server ./
+COPY --from=builder /build/bin/server ./
 
 CMD ["./server"]

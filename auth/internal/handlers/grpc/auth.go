@@ -3,7 +3,7 @@ package grpc_hd
 import (
 	"context"
 
-	pb "msa_big_tech/auth/pkg/api/proto"
+	pb "msa_big_tech/auth/pkg"
 )
 
 type server struct {

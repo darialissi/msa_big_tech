@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"msa_big_tech/auth/pkg/api/proto"
+	"msa_big_tech/auth/pkg"
 	grpc_hd "msa_big_tech/auth/internal/handlers/grpc"
 )
 

@@ -40,6 +40,16 @@ services:
     networks:
       - app-network
 
+  gateway:
+    container_name: gateway_service
+    build:
+      context: ./
+      dockerfile: ./gateway/Dockerfile
+    ports:
+      - "8087:50057"
+    networks:
+      - app-network
+
 
 # Определяем общую сеть
 networks:

@@ -3,7 +3,7 @@ package grpc_hd
 import (
 	"context"
 
-	"msa_big_tech/social/pkg/api/proto"
+	"msa_big_tech/social/pkg"
 )
 
 type server struct {

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"               
 
-	"msa_big_tech/auth/pkg/api/proto"                                              
+	"msa_big_tech/auth/pkg"                                              
 )
 
 func main() {

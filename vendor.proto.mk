@@ -1,5 +1,5 @@
 # Путь до завендореных protobuf файлов
-VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
+VENDOR_PROTO_PATH := $(CURDIR)/$(SERVICEDIR)/vendor.protobuf
 
 # vendor
 vendor:	.vendor-reset .vendor-googleapis .vendor-google-protobuf .vendor-protoc-gen-openapiv2 .vendor-tidy
