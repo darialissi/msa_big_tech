@@ -3,7 +3,7 @@ package grpc_hd
 import (
 	"context"
 
-	"msa_big_tech/chat/pkg"
+	"github.com/darialissi/msa_big_tech/chat/pkg"
 )
 
 type server struct {

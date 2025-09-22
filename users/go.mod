@@ -1,4 +1,4 @@
-module msa_big_tech/users
+module github.com/darialissi/msa_big_tech/users
 
 go 1.25.0
 

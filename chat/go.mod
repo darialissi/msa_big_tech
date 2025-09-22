@@ -1,4 +1,4 @@
-module msa_big_tech/chat
+module github.com/darialissi/msa_big_tech/chat
 
 go 1.25.0
 

@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"msa_big_tech/social/pkg"
-	grpc_hd "msa_big_tech/social/internal/handlers/grpc"
+	grpc_hd "github.com/darialissi/msa_big_tech/social/internal/handlers/grpc"
+	social "github.com/darialissi/msa_big_tech/social/pkg"
 )
 
 

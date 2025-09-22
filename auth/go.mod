@@ -1,4 +1,4 @@
-module msa_big_tech/auth
+module github.com/darialissi/msa_big_tech/auth
 
 go 1.25.0
 

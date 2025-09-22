@@ -1,4 +1,4 @@
-module msa_big_tech/social
+module github.com/darialissi/msa_big_tech/social
 
 go 1.25.0
 
