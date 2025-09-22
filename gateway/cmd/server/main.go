@@ -5,14 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"msa_big_tech/auth/pkg"
-	"msa_big_tech/chat/pkg"
-	"msa_big_tech/social/pkg"
-	"msa_big_tech/users/pkg"
+	"github.com/darialissi/msa_big_tech/auth/pkg"
+	"github.com/darialissi/msa_big_tech/chat/pkg"
+	"github.com/darialissi/msa_big_tech/social/pkg"
+	"github.com/darialissi/msa_big_tech/users/pkg"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
 func main() {

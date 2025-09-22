@@ -1,3 +1,11 @@
+github.com/darialissi/msa_big_tech/auth v0.0.0-20250922182212-4cb647471709 h1:NvD/zE+h9PbIT1LMlQH3DUd/ath2J/LbC4LVV5e7A5w=
+github.com/darialissi/msa_big_tech/auth v0.0.0-20250922182212-4cb647471709/go.mod h1:WFeB4ee0BofGq25UgnnvdiQndO6M31duCrzleIpy1fA=
+github.com/darialissi/msa_big_tech/chat v0.0.0-20250922182212-4cb647471709 h1:LwLyf5ygfxyuIHjIUj9dy+w/rRjKOxUv8DFFZLSJqHU=
+github.com/darialissi/msa_big_tech/chat v0.0.0-20250922182212-4cb647471709/go.mod h1:/V7fik7QYHHoPS+kC+p7o6bz53MLPc3Sve3BK5QpTpc=
+github.com/darialissi/msa_big_tech/social v0.0.0-20250922182212-4cb647471709 h1:1T/dVchyh6IiqXWxyn83Ms09iVy2N1wqL7ckHctOATE=
+github.com/darialissi/msa_big_tech/social v0.0.0-20250922182212-4cb647471709/go.mod h1:j7bFyVuJmiPd8dbGYPkIoyyo5RIQMdD5faxbnUCMSwc=
+github.com/darialissi/msa_big_tech/users v0.0.0-20250922182212-4cb647471709 h1:2weI7mRGyBjsBXj1JPBiaMTGFATf+YLXZ53r+2WhN84=
+github.com/darialissi/msa_big_tech/users v0.0.0-20250922182212-4cb647471709/go.mod h1:wgQKFoyiXpuFwINCLx1HcROl+qRa9yiRGD65CjqiOto=
 github.com/go-logr/logr v1.4.3 h1:CjnDlHq8ikf6E492q6eKboGOC0T8CDaOvkHCIg8idEI=
 github.com/go-logr/logr v1.4.3/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=

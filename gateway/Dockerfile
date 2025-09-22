@@ -2,24 +2,14 @@ FROM golang:1.25-alpine AS builder
 
 WORKDIR /build
 
-COPY ./gateway/ ./gateway/
+COPY ./gateway/ ./
 
-# Зависимые сервисы
-COPY ./auth/go.mod ./auth/
-COPY ./auth/pkg/ ./auth/pkg/
-COPY ./chat/go.mod ./chat/
-COPY ./chat/pkg/ ./chat/pkg/
-COPY ./social/go.mod ./social/
-COPY ./social/pkg/ ./social/pkg/
-COPY ./users/go.mod ./users/
-COPY ./users/pkg/ ./users/pkg/
-
-RUN cd gateway && go build -o ./bin/ ./cmd/server
+RUN go build -o ./bin/ ./cmd/server
 
 FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /build/gateway/bin/server ./
+COPY --from=builder /build/bin/server ./
 
 CMD ["./server"]
