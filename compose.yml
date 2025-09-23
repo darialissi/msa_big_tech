@@ -3,8 +3,7 @@ services:
   auth:
     container_name: auth_service
     build:
-      context: ./
-      dockerfile: ./auth/Dockerfile
+      context: ./auth
     ports:
       - "8083:50053"
     networks:
@@ -13,8 +12,7 @@ services:
   chat:
     container_name: chat_service
     build:
-      context: ./
-      dockerfile: ./chat/Dockerfile
+      context: ./chat
     ports:
       - "8084:50054"
     networks:
@@ -23,8 +21,7 @@ services:
   social:
     container_name: social_service
     build:
-      context: ./
-      dockerfile: ./social/Dockerfile
+      context: ./social
     ports:
       - "8085:50055"
     networks:
@@ -33,8 +30,7 @@ services:
   users:
     container_name: users_service
     build:
-      context: ./
-      dockerfile: ./users/Dockerfile
+      context: ./users
     ports:
       - "8086:50056"
     networks:
@@ -43,8 +39,7 @@ services:
   gateway:
     container_name: gateway_service
     build:
-      context: ./
-      dockerfile: ./gateway/Dockerfile
+      context: ./gateway
     ports:
       - "8087:50057"
     networks:
