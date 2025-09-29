@@ -2,13 +2,21 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.auth;
 
+import "buf/validate/validate.proto";
+
 option go_package = "github.com/darialissi/msa_big_tech/auth/pkg;auth";
 
 
 // Регистрация
 message RegisterRequest {
-  string email = 1;
-  string password = 2;
+  string email = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true
+  ];
+  string password = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 5
+  ];
 }
 
 message RegisterResponse {
@@ -17,8 +25,13 @@ message RegisterResponse {
 
 // Авторизация
 message LoginRequest {
-  string email = 1;
-  string password = 2;
+  string email = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true
+  ];
+  string password = 2 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message LoginResponse {
@@ -29,7 +42,8 @@ message LoginResponse {
 
 // Обновление токена
 message RefreshRequest {
-  string refresh_token = 1;
+  uint64 user_id = 1;
+  string refresh_token = 2;
 }
 
 message RefreshResponse {

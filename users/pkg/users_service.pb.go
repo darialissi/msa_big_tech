@@ -25,13 +25,13 @@ var File_users_service_proto protoreflect.FileDescriptor
 
 const file_users_service_proto_rawDesc = "" +
 	"\n" +
-	"\x13users_service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\vusers.proto\x1a\x1cgoogle/api/annotations.proto2\xd5\x06\n" +
+	"\x13users_service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\vusers.proto\x1a\x1cgoogle/api/annotations.proto2\xcc\x06\n" +
 	"\fUsersService\x12\x92\x01\n" +
 	"\rCreateProfile\x12>.github.com.darialissi.msa_big_tech.users.CreateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.CreateProfileResponse\"\x00\x12\x92\x01\n" +
 	"\rUpdateProfile\x12>.github.com.darialissi.msa_big_tech.users.UpdateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.UpdateProfileResponse\"\x00\x12\xb6\x01\n" +
 	"\x0eGetProfileByID\x12?.github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest\x1a@.github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/profile/{user_id}\x12\xa7\x01\n" +
-	"\x14GetProfileByNickname\x12E.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest\x1aF.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse\"\x00\x12\xb7\x01\n" +
-	"\x10SearchByNickname\x12A.github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest\x1aB.github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/users/searchB\xb3\x02\n" +
+	"\x14GetProfileByNickname\x12E.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest\x1aF.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse\"\x00\x12\xae\x01\n" +
+	"\rSearchByQuery\x12>.github.com.darialissi.msa_big_tech.users.SearchByQueryRequest\x1a?.github.com.darialissi.msa_big_tech.users.SearchByQueryResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/users/searchB\xb3\x02\n" +
 	",com.github.com.darialissi.msa_big_tech.usersB\x11UsersServiceProtoP\x01Z2github.com/darialissi/msa_big_tech/users/pkg;users\xa2\x02\x05GCDMU\xaa\x02&Github.Com.Darialissi.MsaBigTech.Users\xca\x02&Github\\Com\\Darialissi\\MsaBigTech\\Users\xe2\x022Github\\Com\\Darialissi\\MsaBigTech\\Users\\GPBMetadata\xea\x02*Github::Com::Darialissi::MsaBigTech::Usersb\x06proto3"
 
 var file_users_service_proto_goTypes = []any{
@@ -39,24 +39,24 @@ var file_users_service_proto_goTypes = []any{
 	(*UpdateProfileRequest)(nil),         // 1: github.com.darialissi.msa_big_tech.users.UpdateProfileRequest
 	(*GetProfileByIDRequest)(nil),        // 2: github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest
 	(*GetProfileByNicknameRequest)(nil),  // 3: github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest
-	(*SearchByNicknameRequest)(nil),      // 4: github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest
+	(*SearchByQueryRequest)(nil),         // 4: github.com.darialissi.msa_big_tech.users.SearchByQueryRequest
 	(*CreateProfileResponse)(nil),        // 5: github.com.darialissi.msa_big_tech.users.CreateProfileResponse
 	(*UpdateProfileResponse)(nil),        // 6: github.com.darialissi.msa_big_tech.users.UpdateProfileResponse
 	(*GetProfileByIDResponse)(nil),       // 7: github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse
 	(*GetProfileByNicknameResponse)(nil), // 8: github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse
-	(*SearchByNicknameResponse)(nil),     // 9: github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse
+	(*SearchByQueryResponse)(nil),        // 9: github.com.darialissi.msa_big_tech.users.SearchByQueryResponse
 }
 var file_users_service_proto_depIdxs = []int32{
 	0, // 0: github.com.darialissi.msa_big_tech.users.UsersService.CreateProfile:input_type -> github.com.darialissi.msa_big_tech.users.CreateProfileRequest
 	1, // 1: github.com.darialissi.msa_big_tech.users.UsersService.UpdateProfile:input_type -> github.com.darialissi.msa_big_tech.users.UpdateProfileRequest
 	2, // 2: github.com.darialissi.msa_big_tech.users.UsersService.GetProfileByID:input_type -> github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest
 	3, // 3: github.com.darialissi.msa_big_tech.users.UsersService.GetProfileByNickname:input_type -> github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest
-	4, // 4: github.com.darialissi.msa_big_tech.users.UsersService.SearchByNickname:input_type -> github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest
+	4, // 4: github.com.darialissi.msa_big_tech.users.UsersService.SearchByQuery:input_type -> github.com.darialissi.msa_big_tech.users.SearchByQueryRequest
 	5, // 5: github.com.darialissi.msa_big_tech.users.UsersService.CreateProfile:output_type -> github.com.darialissi.msa_big_tech.users.CreateProfileResponse
 	6, // 6: github.com.darialissi.msa_big_tech.users.UsersService.UpdateProfile:output_type -> github.com.darialissi.msa_big_tech.users.UpdateProfileResponse
 	7, // 7: github.com.darialissi.msa_big_tech.users.UsersService.GetProfileByID:output_type -> github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse
 	8, // 8: github.com.darialissi.msa_big_tech.users.UsersService.GetProfileByNickname:output_type -> github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse
-	9, // 9: github.com.darialissi.msa_big_tech.users.UsersService.SearchByNickname:output_type -> github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse
+	9, // 9: github.com.darialissi.msa_big_tech.users.UsersService.SearchByQuery:output_type -> github.com.darialissi.msa_big_tech.users.SearchByQueryResponse
 	5, // [5:10] is the sub-list for method output_type
 	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

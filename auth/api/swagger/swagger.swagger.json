@@ -147,6 +147,10 @@
     "authRefreshRequest": {
       "type": "object",
       "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
         "refreshToken": {
           "type": "string"
         }

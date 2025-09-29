@@ -26,7 +26,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.Register(ctx, &auth.RegisterRequest{
-			Email:   "client_email",
+			Email:   "???",
 			Password: "client_password",
 		})
 		if err != nil {

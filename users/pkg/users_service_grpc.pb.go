@@ -23,7 +23,7 @@ const (
 	UsersService_UpdateProfile_FullMethodName        = "/github.com.darialissi.msa_big_tech.users.UsersService/UpdateProfile"
 	UsersService_GetProfileByID_FullMethodName       = "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByID"
 	UsersService_GetProfileByNickname_FullMethodName = "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByNickname"
-	UsersService_SearchByNickname_FullMethodName     = "/github.com.darialissi.msa_big_tech.users.UsersService/SearchByNickname"
+	UsersService_SearchByQuery_FullMethodName        = "/github.com.darialissi.msa_big_tech.users.UsersService/SearchByQuery"
 )
 
 // UsersServiceClient is the client API for UsersService service.
@@ -39,7 +39,7 @@ type UsersServiceClient interface {
 	// Получение профиля по nickname
 	GetProfileByNickname(ctx context.Context, in *GetProfileByNicknameRequest, opts ...grpc.CallOption) (*GetProfileByNicknameResponse, error)
 	// Поиск профилей по query
-	SearchByNickname(ctx context.Context, in *SearchByNicknameRequest, opts ...grpc.CallOption) (*SearchByNicknameResponse, error)
+	SearchByQuery(ctx context.Context, in *SearchByQueryRequest, opts ...grpc.CallOption) (*SearchByQueryResponse, error)
 }
 
 type usersServiceClient struct {
@@ -90,10 +90,10 @@ func (c *usersServiceClient) GetProfileByNickname(ctx context.Context, in *GetPr
 	return out, nil
 }
 
-func (c *usersServiceClient) SearchByNickname(ctx context.Context, in *SearchByNicknameRequest, opts ...grpc.CallOption) (*SearchByNicknameResponse, error) {
+func (c *usersServiceClient) SearchByQuery(ctx context.Context, in *SearchByQueryRequest, opts ...grpc.CallOption) (*SearchByQueryResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SearchByNicknameResponse)
-	err := c.cc.Invoke(ctx, UsersService_SearchByNickname_FullMethodName, in, out, cOpts...)
+	out := new(SearchByQueryResponse)
+	err := c.cc.Invoke(ctx, UsersService_SearchByQuery_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ type UsersServiceServer interface {
 	// Получение профиля по nickname
 	GetProfileByNickname(context.Context, *GetProfileByNicknameRequest) (*GetProfileByNicknameResponse, error)
 	// Поиск профилей по query
-	SearchByNickname(context.Context, *SearchByNicknameRequest) (*SearchByNicknameResponse, error)
+	SearchByQuery(context.Context, *SearchByQueryRequest) (*SearchByQueryResponse, error)
 	mustEmbedUnimplementedUsersServiceServer()
 }
 
@@ -136,8 +136,8 @@ func (UnimplementedUsersServiceServer) GetProfileByID(context.Context, *GetProfi
 func (UnimplementedUsersServiceServer) GetProfileByNickname(context.Context, *GetProfileByNicknameRequest) (*GetProfileByNicknameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProfileByNickname not implemented")
 }
-func (UnimplementedUsersServiceServer) SearchByNickname(context.Context, *SearchByNicknameRequest) (*SearchByNicknameResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SearchByNickname not implemented")
+func (UnimplementedUsersServiceServer) SearchByQuery(context.Context, *SearchByQueryRequest) (*SearchByQueryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchByQuery not implemented")
 }
 func (UnimplementedUsersServiceServer) mustEmbedUnimplementedUsersServiceServer() {}
 func (UnimplementedUsersServiceServer) testEmbeddedByValue()                      {}
@@ -232,20 +232,20 @@ func _UsersService_GetProfileByNickname_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UsersService_SearchByNickname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchByNicknameRequest)
+func _UsersService_SearchByQuery_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchByQueryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UsersServiceServer).SearchByNickname(ctx, in)
+		return srv.(UsersServiceServer).SearchByQuery(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UsersService_SearchByNickname_FullMethodName,
+		FullMethod: UsersService_SearchByQuery_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UsersServiceServer).SearchByNickname(ctx, req.(*SearchByNicknameRequest))
+		return srv.(UsersServiceServer).SearchByQuery(ctx, req.(*SearchByQueryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -274,8 +274,8 @@ var UsersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UsersService_GetProfileByNickname_Handler,
 		},
 		{
-			MethodName: "SearchByNickname",
-			Handler:    _UsersService_SearchByNickname_Handler,
+			MethodName: "SearchByQuery",
+			Handler:    _UsersService_SearchByQuery_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

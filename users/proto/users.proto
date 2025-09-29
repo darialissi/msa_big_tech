@@ -2,14 +2,18 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.users;
 
+import "buf/validate/validate.proto";
+
 option go_package = "github.com/darialissi/msa_big_tech/users/pkg;users";
 
 
 // Создание профиля
 message CreateProfileRequest {
-  uint64 user_id = 1;
-  string nickname = 2;
-  string bio = 3;
+  string nickname = 2 [
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
+  ];
+  string bio = 3 [(buf.validate.field).string.max_len = 500];
   string avatar_url = 4;
 }
 
@@ -19,9 +23,11 @@ message CreateProfileResponse {
 
 // Обновление профиля
 message UpdateProfileRequest {
-  uint64 user_id = 1;
-  string nickname = 2;
-  string bio = 3;
+  string nickname = 2 [
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
+  ];
+  string bio = 3 [(buf.validate.field).string.max_len = 500];
   string avatar_url = 4;
 }
 
@@ -40,7 +46,10 @@ message GetProfileByIDResponse {
 
 // Получение профиля по nickname
 message GetProfileByNicknameRequest {
-  string nickname = 1;
+  string nickname = 1 [
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
+  ];
 }
 
 message GetProfileByNicknameResponse {
@@ -48,16 +57,20 @@ message GetProfileByNicknameResponse {
 }
 
 // Поиск профилей по query
-message SearchByNicknameRequest {
+message SearchByQueryRequest {
   string query = 1;
   string limit = 2;
 }
 
-message SearchByNicknameResponse {
+message SearchByQueryResponse {
   repeated UserProfile profiles = 1;
 }
 
 // Объекты
 message UserProfile {
-  string nickname = 1;
+  string id = 1;
+  string email = 2;
+  string nickname = 3;
+  string bio = 4;
+  string avatar_url = 5;
 }

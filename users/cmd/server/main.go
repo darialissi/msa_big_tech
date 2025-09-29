@@ -7,13 +7,20 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	grpc_hd "github.com/darialissi/msa_big_tech/users/internal/handlers/grpc"
+	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
+	users_grpc "github.com/darialissi/msa_big_tech/users/internal/controllers/grpc"
 	users "github.com/darialissi/msa_big_tech/users/pkg"
+	users_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/users"
 )
 
 
 func main() {
-	implementation := grpc_hd.NewServer() // наша реализация сервера
+    // DI
+    usersRepo := users_repo.NewRepository()
+    
+    usersUC := usecases.NewAuthUsecase(usersRepo)
+	
+    implementation := users_grpc.NewServer(usersUC) // наша реализация сервера
 
 	lis, err := net.Listen("tcp", ":8086")
 	if err != nil {

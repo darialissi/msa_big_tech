@@ -27,8 +27,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.CreateProfile(ctx, &users.CreateProfileRequest{
-			UserId:   0,
-			Nickname: "client_nickname",
+			Nickname: "???",
 			Bio: "I'm client",
 			AvatarUrl: "http://avatar",
 		})
@@ -49,7 +48,6 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.UpdateProfile(ctx, &users.UpdateProfileRequest{
-			UserId:   0,
 			Nickname: "???",
 			Bio: "I'm client",
 			AvatarUrl: "http://avatar",
@@ -108,7 +106,7 @@ func main() {
 	{
 		ctx := context.Background()
 
-		resp, err := cli.SearchByNickname(ctx, &users.SearchByNicknameRequest{
+		resp, err := cli.SearchByQuery(ctx, &users.SearchByQueryRequest{
 			Query: "nickname=='client_nickname'",
 		})
 		if err != nil {

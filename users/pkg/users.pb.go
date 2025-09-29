@@ -7,6 +7,7 @@
 package users
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,7 +25,6 @@ const (
 // Создание профиля
 type CreateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
 	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
@@ -60,13 +60,6 @@ func (x *CreateProfileRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateProfileRequest.ProtoReflect.Descriptor instead.
 func (*CreateProfileRequest) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateProfileRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 func (x *CreateProfileRequest) GetNickname() string {
@@ -137,7 +130,6 @@ func (x *CreateProfileResponse) GetUserProfile() *UserProfile {
 // Обновление профиля
 type UpdateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
 	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
@@ -173,13 +165,6 @@ func (x *UpdateProfileRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UpdateProfileRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProfileRequest) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *UpdateProfileRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 func (x *UpdateProfileRequest) GetNickname() string {
@@ -426,7 +411,7 @@ func (x *GetProfileByNicknameResponse) GetUserProfile() *UserProfile {
 }
 
 // Поиск профилей по query
-type SearchByNicknameRequest struct {
+type SearchByQueryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	Limit         string                 `protobuf:"bytes,2,opt,name=limit,proto3" json:"limit,omitempty"`
@@ -434,20 +419,20 @@ type SearchByNicknameRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SearchByNicknameRequest) Reset() {
-	*x = SearchByNicknameRequest{}
+func (x *SearchByQueryRequest) Reset() {
+	*x = SearchByQueryRequest{}
 	mi := &file_users_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SearchByNicknameRequest) String() string {
+func (x *SearchByQueryRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SearchByNicknameRequest) ProtoMessage() {}
+func (*SearchByQueryRequest) ProtoMessage() {}
 
-func (x *SearchByNicknameRequest) ProtoReflect() protoreflect.Message {
+func (x *SearchByQueryRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_users_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -459,46 +444,46 @@ func (x *SearchByNicknameRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SearchByNicknameRequest.ProtoReflect.Descriptor instead.
-func (*SearchByNicknameRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SearchByQueryRequest.ProtoReflect.Descriptor instead.
+func (*SearchByQueryRequest) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *SearchByNicknameRequest) GetQuery() string {
+func (x *SearchByQueryRequest) GetQuery() string {
 	if x != nil {
 		return x.Query
 	}
 	return ""
 }
 
-func (x *SearchByNicknameRequest) GetLimit() string {
+func (x *SearchByQueryRequest) GetLimit() string {
 	if x != nil {
 		return x.Limit
 	}
 	return ""
 }
 
-type SearchByNicknameResponse struct {
+type SearchByQueryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Profiles      []*UserProfile         `protobuf:"bytes,1,rep,name=profiles,proto3" json:"profiles,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SearchByNicknameResponse) Reset() {
-	*x = SearchByNicknameResponse{}
+func (x *SearchByQueryResponse) Reset() {
+	*x = SearchByQueryResponse{}
 	mi := &file_users_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SearchByNicknameResponse) String() string {
+func (x *SearchByQueryResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SearchByNicknameResponse) ProtoMessage() {}
+func (*SearchByQueryResponse) ProtoMessage() {}
 
-func (x *SearchByNicknameResponse) ProtoReflect() protoreflect.Message {
+func (x *SearchByQueryResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_users_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -510,12 +495,12 @@ func (x *SearchByNicknameResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SearchByNicknameResponse.ProtoReflect.Descriptor instead.
-func (*SearchByNicknameResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SearchByQueryResponse.ProtoReflect.Descriptor instead.
+func (*SearchByQueryResponse) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *SearchByNicknameResponse) GetProfiles() []*UserProfile {
+func (x *SearchByQueryResponse) GetProfiles() []*UserProfile {
 	if x != nil {
 		return x.Profiles
 	}
@@ -525,7 +510,11 @@ func (x *SearchByNicknameResponse) GetProfiles() []*UserProfile {
 // Объекты
 type UserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nickname      string                 `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Nickname      string                 `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Bio           string                 `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -560,9 +549,37 @@ func (*UserProfile) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{10}
 }
 
+func (x *UserProfile) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *UserProfile) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 func (x *UserProfile) GetNickname() string {
 	if x != nil {
 		return x.Nickname
+	}
+	return ""
+}
+
+func (x *UserProfile) GetBio() string {
+	if x != nil {
+		return x.Bio
+	}
+	return ""
+}
+
+func (x *UserProfile) GetAvatarUrl() string {
+	if x != nil {
+		return x.AvatarUrl
 	}
 	return ""
 }
@@ -571,19 +588,17 @@ var File_users_proto protoreflect.FileDescriptor
 
 const file_users_proto_rawDesc = "" +
 	"\n" +
-	"\vusers.proto\x12(github.com.darialissi.msa_big_tech.users\"|\n" +
-	"\x14CreateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
-	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
+	"\vusers.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x1bbuf/validate/validate.proto\"\x88\x01\n" +
+	"\x14CreateProfileRequest\x125\n" +
+	"\bnickname\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
+	"\x03bio\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15CreateProfileResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"|\n" +
-	"\x14UpdateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
-	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\x88\x01\n" +
+	"\x14UpdateProfileRequest\x125\n" +
+	"\bnickname\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
+	"\x03bio\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15UpdateProfileResponse\x12X\n" +
@@ -591,18 +606,23 @@ const file_users_proto_rawDesc = "" +
 	"\x15GetProfileByIDRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x04R\x06userId\"r\n" +
 	"\x16GetProfileByIDResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"9\n" +
-	"\x1bGetProfileByNicknameRequest\x12\x1a\n" +
-	"\bnickname\x18\x01 \x01(\tR\bnickname\"x\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"T\n" +
+	"\x1bGetProfileByNicknameRequest\x125\n" +
+	"\bnickname\x18\x01 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\"x\n" +
 	"\x1cGetProfileByNicknameResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"E\n" +
-	"\x17SearchByNicknameRequest\x12\x14\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"B\n" +
+	"\x14SearchByQueryRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\tR\x05limit\"m\n" +
-	"\x18SearchByNicknameResponse\x12Q\n" +
-	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\")\n" +
-	"\vUserProfile\x12\x1a\n" +
-	"\bnickname\x18\x01 \x01(\tR\bnicknameB\xac\x02\n" +
+	"\x05limit\x18\x02 \x01(\tR\x05limit\"j\n" +
+	"\x15SearchByQueryResponse\x12Q\n" +
+	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\"\x80\x01\n" +
+	"\vUserProfile\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
+	"\bnickname\x18\x03 \x01(\tR\bnickname\x12\x10\n" +
+	"\x03bio\x18\x04 \x01(\tR\x03bio\x12\x1d\n" +
+	"\n" +
+	"avatar_url\x18\x05 \x01(\tR\tavatarUrlB\xac\x02\n" +
 	",com.github.com.darialissi.msa_big_tech.usersB\n" +
 	"UsersProtoP\x01Z2github.com/darialissi/msa_big_tech/users/pkg;users\xa2\x02\x05GCDMU\xaa\x02&Github.Com.Darialissi.MsaBigTech.Users\xca\x02&Github\\Com\\Darialissi\\MsaBigTech\\Users\xe2\x022Github\\Com\\Darialissi\\MsaBigTech\\Users\\GPBMetadata\xea\x02*Github::Com::Darialissi::MsaBigTech::Usersb\x06proto3"
 
@@ -628,8 +648,8 @@ var file_users_proto_goTypes = []any{
 	(*GetProfileByIDResponse)(nil),       // 5: github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse
 	(*GetProfileByNicknameRequest)(nil),  // 6: github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest
 	(*GetProfileByNicknameResponse)(nil), // 7: github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse
-	(*SearchByNicknameRequest)(nil),      // 8: github.com.darialissi.msa_big_tech.users.SearchByNicknameRequest
-	(*SearchByNicknameResponse)(nil),     // 9: github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse
+	(*SearchByQueryRequest)(nil),         // 8: github.com.darialissi.msa_big_tech.users.SearchByQueryRequest
+	(*SearchByQueryResponse)(nil),        // 9: github.com.darialissi.msa_big_tech.users.SearchByQueryResponse
 	(*UserProfile)(nil),                  // 10: github.com.darialissi.msa_big_tech.users.UserProfile
 }
 var file_users_proto_depIdxs = []int32{
@@ -637,7 +657,7 @@ var file_users_proto_depIdxs = []int32{
 	10, // 1: github.com.darialissi.msa_big_tech.users.UpdateProfileResponse.user_profile:type_name -> github.com.darialissi.msa_big_tech.users.UserProfile
 	10, // 2: github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse.user_profile:type_name -> github.com.darialissi.msa_big_tech.users.UserProfile
 	10, // 3: github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse.user_profile:type_name -> github.com.darialissi.msa_big_tech.users.UserProfile
-	10, // 4: github.com.darialissi.msa_big_tech.users.SearchByNicknameResponse.profiles:type_name -> github.com.darialissi.msa_big_tech.users.UserProfile
+	10, // 4: github.com.darialissi.msa_big_tech.users.SearchByQueryResponse.profiles:type_name -> github.com.darialissi.msa_big_tech.users.UserProfile
 	5,  // [5:5] is the sub-list for method output_type
 	5,  // [5:5] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
