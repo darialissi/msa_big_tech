@@ -1,6 +1,8 @@
 package usecases
 
 import (
+	"errors"
+
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 )
@@ -32,14 +34,22 @@ type TokenRepository interface {
 // Проверка реализации всех методов интерфейса при компиляции
 var _ AuthUsecases = (*AuthUsecase)(nil)
 
-type AuthUsecase struct {
-    repo AuthRepository
-	repoToken TokenRepository
+type Deps struct {
+    RepoAuth AuthRepository
+	RepoToken TokenRepository
 }
 
-func NewAuthUsecase(repo AuthRepository, repoToken TokenRepository) *AuthUsecase {
-    return &AuthUsecase{
-        repo:      repo,
-        repoToken: repoToken,
+type AuthUsecase struct {
+    Deps // встраивание
+}
+
+func NewAuthUsecase(deps Deps) (*AuthUsecase, error) {
+    if deps.RepoAuth == nil {
+        return nil, errors.New("AuthRepository is required")
     }
+    if deps.RepoToken == nil {
+        return nil, errors.New("TokenRepository is required")
+    }
+    
+    return &AuthUsecase{deps}, nil
 }

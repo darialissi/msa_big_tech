@@ -16,7 +16,7 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 		return nil, ErrWeakPassword
 	}
 
-	user, err := ac.repo.FetchByEmail(a.Email)
+	user, err := ac.RepoAuth.FetchByEmail(a.Email)
 
 	if err != nil  {
 		return nil, fmt.Errorf("UpdateCred error: %w", err)
@@ -37,7 +37,7 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
-	if _, err := ac.repo.Update(userInp); err != nil {
+	if _, err := ac.RepoAuth.Update(userInp); err != nil {
 		return nil, fmt.Errorf("UpdateCred error: %w", err)
 	}
 

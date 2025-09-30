@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	grpc_hd "github.com/darialissi/msa_big_tech/chat/internal/handlers/grpc"
+	grpc_hd "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
 

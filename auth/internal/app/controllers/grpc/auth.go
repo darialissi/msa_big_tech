@@ -7,6 +7,7 @@ import (
 
 	auth "github.com/darialissi/msa_big_tech/auth/pkg"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
+	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 )
 
 
@@ -14,11 +15,11 @@ func (s *service) Register(ctx context.Context, req *auth.RegisterRequest) (*aut
 
 	v, err := protovalidate.New()
     if err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
     }
 
     if err = v.Validate(req); err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
 	}
 
 	inp := &dto.Register{
@@ -39,11 +40,11 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 
 	v, err := protovalidate.New()
     if err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
     }
 
     if err = v.Validate(req); err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
 	}
 
 	inp := &dto.Login{

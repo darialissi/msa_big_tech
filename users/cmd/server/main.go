@@ -1,24 +1,25 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
-	users_grpc "github.com/darialissi/msa_big_tech/users/internal/controllers/grpc"
-	users "github.com/darialissi/msa_big_tech/users/pkg"
 	users_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/users"
+	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
+	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
+	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
 
 
 func main() {
     // DI
-    usersRepo := users_repo.NewRepository()
+    usersRepo := users_repo.NewRepository(&sql.DB{})
     
-    usersUC := usecases.NewAuthUsecase(usersRepo)
+    usersUC := usecases.NewUsersUsecase(usersRepo)
 	
     implementation := users_grpc.NewServer(usersUC) // наша реализация сервера
 

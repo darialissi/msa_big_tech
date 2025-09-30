@@ -13,10 +13,10 @@ import (
 
 func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
 	// проверка наличия пользователя, проверка пароля, генерация токенов и запись refresh
-	user, err := ac.repo.FetchByEmail(a.Email)
+	user, err := ac.RepoAuth.FetchByEmail(a.Email)
 
 	if err != nil {
-		return nil, ErrNotExisted
+		return nil, ErrNotExistedUser
 	}
 
 	hashedBytes := []byte(user.PasswordHash)
@@ -36,7 +36,7 @@ func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
-	if err := ac.repoToken.Save(authRefresh); err != nil {
+	if err := ac.RepoToken.Save(authRefresh); err != nil {
 		return nil, fmt.Errorf("Login error: %w", err)
 	}
 

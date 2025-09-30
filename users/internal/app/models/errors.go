@@ -1,4 +1,4 @@
-package auth_grpc
+package models
 
 import (
 	"errors"

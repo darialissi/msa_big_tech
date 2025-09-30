@@ -22,7 +22,7 @@ func (ac *AuthUsecase) Refresh(a *dto.AuthRefresh) (*models.Auth, error) {
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
-	if err := ac.repoToken.Save(authRefresh); err != nil {
+	if err := ac.RepoToken.Save(authRefresh); err != nil {
 		return nil, fmt.Errorf("Refresh error: %w", err)
 	}
 

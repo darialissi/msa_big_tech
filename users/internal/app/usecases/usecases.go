@@ -25,7 +25,7 @@ type UsersUsecase struct {
     repo UsersRepository
 }
 
-func NewAuthUsecase(repo UsersRepository) *UsersUsecase {
+func NewUsersUsecase(repo UsersRepository) *UsersUsecase {
     return &UsersUsecase{
         repo: repo,
     }

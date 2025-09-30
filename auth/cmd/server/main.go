@@ -1,21 +1,22 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net"
-    "path/filepath"
-    "runtime"
+	"path/filepath"
+	"runtime"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/joho/godotenv"
 
-	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases"
-	auth_grpc "github.com/darialissi/msa_big_tech/auth/internal/controllers/grpc"
-	auth "github.com/darialissi/msa_big_tech/auth/pkg"
+	auth_grpc "github.com/darialissi/msa_big_tech/auth/internal/app/controllers/grpc"
 	auth_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/auth"
 	token_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/token"
+	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases"
+	auth "github.com/darialissi/msa_big_tech/auth/pkg"
 )
 
 // init is invoked before main()
@@ -33,10 +34,18 @@ func init() {
 
 func main() {
     // DI
-    authRepo := auth_repo.NewRepository()
+    authRepo := auth_repo.NewRepository(&sql.DB{})
     tokenRepo := token_repo.NewRepository()
     
-    authUC := usecases.NewAuthUsecase(authRepo, tokenRepo)
+    deps := usecases.Deps{
+        RepoAuth:  authRepo,
+        RepoToken: tokenRepo,
+    }
+    
+    authUC, err := usecases.NewAuthUsecase(deps)
+    if err != nil {
+        log.Fatalf("failed to create auth usecase: %v", err)
+    }
 	
     implementation := auth_grpc.NewServer(authUC)
 

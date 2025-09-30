@@ -7,7 +7,8 @@ import (
 	"buf.build/go/protovalidate"
 
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
-	"github.com/darialissi/msa_big_tech/users/pkg"
+	"github.com/darialissi/msa_big_tech/users/internal/app/models"
+	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
 
 
@@ -15,11 +16,11 @@ func (s *server) CreateProfile(ctx context.Context, req *users.CreateProfileRequ
 
 	v, err := protovalidate.New()
     if err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
     }
 
     if err = v.Validate(req); err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
 	}
 
     userEmail, ok := ctx.Value("Email").(string) // TODO: прокинуть Email через middleware
@@ -55,11 +56,11 @@ func (s *server) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequ
 
 	v, err := protovalidate.New()
     if err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
     }
 
     if err = v.Validate(req); err != nil {
-		return nil, ErrValidationFailed
+		return nil, models.ErrValidationFailed
 	}
 
 	userInp := &dto.UpdateUser{

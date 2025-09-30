@@ -1,4 +1,4 @@
-package users_grpc
+package models
 
 import (
 	"errors"

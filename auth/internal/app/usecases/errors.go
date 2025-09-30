@@ -13,5 +13,5 @@ var (
 	// Email уже зарегистрирован
 	ErrRegisteredEmail = errors.New("User with this Email is already registered")
 	// Пользователь не существует
-	ErrNotExisted = errors.New("User does not exist")
+	ErrNotExistedUser = errors.New("User does not exist")
 )

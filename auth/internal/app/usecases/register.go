@@ -16,7 +16,7 @@ func (ac *AuthUsecase) Register(a *dto.Register) (*models.User, error) {
 		return nil, ErrWeakPassword
 	}
 
-	if existed, err := ac.repo.FetchByEmail(a.Email); err != nil  {
+	if existed, err := ac.RepoAuth.FetchByEmail(a.Email); err != nil  {
 		return nil, fmt.Errorf("Register error: %w", err)
 	} else if existed != nil {
 		return nil, ErrRegisteredEmail
@@ -34,7 +34,7 @@ func (ac *AuthUsecase) Register(a *dto.Register) (*models.User, error) {
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
-	user, err := ac.repo.Save(credInp)
+	user, err := ac.RepoAuth.Save(credInp)
 
 	if err != nil {
 		return nil, fmt.Errorf("Register error: %w", err)
