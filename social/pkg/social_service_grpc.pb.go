@@ -20,7 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	SocialService_SendFriendRequest_FullMethodName    = "/github.com.darialissi.msa_big_tech.social.SocialService/SendFriendRequest"
-	SocialService_ListRequests_FullMethodName         = "/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests"
+	SocialService_ListFriendRequests_FullMethodName   = "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests"
 	SocialService_AcceptFriendRequest_FullMethodName  = "/github.com.darialissi.msa_big_tech.social.SocialService/AcceptFriendRequest"
 	SocialService_DeclineFriendRequest_FullMethodName = "/github.com.darialissi.msa_big_tech.social.SocialService/DeclineFriendRequest"
 	SocialService_RemoveFriend_FullMethodName         = "/github.com.darialissi.msa_big_tech.social.SocialService/RemoveFriend"
@@ -34,7 +34,7 @@ type SocialServiceClient interface {
 	// Отправление запроса "В Друзья"
 	SendFriendRequest(ctx context.Context, in *SendFriendRequestRequest, opts ...grpc.CallOption) (*SendFriendRequestResponse, error)
 	// Получение списка входящих запросов
-	ListRequests(ctx context.Context, in *ListRequestsRequest, opts ...grpc.CallOption) (*ListRequestsResponse, error)
+	ListFriendRequests(ctx context.Context, in *ListFriendRequestsRequest, opts ...grpc.CallOption) (*ListFriendRequestsResponse, error)
 	// Принятие заявки
 	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error)
 	// Отклонение заявки
@@ -63,10 +63,10 @@ func (c *socialServiceClient) SendFriendRequest(ctx context.Context, in *SendFri
 	return out, nil
 }
 
-func (c *socialServiceClient) ListRequests(ctx context.Context, in *ListRequestsRequest, opts ...grpc.CallOption) (*ListRequestsResponse, error) {
+func (c *socialServiceClient) ListFriendRequests(ctx context.Context, in *ListFriendRequestsRequest, opts ...grpc.CallOption) (*ListFriendRequestsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListRequestsResponse)
-	err := c.cc.Invoke(ctx, SocialService_ListRequests_FullMethodName, in, out, cOpts...)
+	out := new(ListFriendRequestsResponse)
+	err := c.cc.Invoke(ctx, SocialService_ListFriendRequests_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ type SocialServiceServer interface {
 	// Отправление запроса "В Друзья"
 	SendFriendRequest(context.Context, *SendFriendRequestRequest) (*SendFriendRequestResponse, error)
 	// Получение списка входящих запросов
-	ListRequests(context.Context, *ListRequestsRequest) (*ListRequestsResponse, error)
+	ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error)
 	// Принятие заявки
 	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error)
 	// Отклонение заявки
@@ -142,8 +142,8 @@ type UnimplementedSocialServiceServer struct{}
 func (UnimplementedSocialServiceServer) SendFriendRequest(context.Context, *SendFriendRequestRequest) (*SendFriendRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendFriendRequest not implemented")
 }
-func (UnimplementedSocialServiceServer) ListRequests(context.Context, *ListRequestsRequest) (*ListRequestsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListRequests not implemented")
+func (UnimplementedSocialServiceServer) ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFriendRequests not implemented")
 }
 func (UnimplementedSocialServiceServer) AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriendRequest not implemented")
@@ -196,20 +196,20 @@ func _SocialService_SendFriendRequest_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SocialService_ListRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListRequestsRequest)
+func _SocialService_ListFriendRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFriendRequestsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SocialServiceServer).ListRequests(ctx, in)
+		return srv.(SocialServiceServer).ListFriendRequests(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: SocialService_ListRequests_FullMethodName,
+		FullMethod: SocialService_ListFriendRequests_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SocialServiceServer).ListRequests(ctx, req.(*ListRequestsRequest))
+		return srv.(SocialServiceServer).ListFriendRequests(ctx, req.(*ListFriendRequestsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -298,8 +298,8 @@ var SocialService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SocialService_SendFriendRequest_Handler,
 		},
 		{
-			MethodName: "ListRequests",
-			Handler:    _SocialService_ListRequests_Handler,
+			MethodName: "ListFriendRequests",
+			Handler:    _SocialService_ListFriendRequests_Handler,
 		},
 		{
 			MethodName: "AcceptFriendRequest",

@@ -1,8 +1,9 @@
 package models
 
+type UserID uint64
 
 type User struct {
-	ID uint64
+	ID UserID
 	Email string
 	Nickname string
 	Bio string

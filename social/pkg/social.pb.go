@@ -24,22 +24,22 @@ const (
 type Status int32
 
 const (
-	Status_STATUS_PENDING  Status = 0
-	Status_STATUS_APPROVED Status = 1
-	Status_STATUS_DECLINED Status = 2
+	Status_PENDING  Status = 0
+	Status_ACCEPTED Status = 1
+	Status_DECLINED Status = 2
 )
 
 // Enum value maps for Status.
 var (
 	Status_name = map[int32]string{
-		0: "STATUS_PENDING",
-		1: "STATUS_APPROVED",
-		2: "STATUS_DECLINED",
+		0: "PENDING",
+		1: "ACCEPTED",
+		2: "DECLINED",
 	}
 	Status_value = map[string]int32{
-		"STATUS_PENDING":  0,
-		"STATUS_APPROVED": 1,
-		"STATUS_DECLINED": 2,
+		"PENDING":  0,
+		"ACCEPTED": 1,
+		"DECLINED": 2,
 	}
 )
 
@@ -74,6 +74,7 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 type SendFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ToUserId      uint64                 `protobuf:"varint,2,opt,name=to_user_id,json=toUserId,proto3" json:"to_user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,6 +112,13 @@ func (*SendFriendRequestRequest) Descriptor() ([]byte, []int) {
 func (x *SendFriendRequestRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
+	}
+	return 0
+}
+
+func (x *SendFriendRequestRequest) GetToUserId() uint64 {
+	if x != nil {
+		return x.ToUserId
 	}
 	return 0
 }
@@ -160,27 +168,27 @@ func (x *SendFriendRequestResponse) GetFriendRequest() *FriendRequest {
 }
 
 // Получение списка входящих запросов
-type ListRequestsRequest struct {
+type ListFriendRequestsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListRequestsRequest) Reset() {
-	*x = ListRequestsRequest{}
+func (x *ListFriendRequestsRequest) Reset() {
+	*x = ListFriendRequestsRequest{}
 	mi := &file_social_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListRequestsRequest) String() string {
+func (x *ListFriendRequestsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListRequestsRequest) ProtoMessage() {}
+func (*ListFriendRequestsRequest) ProtoMessage() {}
 
-func (x *ListRequestsRequest) ProtoReflect() protoreflect.Message {
+func (x *ListFriendRequestsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_social_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -192,39 +200,39 @@ func (x *ListRequestsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRequestsRequest.ProtoReflect.Descriptor instead.
-func (*ListRequestsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListFriendRequestsRequest.ProtoReflect.Descriptor instead.
+func (*ListFriendRequestsRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListRequestsRequest) GetUserId() uint64 {
+func (x *ListFriendRequestsRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
 	}
 	return 0
 }
 
-type ListRequestsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Requests      []*FriendRequest       `protobuf:"bytes,1,rep,name=requests,proto3" json:"requests,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type ListFriendRequestsResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	FriendRequests []*FriendRequest       `protobuf:"bytes,1,rep,name=friend_requests,json=friendRequests,proto3" json:"friend_requests,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
-func (x *ListRequestsResponse) Reset() {
-	*x = ListRequestsResponse{}
+func (x *ListFriendRequestsResponse) Reset() {
+	*x = ListFriendRequestsResponse{}
 	mi := &file_social_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListRequestsResponse) String() string {
+func (x *ListFriendRequestsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListRequestsResponse) ProtoMessage() {}
+func (*ListFriendRequestsResponse) ProtoMessage() {}
 
-func (x *ListRequestsResponse) ProtoReflect() protoreflect.Message {
+func (x *ListFriendRequestsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_social_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -236,24 +244,24 @@ func (x *ListRequestsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListRequestsResponse.ProtoReflect.Descriptor instead.
-func (*ListRequestsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListFriendRequestsResponse.ProtoReflect.Descriptor instead.
+func (*ListFriendRequestsResponse) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListRequestsResponse) GetRequests() []*FriendRequest {
+func (x *ListFriendRequestsResponse) GetFriendRequests() []*FriendRequest {
 	if x != nil {
-		return x.Requests
+		return x.FriendRequests
 	}
 	return nil
 }
 
 // Принятие заявки
 type AcceptFriendRequestRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     uint64                 `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	FriendRequestId uint64                 `protobuf:"varint,1,opt,name=friend_request_id,json=friendRequestId,proto3" json:"friend_request_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AcceptFriendRequestRequest) Reset() {
@@ -286,9 +294,9 @@ func (*AcceptFriendRequestRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *AcceptFriendRequestRequest) GetRequestId() uint64 {
+func (x *AcceptFriendRequestRequest) GetFriendRequestId() uint64 {
 	if x != nil {
-		return x.RequestId
+		return x.FriendRequestId
 	}
 	return 0
 }
@@ -339,10 +347,10 @@ func (x *AcceptFriendRequestResponse) GetFriendRequest() *FriendRequest {
 
 // Отклонение заявки
 type DeclineFriendRequestRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     uint64                 `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	FriendRequestId uint64                 `protobuf:"varint,1,opt,name=friend_request_id,json=friendRequestId,proto3" json:"friend_request_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DeclineFriendRequestRequest) Reset() {
@@ -375,9 +383,9 @@ func (*DeclineFriendRequestRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *DeclineFriendRequestRequest) GetRequestId() uint64 {
+func (x *DeclineFriendRequestRequest) GetFriendRequestId() uint64 {
 	if x != nil {
-		return x.RequestId
+		return x.FriendRequestId
 	}
 	return 0
 }
@@ -430,6 +438,7 @@ func (x *DeclineFriendRequestResponse) GetFriendRequest() *FriendRequest {
 type RemoveFriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	FriendId      uint64                 `protobuf:"varint,2,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -471,8 +480,16 @@ func (x *RemoveFriendRequest) GetUserId() uint64 {
 	return 0
 }
 
+func (x *RemoveFriendRequest) GetFriendId() uint64 {
+	if x != nil {
+		return x.FriendId
+	}
+	return 0
+}
+
 type RemoveFriendResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	FriendId      uint64                 `protobuf:"varint,1,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -505,6 +522,13 @@ func (x *RemoveFriendResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use RemoveFriendResponse.ProtoReflect.Descriptor instead.
 func (*RemoveFriendResponse) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *RemoveFriendResponse) GetFriendId() uint64 {
+	if x != nil {
+		return x.FriendId
+	}
+	return 0
 }
 
 // Получение списка "Друзей"
@@ -562,7 +586,7 @@ func (x *ListFriendsRequest) GetLimit() uint64 {
 
 type ListFriendsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FriendUserIds []uint64               `protobuf:"varint,1,rep,packed,name=friend_user_ids,json=friendUserIds,proto3" json:"friend_user_ids,omitempty"`
+	FriendIds     []uint64               `protobuf:"varint,1,rep,packed,name=friend_ids,json=friendIds,proto3" json:"friend_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -597,9 +621,9 @@ func (*ListFriendsResponse) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *ListFriendsResponse) GetFriendUserIds() []uint64 {
+func (x *ListFriendsResponse) GetFriendIds() []uint64 {
 	if x != nil {
-		return x.FriendUserIds
+		return x.FriendIds
 	}
 	return nil
 }
@@ -609,6 +633,8 @@ type FriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RequestId     uint64                 `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status        Status                 `protobuf:"varint,2,opt,name=status,proto3,enum=github.com.darialissi.msa_big_tech.social.Status" json:"status,omitempty"`
+	FromUserId    uint64                 `protobuf:"varint,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
+	ToUserId      uint64                 `protobuf:"varint,4,opt,name=to_user_id,json=toUserId,proto3" json:"to_user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -654,48 +680,69 @@ func (x *FriendRequest) GetStatus() Status {
 	if x != nil {
 		return x.Status
 	}
-	return Status_STATUS_PENDING
+	return Status_PENDING
+}
+
+func (x *FriendRequest) GetFromUserId() uint64 {
+	if x != nil {
+		return x.FromUserId
+	}
+	return 0
+}
+
+func (x *FriendRequest) GetToUserId() uint64 {
+	if x != nil {
+		return x.ToUserId
+	}
+	return 0
 }
 
 var File_social_proto protoreflect.FileDescriptor
 
 const file_social_proto_rawDesc = "" +
 	"\n" +
-	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\"3\n" +
+	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\"Q\n" +
 	"\x18SendFriendRequestRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\"|\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1c\n" +
+	"\n" +
+	"to_user_id\x18\x02 \x01(\x04R\btoUserId\"|\n" +
 	"\x19SendFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\".\n" +
-	"\x13ListRequestsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\"l\n" +
-	"\x14ListRequestsResponse\x12T\n" +
-	"\brequests\x18\x01 \x03(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\brequests\";\n" +
-	"\x1aAcceptFriendRequestRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\x04R\trequestId\"~\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"4\n" +
+	"\x19ListFriendRequestsRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\"\x7f\n" +
+	"\x1aListFriendRequestsResponse\x12a\n" +
+	"\x0ffriend_requests\x18\x01 \x03(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\x0efriendRequests\"H\n" +
+	"\x1aAcceptFriendRequestRequest\x12*\n" +
+	"\x11friend_request_id\x18\x01 \x01(\x04R\x0ffriendRequestId\"~\n" +
 	"\x1bAcceptFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"<\n" +
-	"\x1bDeclineFriendRequestRequest\x12\x1d\n" +
-	"\n" +
-	"request_id\x18\x01 \x01(\x04R\trequestId\"\x7f\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"I\n" +
+	"\x1bDeclineFriendRequestRequest\x12*\n" +
+	"\x11friend_request_id\x18\x01 \x01(\x04R\x0ffriendRequestId\"\x7f\n" +
 	"\x1cDeclineFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\".\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"K\n" +
 	"\x13RemoveFriendRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\"\x16\n" +
-	"\x14RemoveFriendResponse\"C\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1b\n" +
+	"\tfriend_id\x18\x02 \x01(\x04R\bfriendId\"3\n" +
+	"\x14RemoveFriendResponse\x12\x1b\n" +
+	"\tfriend_id\x18\x01 \x01(\x04R\bfriendId\"C\n" +
 	"\x12ListFriendsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x04R\x05limit\"=\n" +
-	"\x13ListFriendsResponse\x12&\n" +
-	"\x0ffriend_user_ids\x18\x01 \x03(\x04R\rfriendUserIds\"y\n" +
+	"\x05limit\x18\x02 \x01(\x04R\x05limit\"4\n" +
+	"\x13ListFriendsResponse\x12\x1d\n" +
+	"\n" +
+	"friend_ids\x18\x01 \x03(\x04R\tfriendIds\"\xb9\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\x04R\trequestId\x12I\n" +
-	"\x06status\x18\x02 \x01(\x0e21.github.com.darialissi.msa_big_tech.social.StatusR\x06status*F\n" +
-	"\x06Status\x12\x12\n" +
-	"\x0eSTATUS_PENDING\x10\x00\x12\x13\n" +
-	"\x0fSTATUS_APPROVED\x10\x01\x12\x13\n" +
-	"\x0fSTATUS_DECLINED\x10\x02B\xb4\x02\n" +
+	"\x06status\x18\x02 \x01(\x0e21.github.com.darialissi.msa_big_tech.social.StatusR\x06status\x12 \n" +
+	"\ffrom_user_id\x18\x03 \x01(\x04R\n" +
+	"fromUserId\x12\x1c\n" +
+	"\n" +
+	"to_user_id\x18\x04 \x01(\x04R\btoUserId*1\n" +
+	"\x06Status\x12\v\n" +
+	"\aPENDING\x10\x00\x12\f\n" +
+	"\bACCEPTED\x10\x01\x12\f\n" +
+	"\bDECLINED\x10\x02B\xb4\x02\n" +
 	"-com.github.com.darialissi.msa_big_tech.socialB\vSocialProtoP\x01Z4github.com/darialissi/msa_big_tech/social/pkg;social\xa2\x02\x05GCDMS\xaa\x02'Github.Com.Darialissi.MsaBigTech.Social\xca\x02'Github\\Com\\Darialissi\\MsaBigTech\\Social\xe2\x023Github\\Com\\Darialissi\\MsaBigTech\\Social\\GPBMetadata\xea\x02+Github::Com::Darialissi::MsaBigTech::Socialb\x06proto3"
 
 var (
@@ -716,8 +763,8 @@ var file_social_proto_goTypes = []any{
 	(Status)(0),                          // 0: github.com.darialissi.msa_big_tech.social.Status
 	(*SendFriendRequestRequest)(nil),     // 1: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
 	(*SendFriendRequestResponse)(nil),    // 2: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
-	(*ListRequestsRequest)(nil),          // 3: github.com.darialissi.msa_big_tech.social.ListRequestsRequest
-	(*ListRequestsResponse)(nil),         // 4: github.com.darialissi.msa_big_tech.social.ListRequestsResponse
+	(*ListFriendRequestsRequest)(nil),    // 3: github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest
+	(*ListFriendRequestsResponse)(nil),   // 4: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse
 	(*AcceptFriendRequestRequest)(nil),   // 5: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
 	(*AcceptFriendRequestResponse)(nil),  // 6: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse
 	(*DeclineFriendRequestRequest)(nil),  // 7: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest
@@ -730,7 +777,7 @@ var file_social_proto_goTypes = []any{
 }
 var file_social_proto_depIdxs = []int32{
 	13, // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	13, // 1: github.com.darialissi.msa_big_tech.social.ListRequestsResponse.requests:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
+	13, // 1: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse.friend_requests:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	13, // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	13, // 3: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	0,  // 4: github.com.darialissi.msa_big_tech.social.FriendRequest.status:type_name -> github.com.darialissi.msa_big_tech.social.Status

@@ -274,6 +274,17 @@
         },
         "name": {
           "type": "string"
+        },
+        "creatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "participantIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
         }
       },
       "title": "Объекты"
@@ -394,6 +405,14 @@
         },
         "text": {
           "type": "string"
+        },
+        "fromUserId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "toChatId": {
+          "type": "string",
+          "format": "uint64"
         }
       }
     },

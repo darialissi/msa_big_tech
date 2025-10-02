@@ -17,7 +17,7 @@
   ],
   "paths": {
     "/api/v1/friends/{userId}/request": {
-      "get": {
+      "post": {
         "summary": "Отправление запроса \"В Друзья\"",
         "operationId": "SocialService_SendFriendRequest",
         "responses": {
@@ -41,6 +41,14 @@
             "required": true,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SocialServiceSendFriendRequestBody"
+            }
           }
         ],
         "tags": [
@@ -114,6 +122,39 @@
         ]
       }
     },
+    "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests": {
+      "post": {
+        "summary": "Получение списка входящих запросов",
+        "operationId": "SocialService_ListFriendRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/socialListFriendRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/socialListFriendRequestsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
     "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriends": {
       "post": {
         "summary": "Получение списка \"Друзей\"",
@@ -139,39 +180,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/socialListFriendsRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SocialService"
-        ]
-      }
-    },
-    "/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests": {
-      "post": {
-        "summary": "Получение списка входящих запросов",
-        "operationId": "SocialService_ListRequests",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/socialListRequestsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/socialListRequestsRequest"
             }
           }
         ],
@@ -215,6 +223,16 @@
     }
   },
   "definitions": {
+    "SocialServiceSendFriendRequestBody": {
+      "type": "object",
+      "properties": {
+        "toUserId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Отправление запроса \"В Друзья\""
+    },
     "googlerpcStatus": {
       "type": "object",
       "properties": {
@@ -237,11 +255,11 @@
     "msa_big_techsocialStatus": {
       "type": "string",
       "enum": [
-        "STATUS_PENDING",
-        "STATUS_APPROVED",
-        "STATUS_DECLINED"
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED"
       ],
-      "default": "STATUS_PENDING"
+      "default": "PENDING"
     },
     "protobufAny": {
       "type": "object",
@@ -255,7 +273,7 @@
     "socialAcceptFriendRequestRequest": {
       "type": "object",
       "properties": {
-        "requestId": {
+        "friendRequestId": {
           "type": "string",
           "format": "uint64"
         }
@@ -273,7 +291,7 @@
     "socialDeclineFriendRequestRequest": {
       "type": "object",
       "properties": {
-        "requestId": {
+        "friendRequestId": {
           "type": "string",
           "format": "uint64"
         }
@@ -297,9 +315,39 @@
         },
         "status": {
           "$ref": "#/definitions/msa_big_techsocialStatus"
+        },
+        "fromUserId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "toUserId": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "title": "Объекты"
+    },
+    "socialListFriendRequestsRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Получение списка входящих запросов"
+    },
+    "socialListFriendRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "friendRequests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/socialFriendRequest"
+          }
+        }
+      }
     },
     "socialListFriendsRequest": {
       "type": "object",
@@ -318,33 +366,11 @@
     "socialListFriendsResponse": {
       "type": "object",
       "properties": {
-        "friendUserIds": {
+        "friendIds": {
           "type": "array",
           "items": {
             "type": "string",
             "format": "uint64"
-          }
-        }
-      }
-    },
-    "socialListRequestsRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "uint64"
-        }
-      },
-      "title": "Получение списка входящих запросов"
-    },
-    "socialListRequestsResponse": {
-      "type": "object",
-      "properties": {
-        "requests": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/socialFriendRequest"
           }
         }
       }
@@ -355,12 +381,22 @@
         "userId": {
           "type": "string",
           "format": "uint64"
+        },
+        "friendId": {
+          "type": "string",
+          "format": "uint64"
         }
       },
       "title": "Удаление из \"Друзей\""
     },
     "socialRemoveFriendResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "friendId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
     },
     "socialSendFriendRequestResponse": {
       "type": "object",

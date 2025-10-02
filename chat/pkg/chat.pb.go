@@ -662,11 +662,13 @@ func (x *StreamMessagesResponse) GetStream() *Message {
 
 // Объекты
 type Chat struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ChatId         uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CreatorId      uint64                 `protobuf:"varint,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	ParticipantIds []uint64               `protobuf:"varint,4,rep,packed,name=participant_ids,json=participantIds,proto3" json:"participant_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Chat) Reset() {
@@ -713,10 +715,26 @@ func (x *Chat) GetName() string {
 	return ""
 }
 
+func (x *Chat) GetCreatorId() uint64 {
+	if x != nil {
+		return x.CreatorId
+	}
+	return 0
+}
+
+func (x *Chat) GetParticipantIds() []uint64 {
+	if x != nil {
+		return x.ParticipantIds
+	}
+	return nil
+}
+
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     uint64                 `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	FromUserId    uint64                 `protobuf:"varint,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
+	ToChatId      uint64                 `protobuf:"varint,4,opt,name=to_chat_id,json=toChatId,proto3" json:"to_chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -765,6 +783,20 @@ func (x *Message) GetText() string {
 	return ""
 }
 
+func (x *Message) GetFromUserId() uint64 {
+	if x != nil {
+		return x.FromUserId
+	}
+	return 0
+}
+
+func (x *Message) GetToChatId() uint64 {
+	if x != nil {
+		return x.ToChatId
+	}
+	return 0
+}
+
 var File_chat_proto protoreflect.FileDescriptor
 
 const file_chat_proto_rawDesc = "" +
@@ -800,14 +832,21 @@ const file_chat_proto_rawDesc = "" +
 	"\x15StreamMessagesRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"b\n" +
 	"\x16StreamMessagesResponse\x12H\n" +
-	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\"3\n" +
+	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\"{\n" +
 	"\x04Chat\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\x04R\x06chatId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"<\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
+	"\n" +
+	"creator_id\x18\x03 \x01(\x04R\tcreatorId\x12'\n" +
+	"\x0fparticipant_ids\x18\x04 \x03(\x04R\x0eparticipantIds\"|\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x04R\tmessageId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04textB\xa4\x02\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12 \n" +
+	"\ffrom_user_id\x18\x03 \x01(\x04R\n" +
+	"fromUserId\x12\x1c\n" +
+	"\n" +
+	"to_chat_id\x18\x04 \x01(\x04R\btoChatIdB\xa4\x02\n" +
 	"+com.github.com.darialissi.msa_big_tech.chatB\tChatProtoP\x01Z0github.com/darialissi/msa_big_tech/chat/pkg;chat\xa2\x02\x05GCDMC\xaa\x02%Github.Com.Darialissi.MsaBigTech.Chat\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Chat\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Chat\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Chatb\x06proto3"
 
 var (

@@ -3,17 +3,35 @@ package main
 import (
 	"log"
 	"net"
+	"database/sql"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	grpc_hd "github.com/darialissi/msa_big_tech/social/internal/app/controllers/grpc"
+	"github.com/darialissi/msa_big_tech/social/internal/app/usecases"
+	friend_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend"
+	friend_req_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend_request"
+	social_grpc "github.com/darialissi/msa_big_tech/social/internal/app/controllers/grpc"
 	social "github.com/darialissi/msa_big_tech/social/pkg"
 )
 
 
 func main() {
-	implementation := grpc_hd.NewServer() // наша реализация сервера
+    // DI
+    friendRepo := friend_repo.NewRepository(&sql.DB{})
+    friendReqRepo := friend_req_repo.NewRepository(&sql.DB{})
+    
+    deps := usecases.Deps{
+        RepoFriend:  friendRepo,
+        RepoFriendReq: friendReqRepo,
+    }
+    
+    socialUC, err := usecases.NewSocialUsecase(deps)
+    if err != nil {
+        log.Fatalf("failed to create social usecase: %v", err)
+    }
+	
+    implementation := social_grpc.NewServer(socialUC) // наша реализация сервера
 
 	lis, err := net.Listen("tcp", ":8085")
 	if err != nil {

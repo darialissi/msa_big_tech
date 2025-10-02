@@ -25,10 +25,10 @@ var File_social_service_proto protoreflect.FileDescriptor
 
 const file_social_service_proto_rawDesc = "" +
 	"\n" +
-	"\x14social_service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\fsocial.proto\x1a\x1cgoogle/api/annotations.proto2\xe9\a\n" +
-	"\rSocialService\x12\xc9\x01\n" +
-	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\")\x82\xd3\xe4\x93\x02#\x12!/api/v1/friends/{user_id}/request\x12\x91\x01\n" +
-	"\fListRequests\x12>.github.com.darialissi.msa_big_tech.social.ListRequestsRequest\x1a?.github.com.darialissi.msa_big_tech.social.ListRequestsResponse\"\x00\x12\xa6\x01\n" +
+	"\x14social_service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\fsocial.proto\x1a\x1cgoogle/api/annotations.proto2\xfe\a\n" +
+	"\rSocialService\x12\xcc\x01\n" +
+	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/v1/friends/{user_id}/request\x12\xa3\x01\n" +
+	"\x12ListFriendRequests\x12D.github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest\x1aE.github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse\"\x00\x12\xa6\x01\n" +
 	"\x13AcceptFriendRequest\x12E.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest\x1aF.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse\"\x00\x12\xa9\x01\n" +
 	"\x14DeclineFriendRequest\x12F.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest\x1aG.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse\"\x00\x12\x91\x01\n" +
 	"\fRemoveFriend\x12>.github.com.darialissi.msa_big_tech.social.RemoveFriendRequest\x1a?.github.com.darialissi.msa_big_tech.social.RemoveFriendResponse\"\x00\x12\x8e\x01\n" +
@@ -37,13 +37,13 @@ const file_social_service_proto_rawDesc = "" +
 
 var file_social_service_proto_goTypes = []any{
 	(*SendFriendRequestRequest)(nil),     // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
-	(*ListRequestsRequest)(nil),          // 1: github.com.darialissi.msa_big_tech.social.ListRequestsRequest
+	(*ListFriendRequestsRequest)(nil),    // 1: github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest
 	(*AcceptFriendRequestRequest)(nil),   // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
 	(*DeclineFriendRequestRequest)(nil),  // 3: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest
 	(*RemoveFriendRequest)(nil),          // 4: github.com.darialissi.msa_big_tech.social.RemoveFriendRequest
 	(*ListFriendsRequest)(nil),           // 5: github.com.darialissi.msa_big_tech.social.ListFriendsRequest
 	(*SendFriendRequestResponse)(nil),    // 6: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
-	(*ListRequestsResponse)(nil),         // 7: github.com.darialissi.msa_big_tech.social.ListRequestsResponse
+	(*ListFriendRequestsResponse)(nil),   // 7: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse
 	(*AcceptFriendRequestResponse)(nil),  // 8: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse
 	(*DeclineFriendRequestResponse)(nil), // 9: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse
 	(*RemoveFriendResponse)(nil),         // 10: github.com.darialissi.msa_big_tech.social.RemoveFriendResponse
@@ -51,13 +51,13 @@ var file_social_service_proto_goTypes = []any{
 }
 var file_social_service_proto_depIdxs = []int32{
 	0,  // 0: github.com.darialissi.msa_big_tech.social.SocialService.SendFriendRequest:input_type -> github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
-	1,  // 1: github.com.darialissi.msa_big_tech.social.SocialService.ListRequests:input_type -> github.com.darialissi.msa_big_tech.social.ListRequestsRequest
+	1,  // 1: github.com.darialissi.msa_big_tech.social.SocialService.ListFriendRequests:input_type -> github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest
 	2,  // 2: github.com.darialissi.msa_big_tech.social.SocialService.AcceptFriendRequest:input_type -> github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
 	3,  // 3: github.com.darialissi.msa_big_tech.social.SocialService.DeclineFriendRequest:input_type -> github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest
 	4,  // 4: github.com.darialissi.msa_big_tech.social.SocialService.RemoveFriend:input_type -> github.com.darialissi.msa_big_tech.social.RemoveFriendRequest
 	5,  // 5: github.com.darialissi.msa_big_tech.social.SocialService.ListFriends:input_type -> github.com.darialissi.msa_big_tech.social.ListFriendsRequest
 	6,  // 6: github.com.darialissi.msa_big_tech.social.SocialService.SendFriendRequest:output_type -> github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
-	7,  // 7: github.com.darialissi.msa_big_tech.social.SocialService.ListRequests:output_type -> github.com.darialissi.msa_big_tech.social.ListRequestsResponse
+	7,  // 7: github.com.darialissi.msa_big_tech.social.SocialService.ListFriendRequests:output_type -> github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse
 	8,  // 8: github.com.darialissi.msa_big_tech.social.SocialService.AcceptFriendRequest:output_type -> github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse
 	9,  // 9: github.com.darialissi.msa_big_tech.social.SocialService.DeclineFriendRequest:output_type -> github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse
 	10, // 10: github.com.darialissi.msa_big_tech.social.SocialService.RemoveFriend:output_type -> github.com.darialissi.msa_big_tech.social.RemoveFriendResponse

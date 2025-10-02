@@ -12,11 +12,12 @@ service SocialService {
     // Отправление запроса "В Друзья"
     rpc SendFriendRequest(SendFriendRequestRequest) returns (SendFriendRequestResponse) {
         option (google.api.http) = {
-        get: "/api/v1/friends/{user_id}/request"
+        post: "/api/v1/friends/{user_id}/request"
+        body: "*"
         };
     }
     // Получение списка входящих запросов
-    rpc ListRequests(ListRequestsRequest) returns (ListRequestsResponse) {}
+    rpc ListFriendRequests(ListFriendRequestsRequest) returns (ListFriendRequestsResponse) {}
     // Принятие заявки
     rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {}
     // Отклонение заявки

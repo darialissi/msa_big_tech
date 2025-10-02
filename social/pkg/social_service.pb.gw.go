@@ -41,6 +41,9 @@ func request_SocialService_SendFriendRequest_0(ctx context.Context, marshaler ru
 		metadata runtime.ServerMetadata
 		err      error
 	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
@@ -62,6 +65,9 @@ func local_request_SocialService_SendFriendRequest_0(ctx context.Context, marsha
 		metadata runtime.ServerMetadata
 		err      error
 	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	val, ok := pathParams["user_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
@@ -74,9 +80,9 @@ func local_request_SocialService_SendFriendRequest_0(ctx context.Context, marsha
 	return msg, metadata, err
 }
 
-func request_SocialService_ListRequests_0(ctx context.Context, marshaler runtime.Marshaler, client SocialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_SocialService_ListFriendRequests_0(ctx context.Context, marshaler runtime.Marshaler, client SocialServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListRequestsRequest
+		protoReq ListFriendRequestsRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -85,19 +91,19 @@ func request_SocialService_ListRequests_0(ctx context.Context, marshaler runtime
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
-	msg, err := client.ListRequests(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListFriendRequests(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_SocialService_ListRequests_0(ctx context.Context, marshaler runtime.Marshaler, server SocialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_SocialService_ListFriendRequests_0(ctx context.Context, marshaler runtime.Marshaler, server SocialServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListRequestsRequest
+		protoReq ListFriendRequestsRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListRequests(ctx, &protoReq)
+	msg, err := server.ListFriendRequests(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -215,7 +221,7 @@ func local_request_SocialService_ListFriends_0(ctx context.Context, marshaler ru
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterSocialServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterSocialServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server SocialServiceServer) error {
-	mux.Handle(http.MethodGet, pattern_SocialService_SendFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SocialService_SendFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -235,25 +241,25 @@ func RegisterSocialServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		}
 		forward_SocialService_SendFriendRequest_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_SocialService_ListRequests_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SocialService_ListFriendRequests_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_SocialService_ListRequests_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_SocialService_ListFriendRequests_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_SocialService_ListRequests_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_SocialService_ListFriendRequests_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_SocialService_AcceptFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -375,7 +381,7 @@ func RegisterSocialServiceHandler(ctx context.Context, mux *runtime.ServeMux, co
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "SocialServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterSocialServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client SocialServiceClient) error {
-	mux.Handle(http.MethodGet, pattern_SocialService_SendFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SocialService_SendFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -392,22 +398,22 @@ func RegisterSocialServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		}
 		forward_SocialService_SendFriendRequest_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_SocialService_ListRequests_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SocialService_ListFriendRequests_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.social.SocialService/ListRequests"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests", runtime.WithHTTPPathPattern("/github.com.darialissi.msa_big_tech.social.SocialService/ListFriendRequests"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_SocialService_ListRequests_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_SocialService_ListFriendRequests_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_SocialService_ListRequests_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_SocialService_ListFriendRequests_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodPost, pattern_SocialService_AcceptFriendRequest_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -482,7 +488,7 @@ func RegisterSocialServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 var (
 	pattern_SocialService_SendFriendRequest_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "friends", "user_id", "request"}, ""))
-	pattern_SocialService_ListRequests_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "ListRequests"}, ""))
+	pattern_SocialService_ListFriendRequests_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "ListFriendRequests"}, ""))
 	pattern_SocialService_AcceptFriendRequest_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "AcceptFriendRequest"}, ""))
 	pattern_SocialService_DeclineFriendRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "DeclineFriendRequest"}, ""))
 	pattern_SocialService_RemoveFriend_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "RemoveFriend"}, ""))
@@ -491,7 +497,7 @@ var (
 
 var (
 	forward_SocialService_SendFriendRequest_0    = runtime.ForwardResponseMessage
-	forward_SocialService_ListRequests_0         = runtime.ForwardResponseMessage
+	forward_SocialService_ListFriendRequests_0   = runtime.ForwardResponseMessage
 	forward_SocialService_AcceptFriendRequest_0  = runtime.ForwardResponseMessage
 	forward_SocialService_DeclineFriendRequest_0 = runtime.ForwardResponseMessage
 	forward_SocialService_RemoveFriend_0         = runtime.ForwardResponseMessage
