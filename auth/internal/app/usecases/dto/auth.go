@@ -43,8 +43,8 @@ type AuthRefresh struct {
 	RefreshToken string
 }
 
-func (id *UserID) String() string {
-	str := strconv.Itoa(int(*id))
+func (id UserID) String() string {
+	str := strconv.Itoa(int(id))
 
 	return str
 }

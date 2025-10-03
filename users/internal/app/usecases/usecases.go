@@ -13,7 +13,7 @@ type UsersUsecases interface {
 }
 
 type UsersRepository interface {
-    Save(user *dto.SaveUser) (*models.User, error)
+    Save(user *dto.CreateUser) (*models.User, error)
     Update(user *dto.UpdateUser) (*models.User, error)
     FetchByNickname(nickname string) (*models.User, error)
 }

@@ -2,7 +2,6 @@ package users_grpc
 
 import (
 	"context"
-	"fmt"
 
 	"buf.build/go/protovalidate"
 
@@ -23,13 +22,11 @@ func (s *server) CreateProfile(ctx context.Context, req *users.CreateProfileRequ
 		return nil, models.ErrValidationFailed
 	}
 
-    userEmail, ok := ctx.Value("Email").(string) // TODO: прокинуть Email через middleware
-    if !ok {
-        return nil, fmt.Errorf("Email not found in context")
-    }
+    // TODO: получить id из jwt MW
+	userId := 1
 
 	userInp := &dto.CreateUser{
-		Email: userEmail,
+		ID: dto.UserID(userId),
 		Nickname: req.Nickname,
 		Bio: req.Bio,
 		Avatar: dto.Url(req.AvatarUrl),
@@ -42,8 +39,7 @@ func (s *server) CreateProfile(ctx context.Context, req *users.CreateProfileRequ
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(user.ID),
-		Email: user.Email,
+		Id: uint64(user.ID),
 		Nickname: user.Nickname,
 		Bio: user.Bio,
 		AvatarUrl: user.Avatar,
@@ -62,8 +58,12 @@ func (s *server) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequ
     if err = v.Validate(req); err != nil {
 		return nil, models.ErrValidationFailed
 	}
+	
+    // TODO: получить id из jwt MW
+	userId := 1
 
 	userInp := &dto.UpdateUser{
+		ID: dto.UserID(userId),
 		Nickname: req.Nickname,
 		Bio: req.Bio,
 		Avatar: dto.Url(req.AvatarUrl),
@@ -76,8 +76,7 @@ func (s *server) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequ
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(user.ID),
-		Email: user.Email,
+		Id: uint64(user.ID),
 		Nickname: user.Nickname,
 		Bio: user.Bio,
 		AvatarUrl: user.Avatar,

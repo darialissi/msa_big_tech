@@ -510,11 +510,10 @@ func (x *SearchByQueryResponse) GetProfiles() []*UserProfile {
 // Объекты
 type UserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Nickname      string                 `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
-	Bio           string                 `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
-	AvatarUrl     string                 `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -549,18 +548,11 @@ func (*UserProfile) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *UserProfile) GetId() string {
+func (x *UserProfile) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
-}
-
-func (x *UserProfile) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
+	return 0
 }
 
 func (x *UserProfile) GetNickname() string {
@@ -615,14 +607,13 @@ const file_users_proto_rawDesc = "" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\tR\x05limit\"j\n" +
 	"\x15SearchByQueryResponse\x12Q\n" +
-	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\"\x80\x01\n" +
+	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\"j\n" +
 	"\vUserProfile\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\bnickname\x18\x03 \x01(\tR\bnickname\x12\x10\n" +
-	"\x03bio\x18\x04 \x01(\tR\x03bio\x12\x1d\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x1a\n" +
+	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
+	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +
-	"avatar_url\x18\x05 \x01(\tR\tavatarUrlB\xac\x02\n" +
+	"avatar_url\x18\x04 \x01(\tR\tavatarUrlB\xac\x02\n" +
 	",com.github.com.darialissi.msa_big_tech.usersB\n" +
 	"UsersProtoP\x01Z2github.com/darialissi/msa_big_tech/users/pkg;users\xa2\x02\x05GCDMU\xaa\x02&Github.Com.Darialissi.MsaBigTech.Users\xca\x02&Github\\Com\\Darialissi\\MsaBigTech\\Users\xe2\x022Github\\Com\\Darialissi\\MsaBigTech\\Users\\GPBMetadata\xea\x02*Github::Com::Darialissi::MsaBigTech::Usersb\x06proto3"
 

@@ -6,10 +6,10 @@ import (
 )
 
 
-func (r *Repository) Save(user *dto.SaveUser) (*models.User, error) {
+func (r *Repository) Save(user *dto.CreateUser) (*models.User, error) {
 	r.db.Exec(
-		"INSERT INTO users (email, nickname, bio, avatar_url) VALUES (?, ?, ?, ?)",
-		user.Email, user.Nickname, user.Bio, user.Avatar,
+		"INSERT INTO users (nickname, bio, avatar_url) VALUES (?, ?, ?)",
+		user.Nickname, user.Bio, user.Avatar,
 	)
 
 	//

@@ -17,14 +17,7 @@ func (uc *UsersUsecase) CreateUser(u *dto.CreateUser) (*models.User, error) {
 		return nil, ErrExistedNickname
 	}
 
-	userSave := &dto.SaveUser{
-		Email: u.Email,
-		Nickname: u.Nickname,
-		Bio: u.Bio,
-		Avatar: u.Avatar,
-	}
-
-	user, err := uc.repo.Save(userSave)
+	user, err := uc.repo.Save(u)
 	if err != nil {
 		return nil, fmt.Errorf("CreateUser error: %w", err)
 	}

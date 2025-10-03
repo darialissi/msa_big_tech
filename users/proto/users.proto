@@ -68,9 +68,8 @@ message SearchByQueryResponse {
 
 // Объекты
 message UserProfile {
-  string id = 1;
-  string email = 2;
-  string nickname = 3;
-  string bio = 4;
-  string avatar_url = 5;
+  uint64 id = 1;
+  string nickname = 2;
+  string bio = 3;
+  string avatar_url = 4;
 }
