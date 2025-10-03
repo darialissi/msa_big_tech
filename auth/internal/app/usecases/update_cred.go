@@ -19,7 +19,7 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 	user, err := ac.RepoAuth.FetchByEmail(a.Email)
 
 	if err != nil  {
-		return nil, fmt.Errorf("UpdateCred error: %w", err)
+		return nil, fmt.Errorf("UpdateCred: FetchByEmail: %w", err)
 	} else if user != nil && dto.UserID(user.ID) != a.ID {
 		return nil, ErrRegisteredEmail
 	}
@@ -28,7 +28,7 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
 
 	if err != nil {
-		return nil, fmt.Errorf("UpdateCred error: %w", err)
+		return nil, fmt.Errorf("UpdateCred: GenerateFromPassword: %w", err)
 	}
 
 	userInp := &dto.UpdateCredSave{
@@ -38,7 +38,7 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 	}
 
 	if _, err := ac.RepoAuth.Update(userInp); err != nil {
-		return nil, fmt.Errorf("UpdateCred error: %w", err)
+		return nil, fmt.Errorf("UpdateCred: Update: %w", err)
 	}
 
 	return user, nil

@@ -7,12 +7,12 @@ import (
 )
 
 
-func (r *Repository) Save(req *dto.SendFriendRequest) (models.FriendRequestID, error) {
+func (r *Repository) Save(req *dto.SaveFriendRequest) (*models.FriendRequest, error) {
 
-	return models.FriendRequestID(0), nil
+	return &models.FriendRequest{}, nil
 }
 
-func (r *Repository) UpdateStatus(reqId dto.FriendRequestID) (*models.FriendRequest, error) {
+func (r *Repository) UpdateStatus(req *dto.ChangeStatus) (*models.FriendRequest, error) {
 
 	return &models.FriendRequest{}, nil
 }

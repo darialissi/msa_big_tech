@@ -12,7 +12,7 @@ service SocialService {
     // Отправление запроса "В Друзья"
     rpc SendFriendRequest(SendFriendRequestRequest) returns (SendFriendRequestResponse) {
         option (google.api.http) = {
-        post: "/api/v1/friends/{user_id}/request"
+        post: "/api/v1/friends/requests"
         body: "*"
         };
     }

@@ -14,7 +14,7 @@ func (ac *AuthUsecase) Refresh(a *dto.AuthRefresh) (*models.Auth, error) {
 
 	authUser, err := utils.GenerateJWT(a.ID)
 	if err != nil {
-		return nil, fmt.Errorf("Refresh error: %w", err)
+		return nil, fmt.Errorf("Refresh: GenerateJWT: %w", err)
 	}
 
 	authRefresh := &dto.AuthRefresh{
@@ -23,7 +23,7 @@ func (ac *AuthUsecase) Refresh(a *dto.AuthRefresh) (*models.Auth, error) {
 	}
 
 	if err := ac.RepoToken.Save(authRefresh); err != nil {
-		return nil, fmt.Errorf("Refresh error: %w", err)
+		return nil, fmt.Errorf("Refresh: Save: %w", err)
 	}
 
 	return authUser, nil

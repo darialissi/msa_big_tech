@@ -74,7 +74,6 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 type SendFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	ToUserId      uint64                 `protobuf:"varint,2,opt,name=to_user_id,json=toUserId,proto3" json:"to_user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,13 +111,6 @@ func (*SendFriendRequestRequest) Descriptor() ([]byte, []int) {
 func (x *SendFriendRequestRequest) GetUserId() uint64 {
 	if x != nil {
 		return x.UserId
-	}
-	return 0
-}
-
-func (x *SendFriendRequestRequest) GetToUserId() uint64 {
-	if x != nil {
-		return x.ToUserId
 	}
 	return 0
 }
@@ -437,8 +429,7 @@ func (x *DeclineFriendRequestResponse) GetFriendRequest() *FriendRequest {
 // Удаление из "Друзей"
 type RemoveFriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	FriendId      uint64                 `protobuf:"varint,2,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
+	FriendId      uint64                 `protobuf:"varint,1,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -471,13 +462,6 @@ func (x *RemoveFriendRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use RemoveFriendRequest.ProtoReflect.Descriptor instead.
 func (*RemoveFriendRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *RemoveFriendRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 func (x *RemoveFriendRequest) GetFriendId() uint64 {
@@ -534,7 +518,6 @@ func (x *RemoveFriendResponse) GetFriendId() uint64 {
 // Получение списка "Друзей"
 type ListFriendsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -568,13 +551,6 @@ func (x *ListFriendsRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListFriendsRequest.ProtoReflect.Descriptor instead.
 func (*ListFriendsRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *ListFriendsRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
 }
 
 func (x *ListFriendsRequest) GetLimit() uint64 {
@@ -701,11 +677,9 @@ var File_social_proto protoreflect.FileDescriptor
 
 const file_social_proto_rawDesc = "" +
 	"\n" +
-	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\"Q\n" +
+	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\"3\n" +
 	"\x18SendFriendRequestRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1c\n" +
-	"\n" +
-	"to_user_id\x18\x02 \x01(\x04R\btoUserId\"|\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\"|\n" +
 	"\x19SendFriendRequestResponse\x12_\n" +
 	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"4\n" +
 	"\x19ListFriendRequestsRequest\x12\x17\n" +
@@ -719,14 +693,12 @@ const file_social_proto_rawDesc = "" +
 	"\x1bDeclineFriendRequestRequest\x12*\n" +
 	"\x11friend_request_id\x18\x01 \x01(\x04R\x0ffriendRequestId\"\x7f\n" +
 	"\x1cDeclineFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"K\n" +
-	"\x13RemoveFriendRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x1b\n" +
-	"\tfriend_id\x18\x02 \x01(\x04R\bfriendId\"3\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"2\n" +
+	"\x13RemoveFriendRequest\x12\x1b\n" +
+	"\tfriend_id\x18\x01 \x01(\x04R\bfriendId\"3\n" +
 	"\x14RemoveFriendResponse\x12\x1b\n" +
-	"\tfriend_id\x18\x01 \x01(\x04R\bfriendId\"C\n" +
-	"\x12ListFriendsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x14\n" +
+	"\tfriend_id\x18\x01 \x01(\x04R\bfriendId\"*\n" +
+	"\x12ListFriendsRequest\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\"4\n" +
 	"\x13ListFriendsResponse\x12\x1d\n" +
 	"\n" +

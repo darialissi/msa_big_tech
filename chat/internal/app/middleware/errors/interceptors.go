@@ -35,6 +35,8 @@ func ErrorsUnaryInterceptor() grpc.UnaryServerInterceptor {
 			err = status.Error(codes.NotFound, err.Error())
 		case errors.Is(err, usecases.ErrNotExistedChat):
 			err = status.Error(codes.NotFound, err.Error())
+		case errors.Is(err, usecases.ErrNoMessages):
+			err = status.Error(codes.NotFound, err.Error())
 		case errors.Is(err, usecases.ErrNotExistedMessage):
 			err = status.Error(codes.NotFound, err.Error())
 		default:

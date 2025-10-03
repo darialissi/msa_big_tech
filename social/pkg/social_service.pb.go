@@ -25,9 +25,9 @@ var File_social_service_proto protoreflect.FileDescriptor
 
 const file_social_service_proto_rawDesc = "" +
 	"\n" +
-	"\x14social_service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\fsocial.proto\x1a\x1cgoogle/api/annotations.proto2\xfe\a\n" +
-	"\rSocialService\x12\xcc\x01\n" +
-	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/v1/friends/{user_id}/request\x12\xa3\x01\n" +
+	"\x14social_service.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\fsocial.proto\x1a\x1cgoogle/api/annotations.proto2\xf5\a\n" +
+	"\rSocialService\x12\xc3\x01\n" +
+	"\x11SendFriendRequest\x12C.github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest\x1aD.github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/friends/requests\x12\xa3\x01\n" +
 	"\x12ListFriendRequests\x12D.github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest\x1aE.github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse\"\x00\x12\xa6\x01\n" +
 	"\x13AcceptFriendRequest\x12E.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest\x1aF.github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse\"\x00\x12\xa9\x01\n" +
 	"\x14DeclineFriendRequest\x12F.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest\x1aG.github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse\"\x00\x12\x91\x01\n" +

@@ -10,7 +10,7 @@ import (
 
 type SocialUsecases interface {
 	// Отправление запроса "В Друзья"
-    SendFriendRequest(req *dto.SendFriendRequest) (models.FriendRequestID, error)
+    SendFriendRequest(req *dto.SendFriendRequest) (*models.FriendRequest, error)
 	// Получение списка входящих запросов "В Друзья" пользователя
     ListFriendRequests(userId dto.UserID) ([]*models.FriendRequest, error)
 	// Принятие заявки "В Друзья"
@@ -18,14 +18,14 @@ type SocialUsecases interface {
 	// Отклонение заявки "В Друзья"
     DeclineFriendRequest(reqId dto.FriendRequestID) (*models.FriendRequest, error)
 	// Удаление из "Друзей"
-    RemoveFriend(m *dto.RemoveFriend) (models.FriendID, error)
+    RemoveFriend(fr *dto.RemoveFriend) (*models.UserFriend, error)
 	// Получение списка "Друзей" пользователя
-    ListFriends(userId dto.UserID) ([]models.FriendID, error)
+    ListFriends(userId dto.UserID) ([]*models.UserFriend, error)
 }
 
 type FriendRequestRepository interface {
-    Save(req *dto.SendFriendRequest) (models.FriendRequestID, error)
-    UpdateStatus(reqId dto.FriendRequestID) (*models.FriendRequest, error)
+    Save(req *dto.SaveFriendRequest) (*models.FriendRequest, error)
+    UpdateStatus(req *dto.ChangeStatus) (*models.FriendRequest, error)
     FetchById(reqId dto.FriendRequestID) (*models.FriendRequest, error)
     FetchManyByUserId(userId dto.UserID) ([]*models.FriendRequest, error)
 }
@@ -33,7 +33,7 @@ type FriendRequestRepository interface {
 type FriendRepository interface {
     Save(fr *dto.SaveFriend) (*models.UserFriend, error)
     Delete(fr *dto.RemoveFriend) (*models.UserFriend, error)
-    FetchManyByUserId(userId dto.UserID) ([]models.FriendID, error)
+    FetchManyByUserId(userId dto.UserID) ([]*models.UserFriend, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

@@ -10,11 +10,16 @@ type UsersUsecases interface {
 	CreateUser(u *dto.CreateUser) (*models.User, error)
 	// Обновление профиля пользователя
 	UpdateUser(u *dto.UpdateUser) (*models.User, error)
+	// Получение профиля пользователя по id
+	GetProfileByID(id dto.UserID) (*models.User, error)
+	// Получение профиля пользователя по nickname
+	GetProfileByNickname(nickname string) (*models.User, error)
 }
 
 type UsersRepository interface {
     Save(user *dto.CreateUser) (*models.User, error)
     Update(user *dto.UpdateUser) (*models.User, error)
+    FetchById(id dto.UserID) (*models.User, error)
     FetchByNickname(nickname string) (*models.User, error)
 }
 

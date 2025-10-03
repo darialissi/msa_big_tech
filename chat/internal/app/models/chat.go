@@ -9,6 +9,7 @@ type Chat struct {
 	ID ChatID
 	Name string
 	CreatorID UserID
+	ParticipantIDs []UserID
 	Messages []*Message
 }
 

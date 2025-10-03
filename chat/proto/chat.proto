@@ -7,7 +7,8 @@ option go_package = "github.com/darialissi/msa_big_tech/chat/pkg;chat";
 
 // Создание личного чата
 message CreateDirectChatRequest {
-  uint64 participant_id = 1;
+  string name = 1;
+  repeated uint64 participant_ids = 2;
 }
 
 message CreateDirectChatResponse {
@@ -38,7 +39,7 @@ message ListChatMembersRequest {
 }
 
 message ListChatMembersResponse {
-  repeated uint64 user_ids = 1;
+  repeated ChatMember members = 1;
 }
 
 // Отправление сообщения
@@ -76,6 +77,11 @@ message Chat {
   string name = 2;
   uint64 creator_id = 3;
   repeated uint64 participant_ids = 4;
+}
+
+message ChatMember {
+  uint64 user_id = 1;
+  string role = 2;
 }
 
 message Message {

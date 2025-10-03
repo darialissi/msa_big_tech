@@ -28,7 +28,7 @@ func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
 
 	authUser, err := utils.GenerateJWT(dto.UserID(user.ID))
 	if err != nil {
-		return nil, fmt.Errorf("Login error: %w", err)
+		return nil, fmt.Errorf("Login: GenerateJWT: %w", err)
 	}
 
 	authRefresh := &dto.AuthRefresh{
@@ -37,7 +37,7 @@ func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
 	}
 
 	if err := ac.RepoToken.Save(authRefresh); err != nil {
-		return nil, fmt.Errorf("Login error: %w", err)
+		return nil, fmt.Errorf("Login: Save: %w", err)
 	}
 
 	return authUser, nil

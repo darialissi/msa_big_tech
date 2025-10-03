@@ -5,15 +5,15 @@ import (
 	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
 
-type server struct {
+type service struct {
 	// UnimplementedAuthServiceServer must be embedded to have forward compatible implementations.
 	users.UnimplementedUsersServiceServer
 
 	UsersUsecase usecases.UsersUsecases
 }
 
-func NewServer(usersUC *usecases.UsersUsecase) *server {
-	return &server{
+func NewServer(usersUC *usecases.UsersUsecase) *service {
+	return &service{
 		UsersUsecase: usersUC,
 	}
 }

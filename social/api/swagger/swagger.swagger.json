@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/friends/{userId}/request": {
+    "/api/v1/friends/requests": {
       "post": {
         "summary": "Отправление запроса \"В Друзья\"",
         "operationId": "SocialService_SendFriendRequest",
@@ -36,18 +36,11 @@
         },
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/SocialServiceSendFriendRequestBody"
+              "$ref": "#/definitions/socialSendFriendRequestRequest"
             }
           }
         ],
@@ -223,16 +216,6 @@
     }
   },
   "definitions": {
-    "SocialServiceSendFriendRequestBody": {
-      "type": "object",
-      "properties": {
-        "toUserId": {
-          "type": "string",
-          "format": "uint64"
-        }
-      },
-      "title": "Отправление запроса \"В Друзья\""
-    },
     "googlerpcStatus": {
       "type": "object",
       "properties": {
@@ -352,10 +335,6 @@
     "socialListFriendsRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string",
-          "format": "uint64"
-        },
         "limit": {
           "type": "string",
           "format": "uint64"
@@ -378,10 +357,6 @@
     "socialRemoveFriendRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string",
-          "format": "uint64"
-        },
         "friendId": {
           "type": "string",
           "format": "uint64"
@@ -397,6 +372,16 @@
           "format": "uint64"
         }
       }
+    },
+    "socialSendFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      },
+      "title": "Отправление запроса \"В Друзья\""
     },
     "socialSendFriendRequestResponse": {
       "type": "object",

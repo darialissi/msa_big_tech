@@ -10,13 +10,13 @@ import (
 
 type ChatUsecases interface {
 	// Создание личного чата
-    CreateDirectChat(userId dto.UserID) (models.ChatID, error)
+    CreateDirectChat(chat *dto.CreateChat) (*models.Chat, error)
 	// Получение чата
     FetchChat(chatId dto.ChatID) (*models.Chat, error)
 	// Получение списка чатов пользователя
     ListUserChats(userId dto.UserID) ([]*models.Chat, error)
 	// Получение списка участников чата
-    ListChatMembers(chatId dto.ChatID) ([]models.UserID, error)
+    ListChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
 	// Отправление сообщения
     SendMessage(m *dto.SendMessage) (*models.Message, error)
 	// Получение истории сообщений чата
@@ -26,13 +26,14 @@ type ChatUsecases interface {
 }
 
 type ChatRepository interface {
-    Save(chat *dto.CreateChat) (models.ChatID, error)
+    Save(chat *dto.CreateChat) (*models.Chat, error)
     FetchById(chatId dto.ChatID) (*models.Chat, error)
+    FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
     FetchManyByUserId(userId dto.UserID) ([]*models.Chat, error)
 }
 
 type MessageRepository interface {
-    Save(message *dto.SendMessage) (models.MessageID, error)
+    Save(message *dto.SendMessage) (*models.Message, error)
     FetchById(messageId dto.MessageID) (*models.Message, error)
     FetchManyByChatId(chatId dto.ChatID) ([]*models.Message, error)
 }

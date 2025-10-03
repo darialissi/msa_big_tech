@@ -28,6 +28,17 @@ func (r *Repository) Update(user *dto.UpdateUser) (*models.User, error) {
 	return &models.User{}, nil
 }
 
+func (r *Repository) FetchById(id dto.UserID) (*models.User, error) {
+	r.db.Exec(
+		"SELECT * FROM users WHERE id=?",
+		id,
+	)
+
+	//
+
+	return &models.User{}, nil
+}
+
 func (r *Repository) FetchByNickname(nickname string) (*models.User, error) {
 	r.db.Exec(
 		"SELECT * FROM users WHERE nickname=?",

@@ -84,9 +84,7 @@ func main() {
 	{
 		ctx := context.Background()
 
-		resp, err := cli.RemoveFriend(ctx, &social.RemoveFriendRequest{
-			UserId: 0,
-		})
+		resp, err := cli.RemoveFriend(ctx, &social.RemoveFriendRequest{})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
 		} else {
@@ -98,7 +96,6 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListFriends(ctx, &social.ListFriendsRequest{
-			UserId:   0,
 			Limit: 5,
 		})
 		if err != nil {

@@ -12,14 +12,14 @@ func (uc *UsersUsecase) UpdateUser(u *dto.UpdateUser) (*models.User, error) {
     // обновление профиля пользователя
 
 	if user, err := uc.repo.FetchByNickname(u.Nickname); err != nil {
-		return nil, fmt.Errorf("UpdateUser error: %w", err)
+		return nil, fmt.Errorf("UpdateUser: FetchByNickname: %w", err)
 	} else if user != nil && dto.UserID(user.ID) != u.ID {
 		return nil, ErrExistedNickname
 	}
 
 	user, err := uc.repo.Update(u)
 	if err != nil {
-		return nil, fmt.Errorf("UpdateUser error: %w", err)
+		return nil, fmt.Errorf("UpdateUser: Update: %w", err)
 	}
 
 	return user, nil

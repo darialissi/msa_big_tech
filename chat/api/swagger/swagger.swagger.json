@@ -289,12 +289,30 @@
       },
       "title": "Объекты"
     },
+    "chatChatMember": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
     "chatCreateDirectChatRequest": {
       "type": "object",
       "properties": {
-        "participantId": {
-          "type": "string",
-          "format": "uint64"
+        "name": {
+          "type": "string"
+        },
+        "participantIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
         }
       },
       "title": "Создание личного чата"
@@ -339,11 +357,11 @@
     "chatListChatMembersResponse": {
       "type": "object",
       "properties": {
-        "userIds": {
+        "members": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "uint64"
+            "type": "object",
+            "$ref": "#/definitions/chatChatMember"
           }
         }
       }

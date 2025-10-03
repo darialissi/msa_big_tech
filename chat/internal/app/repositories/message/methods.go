@@ -6,9 +6,9 @@ import (
 )
 
 
-func (r *Repository) Save(message *dto.SendMessage) (models.MessageID, error) {
+func (r *Repository) Save(message *dto.SendMessage) (*models.Message, error) {
 
-	return models.MessageID(0), nil
+	return &models.Message{}, nil
 }
 
 func (r *Repository) FetchById(messageId dto.MessageID) (*models.Message, error) {

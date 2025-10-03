@@ -16,7 +16,7 @@ func (r *Repository) Delete(fr *dto.RemoveFriend) (*models.UserFriend, error) {
 	return &models.UserFriend{}, nil
 }
 
-func (r *Repository) FetchManyByUserId(userId dto.UserID) ([]models.FriendID, error) {
+func (r *Repository) FetchManyByUserId(userId dto.UserID) ([]*models.UserFriend, error) {
 
-	return []models.FriendID{}, nil
+	return []*models.UserFriend{}, nil
 }

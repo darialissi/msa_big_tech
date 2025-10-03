@@ -22,18 +22,18 @@ func (s *service) Register(ctx context.Context, req *auth.RegisterRequest) (*aut
 		return nil, models.ErrValidationFailed
 	}
 
-	inp := &dto.Register{
+	form := &dto.Register{
 		Email: req.Email,
 		Password: dto.Password(req.Password),
 	}
 
-	user, err := s.AuthUsecase.Register(inp)
+	userResponse, err := s.AuthUsecase.Register(form)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &auth.RegisterResponse{UserId: uint64(user.ID)}, nil
+	return &auth.RegisterResponse{UserId: uint64(userResponse.ID)}, nil
 }
 
 func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginResponse, error) {
@@ -47,12 +47,12 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 		return nil, models.ErrValidationFailed
 	}
 
-	inp := &dto.Login{
+	form := &dto.Login{
 		Email: req.Email,
 		Password: dto.Password(req.Password),
 	}
 
-	authUser, err := s.AuthUsecase.Login(inp)
+	authUser, err := s.AuthUsecase.Login(form)
 
 	if err != nil {
 		return nil, err
@@ -66,12 +66,12 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 }
 
 func (s *service) Refresh(ctx context.Context, req *auth.RefreshRequest) (*auth.RefreshResponse, error) {
-	inp := &dto.AuthRefresh{
+	form := &dto.AuthRefresh{
 		ID: dto.UserID(req.UserId),
 		RefreshToken: req.RefreshToken,
 	}
 
-	authUser, err := s.AuthUsecase.Refresh(inp)
+	authUser, err := s.AuthUsecase.Refresh(form)
 
 	if err != nil {
 		return nil, err

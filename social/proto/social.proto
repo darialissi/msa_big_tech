@@ -8,7 +8,6 @@ option go_package = "github.com/darialissi/msa_big_tech/social/pkg;social";
 // Отправление запроса "В Друзья"
 message SendFriendRequestRequest {
   uint64 user_id = 1;
-  uint64 to_user_id = 2;
 }
 
 message SendFriendRequestResponse {
@@ -44,8 +43,7 @@ message DeclineFriendRequestResponse {
 
 // Удаление из "Друзей"
 message RemoveFriendRequest {
-  uint64 user_id = 1;
-  uint64 friend_id = 2;
+  uint64 friend_id = 1;
 }
 
 message RemoveFriendResponse {
@@ -54,7 +52,6 @@ message RemoveFriendResponse {
 
 // Получение списка "Друзей"
 message ListFriendsRequest {
-  uint64 user_id = 1;
   uint64 limit = 2;
 }
 

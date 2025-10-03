@@ -27,7 +27,8 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.CreateDirectChat(ctx, &chat.CreateDirectChatRequest{
-			ParticipantId:   0,
+			ParticipantIds: []uint64{0, 3},
+			Name: "HI",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())

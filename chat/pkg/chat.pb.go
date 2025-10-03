@@ -23,10 +23,11 @@ const (
 
 // Создание личного чата
 type CreateDirectChatRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParticipantId uint64                 `protobuf:"varint,1,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	ParticipantIds []uint64               `protobuf:"varint,2,rep,packed,name=participant_ids,json=participantIds,proto3" json:"participant_ids,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CreateDirectChatRequest) Reset() {
@@ -59,11 +60,18 @@ func (*CreateDirectChatRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateDirectChatRequest) GetParticipantId() uint64 {
+func (x *CreateDirectChatRequest) GetName() string {
 	if x != nil {
-		return x.ParticipantId
+		return x.Name
 	}
-	return 0
+	return ""
+}
+
+func (x *CreateDirectChatRequest) GetParticipantIds() []uint64 {
+	if x != nil {
+		return x.ParticipantIds
+	}
+	return nil
 }
 
 type CreateDirectChatResponse struct {
@@ -335,7 +343,7 @@ func (x *ListChatMembersRequest) GetChatId() uint64 {
 
 type ListChatMembersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserIds       []uint64               `protobuf:"varint,1,rep,packed,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	Members       []*ChatMember          `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -370,9 +378,9 @@ func (*ListChatMembersResponse) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ListChatMembersResponse) GetUserIds() []uint64 {
+func (x *ListChatMembersResponse) GetMembers() []*ChatMember {
 	if x != nil {
-		return x.UserIds
+		return x.Members
 	}
 	return nil
 }
@@ -729,6 +737,58 @@ func (x *Chat) GetParticipantIds() []uint64 {
 	return nil
 }
 
+type ChatMember struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChatMember) Reset() {
+	*x = ChatMember{}
+	mi := &file_chat_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChatMember) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChatMember) ProtoMessage() {}
+
+func (x *ChatMember) ProtoReflect() protoreflect.Message {
+	mi := &file_chat_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChatMember.ProtoReflect.Descriptor instead.
+func (*ChatMember) Descriptor() ([]byte, []int) {
+	return file_chat_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ChatMember) GetUserId() uint64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ChatMember) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     uint64                 `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
@@ -741,7 +801,7 @@ type Message struct {
 
 func (x *Message) Reset() {
 	*x = Message{}
-	mi := &file_chat_proto_msgTypes[15]
+	mi := &file_chat_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -753,7 +813,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_chat_proto_msgTypes[15]
+	mi := &file_chat_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -766,7 +826,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_chat_proto_rawDescGZIP(), []int{15}
+	return file_chat_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Message) GetMessageId() uint64 {
@@ -802,9 +862,10 @@ var File_chat_proto protoreflect.FileDescriptor
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\"@\n" +
-	"\x17CreateDirectChatRequest\x12%\n" +
-	"\x0eparticipant_id\x18\x01 \x01(\x04R\rparticipantId\"3\n" +
+	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\"V\n" +
+	"\x17CreateDirectChatRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12'\n" +
+	"\x0fparticipant_ids\x18\x02 \x03(\x04R\x0eparticipantIds\"3\n" +
 	"\x18CreateDirectChatResponse\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\x04R\x06chatId\")\n" +
 	"\x0eGetChatRequest\x12\x17\n" +
@@ -816,9 +877,9 @@ const file_chat_proto_rawDesc = "" +
 	"\x15ListUserChatsResponse\x12C\n" +
 	"\x05chats\x18\x01 \x03(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x05chats\"1\n" +
 	"\x16ListChatMembersRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"4\n" +
-	"\x17ListChatMembersResponse\x12\x19\n" +
-	"\buser_ids\x18\x01 \x03(\x04R\auserIds\"A\n" +
+	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"h\n" +
+	"\x17ListChatMembersResponse\x12M\n" +
+	"\amembers\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\amembers\"A\n" +
 	"\x12SendMessageRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\x04R\x06chatId\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\"a\n" +
@@ -838,7 +899,11 @@ const file_chat_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
 	"creator_id\x18\x03 \x01(\x04R\tcreatorId\x12'\n" +
-	"\x0fparticipant_ids\x18\x04 \x03(\x04R\x0eparticipantIds\"|\n" +
+	"\x0fparticipant_ids\x18\x04 \x03(\x04R\x0eparticipantIds\"9\n" +
+	"\n" +
+	"ChatMember\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x12\n" +
+	"\x04role\x18\x02 \x01(\tR\x04role\"|\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\x04R\tmessageId\x12\x12\n" +
@@ -861,7 +926,7 @@ func file_chat_proto_rawDescGZIP() []byte {
 	return file_chat_proto_rawDescData
 }
 
-var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_chat_proto_goTypes = []any{
 	(*CreateDirectChatRequest)(nil),  // 0: github.com.darialissi.msa_big_tech.chat.CreateDirectChatRequest
 	(*CreateDirectChatResponse)(nil), // 1: github.com.darialissi.msa_big_tech.chat.CreateDirectChatResponse
@@ -878,19 +943,21 @@ var file_chat_proto_goTypes = []any{
 	(*StreamMessagesRequest)(nil),    // 12: github.com.darialissi.msa_big_tech.chat.StreamMessagesRequest
 	(*StreamMessagesResponse)(nil),   // 13: github.com.darialissi.msa_big_tech.chat.StreamMessagesResponse
 	(*Chat)(nil),                     // 14: github.com.darialissi.msa_big_tech.chat.Chat
-	(*Message)(nil),                  // 15: github.com.darialissi.msa_big_tech.chat.Message
+	(*ChatMember)(nil),               // 15: github.com.darialissi.msa_big_tech.chat.ChatMember
+	(*Message)(nil),                  // 16: github.com.darialissi.msa_big_tech.chat.Message
 }
 var file_chat_proto_depIdxs = []int32{
 	14, // 0: github.com.darialissi.msa_big_tech.chat.GetChatResponse.chat:type_name -> github.com.darialissi.msa_big_tech.chat.Chat
 	14, // 1: github.com.darialissi.msa_big_tech.chat.ListUserChatsResponse.chats:type_name -> github.com.darialissi.msa_big_tech.chat.Chat
-	15, // 2: github.com.darialissi.msa_big_tech.chat.SendMessageResponse.message:type_name -> github.com.darialissi.msa_big_tech.chat.Message
-	15, // 3: github.com.darialissi.msa_big_tech.chat.ListMessagesResponse.messages:type_name -> github.com.darialissi.msa_big_tech.chat.Message
-	15, // 4: github.com.darialissi.msa_big_tech.chat.StreamMessagesResponse.stream:type_name -> github.com.darialissi.msa_big_tech.chat.Message
-	5,  // [5:5] is the sub-list for method output_type
-	5,  // [5:5] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	15, // 2: github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse.members:type_name -> github.com.darialissi.msa_big_tech.chat.ChatMember
+	16, // 3: github.com.darialissi.msa_big_tech.chat.SendMessageResponse.message:type_name -> github.com.darialissi.msa_big_tech.chat.Message
+	16, // 4: github.com.darialissi.msa_big_tech.chat.ListMessagesResponse.messages:type_name -> github.com.darialissi.msa_big_tech.chat.Message
+	16, // 5: github.com.darialissi.msa_big_tech.chat.StreamMessagesResponse.stream:type_name -> github.com.darialissi.msa_big_tech.chat.Message
+	6,  // [6:6] is the sub-list for method output_type
+	6,  // [6:6] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_chat_proto_init() }
@@ -904,7 +971,7 @@ func file_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_chat_proto_rawDesc), len(file_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

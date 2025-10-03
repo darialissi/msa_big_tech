@@ -37,6 +37,8 @@ func ErrorsUnaryInterceptor() grpc.UnaryServerInterceptor {
 			err = status.Error(codes.NotFound, err.Error())
 		case errors.Is(err, usecases.ErrUserNoFriends):
 			err = status.Error(codes.NotFound, err.Error())
+		case errors.Is(err, usecases.ErrNoFriend):
+			err = status.Error(codes.NotFound, err.Error())
 		case errors.Is(err, usecases.ErrNoFriendRequest):
 			err = status.Error(codes.NotFound, err.Error())
 		default:

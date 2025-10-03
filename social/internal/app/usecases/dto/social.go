@@ -11,6 +11,17 @@ type SendFriendRequest struct {
 	ToUserID UserID
 }
 
+type SaveFriendRequest struct {
+	StatusID FriendRequestStatus
+	FromUserID UserID
+	ToUserID UserID
+}
+
+type ChangeStatus struct {
+	ReqID FriendRequestID
+	StatusID FriendRequestStatus
+}
+
 type SaveFriend struct {
 	UserID UserID
 	FriendID FriendID

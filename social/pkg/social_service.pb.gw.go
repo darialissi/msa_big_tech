@@ -39,21 +39,12 @@ func request_SocialService_SendFriendRequest_0(ctx context.Context, marshaler ru
 	var (
 		protoReq SendFriendRequestRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 	msg, err := client.SendFriendRequest(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -63,18 +54,9 @@ func local_request_SocialService_SendFriendRequest_0(ctx context.Context, marsha
 	var (
 		protoReq SendFriendRequestRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	val, ok := pathParams["user_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
-	}
-	protoReq.UserId, err = runtime.Uint64(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 	msg, err := server.SendFriendRequest(ctx, &protoReq)
 	return msg, metadata, err
@@ -227,7 +209,7 @@ func RegisterSocialServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/SendFriendRequest", runtime.WithHTTPPathPattern("/api/v1/friends/{user_id}/request"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/SendFriendRequest", runtime.WithHTTPPathPattern("/api/v1/friends/requests"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -385,7 +367,7 @@ func RegisterSocialServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/SendFriendRequest", runtime.WithHTTPPathPattern("/api/v1/friends/{user_id}/request"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.social.SocialService/SendFriendRequest", runtime.WithHTTPPathPattern("/api/v1/friends/requests"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -487,7 +469,7 @@ func RegisterSocialServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_SocialService_SendFriendRequest_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "v1", "friends", "user_id", "request"}, ""))
+	pattern_SocialService_SendFriendRequest_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "friends", "requests"}, ""))
 	pattern_SocialService_ListFriendRequests_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "ListFriendRequests"}, ""))
 	pattern_SocialService_AcceptFriendRequest_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "AcceptFriendRequest"}, ""))
 	pattern_SocialService_DeclineFriendRequest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.social.SocialService", "DeclineFriendRequest"}, ""))
