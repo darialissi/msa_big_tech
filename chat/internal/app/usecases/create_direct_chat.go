@@ -8,7 +8,7 @@ import (
 )
 
 
-func (ch *ChatUsecase) CreateDirectChat(chat *dto.CreateChat) (*models.Chat, error) {
+func (ch *ChatUsecase) CreateDirectChat(chat *dto.CreateDirectChat) (*models.DirectChat, error) {
 
 	res, err := ch.repoChat.Save(chat)
 

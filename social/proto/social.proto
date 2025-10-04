@@ -7,7 +7,7 @@ option go_package = "github.com/darialissi/msa_big_tech/social/pkg;social";
 
 // Отправление запроса "В Друзья"
 message SendFriendRequestRequest {
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 message SendFriendRequestResponse {
@@ -16,7 +16,7 @@ message SendFriendRequestResponse {
 
 // Получение списка входящих запросов
 message ListFriendRequestsRequest {
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 message ListFriendRequestsResponse {
@@ -25,7 +25,7 @@ message ListFriendRequestsResponse {
 
 // Принятие заявки
 message AcceptFriendRequestRequest {
-  uint64 friend_request_id = 1;
+  string friend_request_id = 1;
 }
 
 message AcceptFriendRequestResponse {
@@ -34,7 +34,7 @@ message AcceptFriendRequestResponse {
 
 // Отклонение заявки
 message DeclineFriendRequestRequest {
-  uint64 friend_request_id = 1;
+  string friend_request_id = 1;
 }
 
 message DeclineFriendRequestResponse {
@@ -43,11 +43,11 @@ message DeclineFriendRequestResponse {
 
 // Удаление из "Друзей"
 message RemoveFriendRequest {
-  uint64 friend_id = 1;
+  string friend_id = 1;
 }
 
 message RemoveFriendResponse {
-  uint64 friend_id = 1;
+  string friend_id = 1;
 }
 
 // Получение списка "Друзей"
@@ -56,15 +56,15 @@ message ListFriendsRequest {
 }
 
 message ListFriendsResponse {
-  repeated uint64 friend_ids = 1;
+  repeated string friend_ids = 1;
 }
 
 // Объекты
 message FriendRequest {
-  uint64 request_id = 1;
+  string request_id = 1;
   Status status = 2;
-  uint64 from_user_id = 3;
-  uint64 to_user_id = 4;
+  string from_user_id = 3;
+  string to_user_id = 4;
 }
 
 enum Status {

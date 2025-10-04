@@ -69,7 +69,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetProfileByID(ctx, &users.GetProfileByIDRequest{
-			UserId:   0,
+			UserId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())

@@ -235,7 +235,7 @@ func (x *UpdateProfileResponse) GetUserProfile() *UserProfile {
 // Получение профиля по id
 type GetProfileByIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,11 +270,11 @@ func (*GetProfileByIDRequest) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetProfileByIDRequest) GetUserId() uint64 {
+func (x *GetProfileByIDRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type GetProfileByIDResponse struct {
@@ -510,7 +510,7 @@ func (x *SearchByQueryResponse) GetProfiles() []*UserProfile {
 // Объекты
 type UserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
 	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
@@ -548,11 +548,11 @@ func (*UserProfile) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *UserProfile) GetId() uint64 {
+func (x *UserProfile) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 func (x *UserProfile) GetNickname() string {
@@ -596,7 +596,7 @@ const file_users_proto_rawDesc = "" +
 	"\x15UpdateProfileResponse\x12X\n" +
 	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"0\n" +
 	"\x15GetProfileByIDRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\"r\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"r\n" +
 	"\x16GetProfileByIDResponse\x12X\n" +
 	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"T\n" +
 	"\x1bGetProfileByNicknameRequest\x125\n" +
@@ -609,7 +609,7 @@ const file_users_proto_rawDesc = "" +
 	"\x15SearchByQueryResponse\x12Q\n" +
 	"\bprofiles\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\bprofiles\"j\n" +
 	"\vUserProfile\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x1a\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
 	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
 	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +

@@ -1,14 +1,13 @@
 package dto
 
-type ChatID uint64
-type UserID uint64
-type MessageID uint64
+type ChatID string
+type UserID string
+type MessageID string
 
 
-type CreateChat struct {
-	Name string
+type CreateDirectChat struct {
 	CreatorID UserID
-	ParticipantIDs []UserID
+	ParticipantID UserID
 }
 
 type SendMessage struct {

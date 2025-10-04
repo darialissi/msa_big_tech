@@ -37,7 +37,7 @@ message UpdateProfileResponse {
 
 // Получение профиля по id
 message GetProfileByIDRequest {
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 message GetProfileByIDResponse {
@@ -68,7 +68,7 @@ message SearchByQueryResponse {
 
 // Объекты
 message UserProfile {
-  uint64 id = 1;
+  string id = 1;
   string nickname = 2;
   string bio = 3;
   string avatar_url = 4;

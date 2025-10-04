@@ -1,13 +1,12 @@
 package dto
 
 import (
-	"strconv"
 	"unicode"
 )
 
 
 type Password string
-type UserID uint64
+type UserID string
 
 
 type Register struct {
@@ -41,12 +40,6 @@ type UpdateCredSave struct {
 type AuthRefresh struct {
 	ID UserID
 	RefreshToken string
-}
-
-func (id UserID) String() string {
-	str := strconv.Itoa(int(id))
-
-	return str
 }
 
 func (password Password) IsValid() bool {

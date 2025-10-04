@@ -23,7 +23,7 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 	}
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	form := &dto.CreateUser{
 		ID: dto.UserID(userId),
@@ -39,7 +39,7 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 	}
 
 	userProfile := &users.UserProfile{
-		Id: uint64(res.ID),
+		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
 		AvatarUrl: res.Avatar,
@@ -60,7 +60,7 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 	}
 	
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	form := &dto.UpdateUser{
 		ID: dto.UserID(userId),
@@ -76,7 +76,7 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 	}
 
 	userProfile := &users.UserProfile{
-		Id: uint64(res.ID),
+		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
 		AvatarUrl: res.Avatar,
@@ -94,7 +94,7 @@ func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDR
 	}
 
 	userProfile := &users.UserProfile{
-		Id: uint64(res.ID),
+		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
 		AvatarUrl: res.Avatar,
@@ -112,7 +112,7 @@ func (s *service) GetProfileByNickname(ctx context.Context, req *users.GetProfil
 	}
 
 	userProfile := &users.UserProfile{
-		Id: uint64(res.ID),
+		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
 		AvatarUrl: res.Avatar,

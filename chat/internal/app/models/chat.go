@@ -1,15 +1,14 @@
 package models
 
-type ChatID uint64
-type UserID uint64
-type MessageID uint64
+type ChatID string
+type UserID string
+type MessageID string
 
 
-type Chat struct {
+type DirectChat struct {
 	ID ChatID
-	Name string
 	CreatorID UserID
-	ParticipantIDs []UserID
+	ParticipantID UserID
 	Messages []*Message
 }
 

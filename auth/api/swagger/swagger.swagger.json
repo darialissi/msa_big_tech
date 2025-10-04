@@ -133,8 +133,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "accessToken": {
           "type": "string"
@@ -148,8 +147,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "refreshToken": {
           "type": "string"
@@ -161,8 +159,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "accessToken": {
           "type": "string"
@@ -188,8 +185,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       }
     },

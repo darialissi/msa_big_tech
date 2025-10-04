@@ -4,9 +4,9 @@ import (
 	"strings"
 )
 
-type UserID uint64
-type FriendID uint64
-type FriendRequestID uint64
+type UserID string
+type FriendID string
+type FriendRequestID string
 type FriendRequestStatus uint64
 
 

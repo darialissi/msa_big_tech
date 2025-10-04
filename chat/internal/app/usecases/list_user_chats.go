@@ -8,7 +8,7 @@ import (
 )
 
 
-func (ch *ChatUsecase) ListUserChats(userId dto.UserID) ([]*models.Chat, error) {
+func (ch *ChatUsecase) ListUserChats(userId dto.UserID) ([]*models.DirectChat, error) {
 
 	res, err := ch.repoChat.FetchManyByUserId(userId)
 

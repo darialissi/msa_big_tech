@@ -23,11 +23,10 @@ const (
 
 // Создание личного чата
 type CreateDirectChatRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	ParticipantIds []uint64               `protobuf:"varint,2,rep,packed,name=participant_ids,json=participantIds,proto3" json:"participant_ids,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ParticipantId string                 `protobuf:"bytes,1,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateDirectChatRequest) Reset() {
@@ -60,23 +59,16 @@ func (*CreateDirectChatRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateDirectChatRequest) GetName() string {
+func (x *CreateDirectChatRequest) GetParticipantId() string {
 	if x != nil {
-		return x.Name
+		return x.ParticipantId
 	}
 	return ""
 }
 
-func (x *CreateDirectChatRequest) GetParticipantIds() []uint64 {
-	if x != nil {
-		return x.ParticipantIds
-	}
-	return nil
-}
-
 type CreateDirectChatResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,17 +103,17 @@ func (*CreateDirectChatResponse) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateDirectChatResponse) GetChatId() uint64 {
+func (x *CreateDirectChatResponse) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 // Получение информации о чате
 type GetChatRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -156,11 +148,11 @@ func (*GetChatRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetChatRequest) GetChatId() uint64 {
+func (x *GetChatRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 type GetChatResponse struct {
@@ -210,7 +202,7 @@ func (x *GetChatResponse) GetChat() *Chat {
 // Получение списка чатов пользователя
 type ListUserChatsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -245,11 +237,11 @@ func (*ListUserChatsRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListUserChatsRequest) GetUserId() uint64 {
+func (x *ListUserChatsRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type ListUserChatsResponse struct {
@@ -299,7 +291,7 @@ func (x *ListUserChatsResponse) GetChats() []*Chat {
 // Получение списка участников чата
 type ListChatMembersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -334,11 +326,11 @@ func (*ListChatMembersRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *ListChatMembersRequest) GetChatId() uint64 {
+func (x *ListChatMembersRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 type ListChatMembersResponse struct {
@@ -388,7 +380,7 @@ func (x *ListChatMembersResponse) GetMembers() []*ChatMember {
 // Отправление сообщения
 type SendMessageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -424,11 +416,11 @@ func (*SendMessageRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *SendMessageRequest) GetChatId() uint64 {
+func (x *SendMessageRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 func (x *SendMessageRequest) GetText() string {
@@ -485,7 +477,7 @@ func (x *SendMessageResponse) GetMessage() *Message {
 // Получение истории сообщений чата
 type ListMessagesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -521,11 +513,11 @@ func (*ListMessagesRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ListMessagesRequest) GetChatId() uint64 {
+func (x *ListMessagesRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 func (x *ListMessagesRequest) GetLimit() uint64 {
@@ -582,7 +574,7 @@ func (x *ListMessagesResponse) GetMessages() []*Message {
 // Серверный стрим новых сообщений
 type StreamMessagesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -617,11 +609,11 @@ func (*StreamMessagesRequest) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *StreamMessagesRequest) GetChatId() uint64 {
+func (x *StreamMessagesRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 type StreamMessagesResponse struct {
@@ -670,13 +662,12 @@ func (x *StreamMessagesResponse) GetStream() *Message {
 
 // Объекты
 type Chat struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ChatId         uint64                 `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CreatorId      uint64                 `protobuf:"varint,3,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	ParticipantIds []uint64               `protobuf:"varint,4,rep,packed,name=participant_ids,json=participantIds,proto3" json:"participant_ids,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	CreatorId     string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	ParticipantId string                 `protobuf:"bytes,3,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Chat) Reset() {
@@ -709,37 +700,30 @@ func (*Chat) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *Chat) GetChatId() uint64 {
+func (x *Chat) GetChatId() string {
 	if x != nil {
 		return x.ChatId
-	}
-	return 0
-}
-
-func (x *Chat) GetName() string {
-	if x != nil {
-		return x.Name
 	}
 	return ""
 }
 
-func (x *Chat) GetCreatorId() uint64 {
+func (x *Chat) GetCreatorId() string {
 	if x != nil {
 		return x.CreatorId
 	}
-	return 0
+	return ""
 }
 
-func (x *Chat) GetParticipantIds() []uint64 {
+func (x *Chat) GetParticipantId() string {
 	if x != nil {
-		return x.ParticipantIds
+		return x.ParticipantId
 	}
-	return nil
+	return ""
 }
 
 type ChatMember struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        uint64                 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -775,11 +759,11 @@ func (*ChatMember) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *ChatMember) GetUserId() uint64 {
+func (x *ChatMember) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *ChatMember) GetRole() string {
@@ -791,10 +775,10 @@ func (x *ChatMember) GetRole() string {
 
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	MessageId     uint64                 `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
+	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
-	FromUserId    uint64                 `protobuf:"varint,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
-	ToChatId      uint64                 `protobuf:"varint,4,opt,name=to_chat_id,json=toChatId,proto3" json:"to_chat_id,omitempty"`
+	FromUserId    string                 `protobuf:"bytes,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
+	ToChatId      string                 `protobuf:"bytes,4,opt,name=to_chat_id,json=toChatId,proto3" json:"to_chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -829,11 +813,11 @@ func (*Message) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{16}
 }
 
-func (x *Message) GetMessageId() uint64 {
+func (x *Message) GetMessageId() string {
 	if x != nil {
 		return x.MessageId
 	}
-	return 0
+	return ""
 }
 
 func (x *Message) GetText() string {
@@ -843,18 +827,18 @@ func (x *Message) GetText() string {
 	return ""
 }
 
-func (x *Message) GetFromUserId() uint64 {
+func (x *Message) GetFromUserId() string {
 	if x != nil {
 		return x.FromUserId
 	}
-	return 0
+	return ""
 }
 
-func (x *Message) GetToChatId() uint64 {
+func (x *Message) GetToChatId() string {
 	if x != nil {
 		return x.ToChatId
 	}
-	return 0
+	return ""
 }
 
 var File_chat_proto protoreflect.FileDescriptor
@@ -862,56 +846,54 @@ var File_chat_proto protoreflect.FileDescriptor
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\"V\n" +
-	"\x17CreateDirectChatRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12'\n" +
-	"\x0fparticipant_ids\x18\x02 \x03(\x04R\x0eparticipantIds\"3\n" +
+	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\"@\n" +
+	"\x17CreateDirectChatRequest\x12%\n" +
+	"\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\"3\n" +
 	"\x18CreateDirectChatResponse\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\")\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\")\n" +
 	"\x0eGetChatRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"T\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\"T\n" +
 	"\x0fGetChatResponse\x12A\n" +
 	"\x04chat\x18\x01 \x01(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x04chat\"/\n" +
 	"\x14ListUserChatsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\"\\\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\\\n" +
 	"\x15ListUserChatsResponse\x12C\n" +
 	"\x05chats\x18\x01 \x03(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x05chats\"1\n" +
 	"\x16ListChatMembersRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"h\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\"h\n" +
 	"\x17ListChatMembersResponse\x12M\n" +
 	"\amembers\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\amembers\"A\n" +
 	"\x12SendMessageRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\x12\x12\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\"a\n" +
 	"\x13SendMessageResponse\x12J\n" +
 	"\amessage\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\amessage\"D\n" +
 	"\x13ListMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\x12\x14\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\"d\n" +
 	"\x14ListMessagesResponse\x12L\n" +
 	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\"0\n" +
 	"\x15StreamMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\"b\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\"b\n" +
 	"\x16StreamMessagesResponse\x12H\n" +
-	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\"{\n" +
+	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\"e\n" +
 	"\x04Chat\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x04R\x06chatId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x1d\n" +
 	"\n" +
-	"creator_id\x18\x03 \x01(\x04R\tcreatorId\x12'\n" +
-	"\x0fparticipant_ids\x18\x04 \x03(\x04R\x0eparticipantIds\"9\n" +
+	"creator_id\x18\x02 \x01(\tR\tcreatorId\x12%\n" +
+	"\x0eparticipant_id\x18\x03 \x01(\tR\rparticipantId\"9\n" +
 	"\n" +
 	"ChatMember\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x04R\x06userId\x12\x12\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x12\n" +
 	"\x04role\x18\x02 \x01(\tR\x04role\"|\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x04R\tmessageId\x12\x12\n" +
+	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12 \n" +
-	"\ffrom_user_id\x18\x03 \x01(\x04R\n" +
+	"\ffrom_user_id\x18\x03 \x01(\tR\n" +
 	"fromUserId\x12\x1c\n" +
 	"\n" +
-	"to_chat_id\x18\x04 \x01(\x04R\btoChatIdB\xa4\x02\n" +
+	"to_chat_id\x18\x04 \x01(\tR\btoChatIdB\xa4\x02\n" +
 	"+com.github.com.darialissi.msa_big_tech.chatB\tChatProtoP\x01Z0github.com/darialissi/msa_big_tech/chat/pkg;chat\xa2\x02\x05GCDMC\xaa\x02%Github.Com.Darialissi.MsaBigTech.Chat\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Chat\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Chat\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Chatb\x06proto3"
 
 var (

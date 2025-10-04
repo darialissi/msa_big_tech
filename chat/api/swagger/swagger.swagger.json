@@ -39,8 +39,7 @@
             "name": "chatId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "uint64"
+            "type": "string"
           },
           {
             "name": "body",
@@ -269,22 +268,13 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "name": {
           "type": "string"
         },
         "creatorId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
-        "participantIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "uint64"
-          }
+        "participantId": {
+          "type": "string"
         }
       },
       "title": "Объекты"
@@ -293,8 +283,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "role": {
           "type": "string"
@@ -304,15 +293,8 @@
     "chatCreateDirectChatRequest": {
       "type": "object",
       "properties": {
-        "name": {
+        "participantId": {
           "type": "string"
-        },
-        "participantIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "uint64"
-          }
         }
       },
       "title": "Создание личного чата"
@@ -321,8 +303,7 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       }
     },
@@ -330,8 +311,7 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Получение информации о чате"
@@ -348,8 +328,7 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Получение списка участников чата"
@@ -370,8 +349,7 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "limit": {
           "type": "string",
@@ -396,8 +374,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Получение списка чатов пользователя"
@@ -418,19 +395,16 @@
       "type": "object",
       "properties": {
         "messageId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "text": {
           "type": "string"
         },
         "fromUserId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "toChatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       }
     },
@@ -446,8 +420,7 @@
       "type": "object",
       "properties": {
         "chatId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Серверный стрим новых сообщений"

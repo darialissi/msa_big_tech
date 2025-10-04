@@ -27,7 +27,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.SendFriendRequest(ctx, &social.SendFriendRequestRequest{
-			UserId:   0,
+			UserId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -40,7 +40,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListFriendRequests(ctx, &social.ListFriendRequestsRequest{
-			UserId:   0,
+			UserId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -59,7 +59,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.AcceptFriendRequest(ctx, &social.AcceptFriendRequestRequest{
-			FriendRequestId: 10,
+			FriendRequestId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -72,7 +72,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.DeclineFriendRequest(ctx, &social.DeclineFriendRequestRequest{
-			FriendRequestId: 10,
+			FriendRequestId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())

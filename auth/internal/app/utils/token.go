@@ -26,7 +26,7 @@ func GenerateJWT(userId dto.UserID) (*models.Auth, error) {
 	accessClaims := &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 		Issuer:    "auth_service",
-		Subject:   userId.String(),
+		Subject:   string(userId),
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
@@ -39,7 +39,7 @@ func GenerateJWT(userId dto.UserID) (*models.Auth, error) {
 	refreshClaims := &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 5).Unix(),
 		Issuer:    "auth_service",
-		Subject:   userId.String(),
+		Subject:   string(userId),
 	}
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)

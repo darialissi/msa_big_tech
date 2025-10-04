@@ -1,6 +1,6 @@
 package dto                                 
 
-type UserID uint64
+type UserID string
 type Url string
 
 

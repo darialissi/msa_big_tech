@@ -7,17 +7,16 @@ option go_package = "github.com/darialissi/msa_big_tech/chat/pkg;chat";
 
 // Создание личного чата
 message CreateDirectChatRequest {
-  string name = 1;
-  repeated uint64 participant_ids = 2;
+  string participant_id = 1;
 }
 
 message CreateDirectChatResponse {
-  uint64 chat_id = 1;
+  string chat_id = 1;
 }
 
 // Получение информации о чате
 message GetChatRequest {
-  uint64 chat_id = 1;
+  string chat_id = 1;
 }
 
 message GetChatResponse {
@@ -26,7 +25,7 @@ message GetChatResponse {
 
 // Получение списка чатов пользователя
 message ListUserChatsRequest {
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 message ListUserChatsResponse {
@@ -35,7 +34,7 @@ message ListUserChatsResponse {
 
 // Получение списка участников чата
 message ListChatMembersRequest {
-  uint64 chat_id = 1;
+  string chat_id = 1;
 }
 
 message ListChatMembersResponse {
@@ -44,7 +43,7 @@ message ListChatMembersResponse {
 
 // Отправление сообщения
 message SendMessageRequest {
-  uint64 chat_id = 1;
+  string chat_id = 1;
   string text = 2;
 }
 
@@ -54,7 +53,7 @@ message SendMessageResponse {
 
 // Получение истории сообщений чата
 message ListMessagesRequest {
-  uint64 chat_id = 1;
+  string chat_id = 1;
   uint64 limit = 2;
 }
 
@@ -64,7 +63,7 @@ message ListMessagesResponse {
 
 // Серверный стрим новых сообщений
 message StreamMessagesRequest {
-  uint64 chat_id = 1;
+  string chat_id = 1;
 }
 
 message StreamMessagesResponse {
@@ -73,20 +72,19 @@ message StreamMessagesResponse {
 
 // Объекты
 message Chat {
-  uint64 chat_id = 1;
-  string name = 2;
-  uint64 creator_id = 3;
-  repeated uint64 participant_ids = 4;
+  string chat_id = 1;
+  string creator_id = 2;
+  string participant_id = 3;
 }
 
 message ChatMember {
-  uint64 user_id = 1;
+  string user_id = 1;
   string role = 2;
 }
 
 message Message {
-  uint64 message_id = 1;
+  string message_id = 1;
   string text = 2;
-  uint64 from_user_id = 3;
-  uint64 to_chat_id = 4;
+  string from_user_id = 3;
+  string to_chat_id = 4;
 }

@@ -10,7 +10,7 @@ import (
 func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendRequestRequest) (*social.SendFriendRequestResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	form := &dto.SendFriendRequest{
 		FromUserID: dto.UserID(userId),
@@ -24,10 +24,10 @@ func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendR
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: uint64(res.ID),
+		RequestId: string(res.ID),
 		Status: social.Status(res.Status),
-		FromUserId: uint64(res.FromUserID),
-		ToUserId: uint64(res.ToUserID),
+		FromUserId: string(res.FromUserID),
+		ToUserId: string(res.ToUserID),
 	}
 
 	return &social.SendFriendRequestResponse{FriendRequest: resp}, nil
@@ -45,10 +45,10 @@ func (s *service) ListRequests(ctx context.Context, req *social.ListFriendReques
 
     for i, r := range res {
         resp[i] = &social.FriendRequest{
-			RequestId: uint64(r.ID),
+			RequestId: string(r.ID),
 			Status: social.Status(r.Status),
-			FromUserId: uint64(r.FromUserID),
-			ToUserId: uint64(r.ToUserID),
+			FromUserId: string(r.FromUserID),
+			ToUserId: string(r.ToUserID),
 		}
 	}
 
@@ -64,10 +64,10 @@ func (s *service) AcceptFriendRequest(ctx context.Context, req *social.AcceptFri
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: uint64(res.ID),
+		RequestId: string(res.ID),
 		Status: social.Status(res.Status),
-		FromUserId: uint64(res.FromUserID),
-		ToUserId: uint64(res.ToUserID),
+		FromUserId: string(res.FromUserID),
+		ToUserId: string(res.ToUserID),
 	}
 
 	return &social.AcceptFriendRequestResponse{FriendRequest: resp}, nil
@@ -82,10 +82,10 @@ func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineF
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: uint64(res.ID),
+		RequestId: string(res.ID),
 		Status: social.Status(res.Status),
-		FromUserId: uint64(res.FromUserID),
-		ToUserId: uint64(res.ToUserID),
+		FromUserId: string(res.FromUserID),
+		ToUserId: string(res.ToUserID),
 	}
 
 	return &social.DeclineFriendRequestResponse{FriendRequest: resp}, nil
@@ -94,7 +94,7 @@ func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineF
 func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequest) (*social.RemoveFriendResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	form := &dto.RemoveFriend{
 		UserID: dto.UserID(userId),
@@ -107,7 +107,7 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 		return nil, err
 	}
 
-	return &social.RemoveFriendResponse{FriendId: uint64(res.FriendId)}, nil
+	return &social.RemoveFriendResponse{FriendId: string(res.FriendId)}, nil
 }
 
 func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsRequest) (*social.ListFriendsResponse, error) {
@@ -115,7 +115,7 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 	// TODO: реализовать пагинацию
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	res, err := s.SocialUsecase.ListFriends(dto.UserID(userId))
 
@@ -123,10 +123,10 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 		return nil, err
 	}
 
-    resp := make([]uint64, len(res))
+    resp := make([]string, len(res))
 
     for i, v := range res {
-        resp[i] = uint64(v.FriendId)
+        resp[i] = string(v.FriendId)
     }
 
 	return &social.ListFriendsResponse{FriendIds: resp}, nil

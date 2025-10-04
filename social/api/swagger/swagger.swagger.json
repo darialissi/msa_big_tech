@@ -257,8 +257,7 @@
       "type": "object",
       "properties": {
         "friendRequestId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Принятие заявки"
@@ -275,8 +274,7 @@
       "type": "object",
       "properties": {
         "friendRequestId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Отклонение заявки"
@@ -293,19 +291,16 @@
       "type": "object",
       "properties": {
         "requestId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "status": {
           "$ref": "#/definitions/msa_big_techsocialStatus"
         },
         "fromUserId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         },
         "toUserId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Объекты"
@@ -314,8 +309,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Получение списка входящих запросов"
@@ -348,8 +342,7 @@
         "friendIds": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "uint64"
+            "type": "string"
           }
         }
       }
@@ -358,8 +351,7 @@
       "type": "object",
       "properties": {
         "friendId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Удаление из \"Друзей\""
@@ -368,8 +360,7 @@
       "type": "object",
       "properties": {
         "friendId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       }
     },
@@ -377,8 +368,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "uint64"
+          "type": "string"
         }
       },
       "title": "Отправление запроса \"В Друзья\""

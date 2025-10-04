@@ -27,8 +27,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.CreateDirectChat(ctx, &chat.CreateDirectChatRequest{
-			ParticipantIds: []uint64{0, 3},
-			Name: "HI",
+			ParticipantId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -41,7 +40,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetChat(ctx, &chat.GetChatRequest{
-			ChatId:   0,
+			ChatId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -60,7 +59,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListUserChats(ctx, &chat.ListUserChatsRequest{
-			UserId: 0,
+			UserId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -79,7 +78,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListChatMembers(ctx, &chat.ListChatMembersRequest{
-			ChatId: 0,
+			ChatId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())
@@ -98,7 +97,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.SendMessage(ctx, &chat.SendMessageRequest{
-			ChatId: 10,
+			ChatId: "00000000-0000-0000-0000-0000000000000",
 			Text: "hi from client",
 		})
 		if err != nil {
@@ -118,7 +117,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListMessages(ctx, &chat.ListMessagesRequest{
-			ChatId: 0,
+			ChatId: "00000000-0000-0000-0000-0000000000000",
 			Limit: 5,
 		})
 		if err != nil {
@@ -138,7 +137,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.StreamMessages(ctx, &chat.StreamMessagesRequest{
-			ChatId: 0,
+			ChatId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
 			log.Fatalln(status.Code(err).String())

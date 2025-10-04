@@ -2,7 +2,6 @@ package chat_grpc
 
 import (
 	"context"
-	"unsafe"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
@@ -11,12 +10,11 @@ import (
 func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectChatRequest) (*chat.CreateDirectChatResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
-	form := &dto.CreateChat{
-		Name: req.Name,
+	form := &dto.CreateDirectChat{
 		CreatorID: dto.UserID(userId),
-		ParticipantIDs: *(*[]dto.UserID)(unsafe.Pointer(&req.ParticipantIds)),
+		ParticipantID: dto.UserID(req.ParticipantId),
 	}
 
 	chatResponse, err := s.ChatUsecase.CreateDirectChat(form)
@@ -25,7 +23,7 @@ func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectCh
 		return nil, err
 	}
 
-	return &chat.CreateDirectChatResponse{ChatId: uint64(chatResponse.ID)}, nil
+	return &chat.CreateDirectChatResponse{ChatId: string(chatResponse.ID)}, nil
 }
 
 func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.GetChatResponse, error) {
@@ -37,10 +35,9 @@ func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.
 	}
 
 	chatResponse := &chat.Chat{
-		ChatId: uint64(res.ID),
-		Name: res.Name,
-		CreatorId: uint64(res.CreatorID),
-		ParticipantIds: *(*[]uint64)(unsafe.Pointer(&res.ParticipantIDs)),
+		ChatId: string(res.ID),
+		CreatorId: string(res.CreatorID),
+		ParticipantId: string(res.ParticipantID),
 	}
 
 	return &chat.GetChatResponse{Chat: chatResponse}, nil
@@ -58,10 +55,9 @@ func (s *service) ListUserChats(ctx context.Context, req *chat.ListUserChatsRequ
 
     for i, ch := range res {
         chatResponses[i] = &chat.Chat{
-			ChatId: uint64(ch.ID),
-			Name: ch.Name,
-			CreatorId: uint64(ch.CreatorID),
-			ParticipantIds: *(*[]uint64)(unsafe.Pointer(&ch.ParticipantIDs)),
+			ChatId: string(ch.ID),
+			CreatorId: string(ch.CreatorID),
+			ParticipantId: string(ch.ParticipantID),
 		}
     }
 
@@ -80,7 +76,7 @@ func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembers
 
     for i, m := range res {
         chatMembers[i] = &chat.ChatMember{
-			UserId: uint64(m.UserID),
+			UserId: string(m.UserID),
 			Role: m.Role,
 		}
 	}
@@ -91,7 +87,7 @@ func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembers
 func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest) (*chat.SendMessageResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := 1
+	userId := "00000000-0000-0000-0000-0000000000000"
 
 	form := &dto.SendMessage{
 		Text: req.Text,
@@ -106,10 +102,10 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 	}
 
 	chatMessage := &chat.Message{
-		MessageId: uint64(res.ID),
+		MessageId: string(res.ID),
 		Text: res.Text,
-		FromUserId: uint64(res.FromUserID),
-		ToChatId: uint64(res.ChatID),
+		FromUserId: string(res.FromUserID),
+		ToChatId: string(res.ChatID),
 	}
 
 	return &chat.SendMessageResponse{Message: chatMessage}, nil
@@ -127,10 +123,10 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
 
     for i, mes := range res {
         chatMessages[i] = &chat.Message{
-			MessageId: uint64(mes.ID),
+			MessageId: string(mes.ID),
 			Text: mes.Text,
-			FromUserId: uint64(mes.FromUserID),
-			ToChatId: uint64(mes.ChatID),
+			FromUserId: string(mes.FromUserID),
+			ToChatId: string(mes.ChatID),
 
 		}
     }

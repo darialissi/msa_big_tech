@@ -6,14 +6,14 @@ import (
 )
 
 
-func (r *Repository) Save(chat *dto.CreateChat) (*models.Chat, error) {
+func (r *Repository) Save(chat *dto.CreateDirectChat) (*models.DirectChat, error) {
 
-	return &models.Chat{}, nil
+	return &models.DirectChat{}, nil
 }
 
-func (r *Repository) FetchById(chatId dto.ChatID) (*models.Chat, error) {
+func (r *Repository) FetchById(chatId dto.ChatID) (*models.DirectChat, error) {
 
-	return &models.Chat{}, nil
+	return &models.DirectChat{}, nil
 }
 
 func (r *Repository) FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error) {
@@ -21,7 +21,7 @@ func (r *Repository) FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticip
 	return []*models.ChatParticipant{}, nil
 }
 
-func (r *Repository) FetchManyByUserId(userId dto.UserID) ([]*models.Chat, error) {
+func (r *Repository) FetchManyByUserId(userId dto.UserID) ([]*models.DirectChat, error) {
 
-	return []*models.Chat{}, nil
+	return []*models.DirectChat{}, nil
 }

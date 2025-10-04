@@ -33,7 +33,7 @@ func (s *service) Register(ctx context.Context, req *auth.RegisterRequest) (*aut
 		return nil, err
 	}
 
-	return &auth.RegisterResponse{UserId: uint64(userResponse.ID)}, nil
+	return &auth.RegisterResponse{UserId: string(userResponse.ID)}, nil
 }
 
 func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.LoginResponse, error) {
@@ -59,7 +59,7 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 	}
 
 	return &auth.LoginResponse{
-		UserId: uint64(authUser.ID), 
+		UserId: string(authUser.ID), 
 		AccessToken: authUser.Token.AccessToken, 
 		RefreshToken: authUser.Token.RefreshToken,
 		}, nil
@@ -78,7 +78,7 @@ func (s *service) Refresh(ctx context.Context, req *auth.RefreshRequest) (*auth.
 	}
 
 	return &auth.RefreshResponse{
-		UserId: uint64(authUser.ID), 
+		UserId: string(authUser.ID), 
 		AccessToken: authUser.Token.AccessToken, 
 		RefreshToken: authUser.Token.RefreshToken,
 		}, nil

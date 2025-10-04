@@ -20,7 +20,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 // Авторизация
@@ -35,19 +35,19 @@ message LoginRequest {
 }
 
 message LoginResponse {
-  uint64 user_id = 1;
+  string user_id = 1;
   string access_token = 2;
   string refresh_token = 3;
 }
 
 // Обновление токена
 message RefreshRequest {
-  uint64 user_id = 1;
+  string user_id = 1;
   string refresh_token = 2;
 }
 
 message RefreshResponse {
-  uint64 user_id = 1;
+  string user_id = 1;
   string access_token = 2;
   string refresh_token = 3;
 }

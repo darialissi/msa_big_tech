@@ -10,11 +10,11 @@ import (
 
 type ChatUsecases interface {
 	// Создание личного чата
-    CreateDirectChat(chat *dto.CreateChat) (*models.Chat, error)
+    CreateDirectChat(chat *dto.CreateDirectChat) (*models.DirectChat, error)
 	// Получение чата
-    FetchChat(chatId dto.ChatID) (*models.Chat, error)
+    FetchChat(chatId dto.ChatID) (*models.DirectChat, error)
 	// Получение списка чатов пользователя
-    ListUserChats(userId dto.UserID) ([]*models.Chat, error)
+    ListUserChats(userId dto.UserID) ([]*models.DirectChat, error)
 	// Получение списка участников чата
     ListChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
 	// Отправление сообщения
@@ -26,10 +26,10 @@ type ChatUsecases interface {
 }
 
 type ChatRepository interface {
-    Save(chat *dto.CreateChat) (*models.Chat, error)
-    FetchById(chatId dto.ChatID) (*models.Chat, error)
+    Save(chat *dto.CreateDirectChat) (*models.DirectChat, error)
+    FetchById(chatId dto.ChatID) (*models.DirectChat, error)
     FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
-    FetchManyByUserId(userId dto.UserID) ([]*models.Chat, error)
+    FetchManyByUserId(userId dto.UserID) ([]*models.DirectChat, error)
 }
 
 type MessageRepository interface {

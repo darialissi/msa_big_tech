@@ -8,7 +8,7 @@ import (
 )
 
 
-func (ch *ChatUsecase) FetchChat(chatId dto.ChatID) (*models.Chat, error) {
+func (ch *ChatUsecase) FetchChat(chatId dto.ChatID) (*models.DirectChat, error) {
 
 	res, err := ch.repoChat.FetchById(chatId)
 
