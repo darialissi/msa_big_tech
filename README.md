@@ -33,3 +33,7 @@ SERVICEDIR=auth make build
 ```shell
 docker compose up
 ```
+
+### Локальное тестирование
+
+Пока написаны только unit тесты на *usecases* сервиса *social*
