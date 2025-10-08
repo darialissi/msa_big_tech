@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	dto "github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 	mock "github.com/stretchr/testify/mock"
 
@@ -22,9 +24,9 @@ func (_m *FriendRequestRepository) EXPECT() *FriendRequestRepository_Expecter {
 	return &FriendRequestRepository_Expecter{mock: &_m.Mock}
 }
 
-// FetchById provides a mock function with given fields: reqId
-func (_m *FriendRequestRepository) FetchById(reqId dto.FriendRequestID) (*models.FriendRequest, error) {
-	ret := _m.Called(reqId)
+// FetchById provides a mock function with given fields: ctx, reqId
+func (_m *FriendRequestRepository) FetchById(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
+	ret := _m.Called(ctx, reqId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FetchById")
@@ -32,19 +34,19 @@ func (_m *FriendRequestRepository) FetchById(reqId dto.FriendRequestID) (*models
 
 	var r0 *models.FriendRequest
 	var r1 error
-	if rf, ok := ret.Get(0).(func(dto.FriendRequestID) (*models.FriendRequest, error)); ok {
-		return rf(reqId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.FriendRequestID) (*models.FriendRequest, error)); ok {
+		return rf(ctx, reqId)
 	}
-	if rf, ok := ret.Get(0).(func(dto.FriendRequestID) *models.FriendRequest); ok {
-		r0 = rf(reqId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.FriendRequestID) *models.FriendRequest); ok {
+		r0 = rf(ctx, reqId)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.FriendRequest)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(dto.FriendRequestID) error); ok {
-		r1 = rf(reqId)
+	if rf, ok := ret.Get(1).(func(context.Context, dto.FriendRequestID) error); ok {
+		r1 = rf(ctx, reqId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -58,14 +60,15 @@ type FriendRequestRepository_FetchById_Call struct {
 }
 
 // FetchById is a helper method to define mock.On call
+//   - ctx context.Context
 //   - reqId dto.FriendRequestID
-func (_e *FriendRequestRepository_Expecter) FetchById(reqId interface{}) *FriendRequestRepository_FetchById_Call {
-	return &FriendRequestRepository_FetchById_Call{Call: _e.mock.On("FetchById", reqId)}
+func (_e *FriendRequestRepository_Expecter) FetchById(ctx interface{}, reqId interface{}) *FriendRequestRepository_FetchById_Call {
+	return &FriendRequestRepository_FetchById_Call{Call: _e.mock.On("FetchById", ctx, reqId)}
 }
 
-func (_c *FriendRequestRepository_FetchById_Call) Run(run func(reqId dto.FriendRequestID)) *FriendRequestRepository_FetchById_Call {
+func (_c *FriendRequestRepository_FetchById_Call) Run(run func(ctx context.Context, reqId dto.FriendRequestID)) *FriendRequestRepository_FetchById_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(dto.FriendRequestID))
+		run(args[0].(context.Context), args[1].(dto.FriendRequestID))
 	})
 	return _c
 }
@@ -75,14 +78,14 @@ func (_c *FriendRequestRepository_FetchById_Call) Return(_a0 *models.FriendReque
 	return _c
 }
 
-func (_c *FriendRequestRepository_FetchById_Call) RunAndReturn(run func(dto.FriendRequestID) (*models.FriendRequest, error)) *FriendRequestRepository_FetchById_Call {
+func (_c *FriendRequestRepository_FetchById_Call) RunAndReturn(run func(context.Context, dto.FriendRequestID) (*models.FriendRequest, error)) *FriendRequestRepository_FetchById_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// FetchManyByUserId provides a mock function with given fields: userId
-func (_m *FriendRequestRepository) FetchManyByUserId(userId dto.UserID) ([]*models.FriendRequest, error) {
-	ret := _m.Called(userId)
+// FetchManyByUserId provides a mock function with given fields: ctx, userId
+func (_m *FriendRequestRepository) FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error) {
+	ret := _m.Called(ctx, userId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FetchManyByUserId")
@@ -90,19 +93,19 @@ func (_m *FriendRequestRepository) FetchManyByUserId(userId dto.UserID) ([]*mode
 
 	var r0 []*models.FriendRequest
 	var r1 error
-	if rf, ok := ret.Get(0).(func(dto.UserID) ([]*models.FriendRequest, error)); ok {
-		return rf(userId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.UserID) ([]*models.FriendRequest, error)); ok {
+		return rf(ctx, userId)
 	}
-	if rf, ok := ret.Get(0).(func(dto.UserID) []*models.FriendRequest); ok {
-		r0 = rf(userId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.UserID) []*models.FriendRequest); ok {
+		r0 = rf(ctx, userId)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.FriendRequest)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(dto.UserID) error); ok {
-		r1 = rf(userId)
+	if rf, ok := ret.Get(1).(func(context.Context, dto.UserID) error); ok {
+		r1 = rf(ctx, userId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -116,14 +119,15 @@ type FriendRequestRepository_FetchManyByUserId_Call struct {
 }
 
 // FetchManyByUserId is a helper method to define mock.On call
+//   - ctx context.Context
 //   - userId dto.UserID
-func (_e *FriendRequestRepository_Expecter) FetchManyByUserId(userId interface{}) *FriendRequestRepository_FetchManyByUserId_Call {
-	return &FriendRequestRepository_FetchManyByUserId_Call{Call: _e.mock.On("FetchManyByUserId", userId)}
+func (_e *FriendRequestRepository_Expecter) FetchManyByUserId(ctx interface{}, userId interface{}) *FriendRequestRepository_FetchManyByUserId_Call {
+	return &FriendRequestRepository_FetchManyByUserId_Call{Call: _e.mock.On("FetchManyByUserId", ctx, userId)}
 }
 
-func (_c *FriendRequestRepository_FetchManyByUserId_Call) Run(run func(userId dto.UserID)) *FriendRequestRepository_FetchManyByUserId_Call {
+func (_c *FriendRequestRepository_FetchManyByUserId_Call) Run(run func(ctx context.Context, userId dto.UserID)) *FriendRequestRepository_FetchManyByUserId_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(dto.UserID))
+		run(args[0].(context.Context), args[1].(dto.UserID))
 	})
 	return _c
 }
@@ -133,14 +137,14 @@ func (_c *FriendRequestRepository_FetchManyByUserId_Call) Return(_a0 []*models.F
 	return _c
 }
 
-func (_c *FriendRequestRepository_FetchManyByUserId_Call) RunAndReturn(run func(dto.UserID) ([]*models.FriendRequest, error)) *FriendRequestRepository_FetchManyByUserId_Call {
+func (_c *FriendRequestRepository_FetchManyByUserId_Call) RunAndReturn(run func(context.Context, dto.UserID) ([]*models.FriendRequest, error)) *FriendRequestRepository_FetchManyByUserId_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// Save provides a mock function with given fields: req
-func (_m *FriendRequestRepository) Save(req *dto.SaveFriendRequest) (*models.FriendRequest, error) {
-	ret := _m.Called(req)
+// Save provides a mock function with given fields: ctx, req
+func (_m *FriendRequestRepository) Save(ctx context.Context, req *dto.SaveFriendRequest) (*models.FriendRequest, error) {
+	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Save")
@@ -148,19 +152,19 @@ func (_m *FriendRequestRepository) Save(req *dto.SaveFriendRequest) (*models.Fri
 
 	var r0 *models.FriendRequest
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*dto.SaveFriendRequest) (*models.FriendRequest, error)); ok {
-		return rf(req)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.SaveFriendRequest) (*models.FriendRequest, error)); ok {
+		return rf(ctx, req)
 	}
-	if rf, ok := ret.Get(0).(func(*dto.SaveFriendRequest) *models.FriendRequest); ok {
-		r0 = rf(req)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.SaveFriendRequest) *models.FriendRequest); ok {
+		r0 = rf(ctx, req)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.FriendRequest)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(*dto.SaveFriendRequest) error); ok {
-		r1 = rf(req)
+	if rf, ok := ret.Get(1).(func(context.Context, *dto.SaveFriendRequest) error); ok {
+		r1 = rf(ctx, req)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -174,14 +178,15 @@ type FriendRequestRepository_Save_Call struct {
 }
 
 // Save is a helper method to define mock.On call
+//   - ctx context.Context
 //   - req *dto.SaveFriendRequest
-func (_e *FriendRequestRepository_Expecter) Save(req interface{}) *FriendRequestRepository_Save_Call {
-	return &FriendRequestRepository_Save_Call{Call: _e.mock.On("Save", req)}
+func (_e *FriendRequestRepository_Expecter) Save(ctx interface{}, req interface{}) *FriendRequestRepository_Save_Call {
+	return &FriendRequestRepository_Save_Call{Call: _e.mock.On("Save", ctx, req)}
 }
 
-func (_c *FriendRequestRepository_Save_Call) Run(run func(req *dto.SaveFriendRequest)) *FriendRequestRepository_Save_Call {
+func (_c *FriendRequestRepository_Save_Call) Run(run func(ctx context.Context, req *dto.SaveFriendRequest)) *FriendRequestRepository_Save_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.SaveFriendRequest))
+		run(args[0].(context.Context), args[1].(*dto.SaveFriendRequest))
 	})
 	return _c
 }
@@ -191,14 +196,14 @@ func (_c *FriendRequestRepository_Save_Call) Return(_a0 *models.FriendRequest, _
 	return _c
 }
 
-func (_c *FriendRequestRepository_Save_Call) RunAndReturn(run func(*dto.SaveFriendRequest) (*models.FriendRequest, error)) *FriendRequestRepository_Save_Call {
+func (_c *FriendRequestRepository_Save_Call) RunAndReturn(run func(context.Context, *dto.SaveFriendRequest) (*models.FriendRequest, error)) *FriendRequestRepository_Save_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// UpdateStatus provides a mock function with given fields: req
-func (_m *FriendRequestRepository) UpdateStatus(req *dto.ChangeStatus) (*models.FriendRequest, error) {
-	ret := _m.Called(req)
+// UpdateStatus provides a mock function with given fields: ctx, req
+func (_m *FriendRequestRepository) UpdateStatus(ctx context.Context, req *dto.UpdateFriendRequest) (*models.FriendRequest, error) {
+	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateStatus")
@@ -206,19 +211,19 @@ func (_m *FriendRequestRepository) UpdateStatus(req *dto.ChangeStatus) (*models.
 
 	var r0 *models.FriendRequest
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*dto.ChangeStatus) (*models.FriendRequest, error)); ok {
-		return rf(req)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.UpdateFriendRequest) (*models.FriendRequest, error)); ok {
+		return rf(ctx, req)
 	}
-	if rf, ok := ret.Get(0).(func(*dto.ChangeStatus) *models.FriendRequest); ok {
-		r0 = rf(req)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.UpdateFriendRequest) *models.FriendRequest); ok {
+		r0 = rf(ctx, req)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.FriendRequest)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(*dto.ChangeStatus) error); ok {
-		r1 = rf(req)
+	if rf, ok := ret.Get(1).(func(context.Context, *dto.UpdateFriendRequest) error); ok {
+		r1 = rf(ctx, req)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -232,14 +237,15 @@ type FriendRequestRepository_UpdateStatus_Call struct {
 }
 
 // UpdateStatus is a helper method to define mock.On call
-//   - req *dto.ChangeStatus
-func (_e *FriendRequestRepository_Expecter) UpdateStatus(req interface{}) *FriendRequestRepository_UpdateStatus_Call {
-	return &FriendRequestRepository_UpdateStatus_Call{Call: _e.mock.On("UpdateStatus", req)}
+//   - ctx context.Context
+//   - req *dto.UpdateFriendRequest
+func (_e *FriendRequestRepository_Expecter) UpdateStatus(ctx interface{}, req interface{}) *FriendRequestRepository_UpdateStatus_Call {
+	return &FriendRequestRepository_UpdateStatus_Call{Call: _e.mock.On("UpdateStatus", ctx, req)}
 }
 
-func (_c *FriendRequestRepository_UpdateStatus_Call) Run(run func(req *dto.ChangeStatus)) *FriendRequestRepository_UpdateStatus_Call {
+func (_c *FriendRequestRepository_UpdateStatus_Call) Run(run func(ctx context.Context, req *dto.UpdateFriendRequest)) *FriendRequestRepository_UpdateStatus_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.ChangeStatus))
+		run(args[0].(context.Context), args[1].(*dto.UpdateFriendRequest))
 	})
 	return _c
 }
@@ -249,7 +255,7 @@ func (_c *FriendRequestRepository_UpdateStatus_Call) Return(_a0 *models.FriendRe
 	return _c
 }
 
-func (_c *FriendRequestRepository_UpdateStatus_Call) RunAndReturn(run func(*dto.ChangeStatus) (*models.FriendRequest, error)) *FriendRequestRepository_UpdateStatus_Call {
+func (_c *FriendRequestRepository_UpdateStatus_Call) RunAndReturn(run func(context.Context, *dto.UpdateFriendRequest) (*models.FriendRequest, error)) *FriendRequestRepository_UpdateStatus_Call {
 	_c.Call.Return(run)
 	return _c
 }

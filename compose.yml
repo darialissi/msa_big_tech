@@ -8,6 +8,18 @@ services:
       - "8083:50053"
     networks:
       - app-network
+    depends_on:
+      - auth_postgres
+
+  auth_postgres:
+    image: postgres:latest
+    container_name: auth_postgres
+    env_file:
+      - ./auth/.env
+    ports:
+      - 5433:5432
+    networks:
+      - app-network
 
   chat:
     container_name: chat_service
@@ -15,6 +27,18 @@ services:
       context: ./chat
     ports:
       - "8084:50054"
+    networks:
+      - app-network
+    depends_on:
+      - chat_postgres
+
+  chat_postgres:
+    image: postgres:latest
+    container_name: chat_postgres
+    env_file:
+      - ./chat/.env
+    ports:
+      - 5434:5432
     networks:
       - app-network
 
@@ -26,6 +50,29 @@ services:
       - "8085:50055"
     networks:
       - app-network
+    depends_on:
+      - social_migrations
+
+  social_postgres:
+    image: postgres:latest
+    container_name: social_postgres
+    env_file:
+      - ./social/.env
+    ports:
+      - 5435:5432
+    networks:
+      - app-network
+      
+  social_migrations:
+    build:
+      context: ./social
+      dockerfile: Dockerfile.migrations
+    env_file:
+      - ./social/.env
+    networks:
+      - app-network
+    depends_on:
+      - social_postgres
 
   users:
     container_name: users_service
@@ -33,6 +80,18 @@ services:
       context: ./users
     ports:
       - "8086:50056"
+    networks:
+      - app-network
+    depends_on:
+      - users_postgres
+
+  users_postgres:
+    image: postgres:latest
+    container_name: users_postgres
+    env_file:
+      - ./users/.env
+    ports:
+      - 5436:5432
     networks:
       - app-network
 

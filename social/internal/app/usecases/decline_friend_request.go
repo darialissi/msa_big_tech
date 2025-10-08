@@ -2,18 +2,19 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
 
-func (sc *SocialUsecase) DeclineFriendRequest(reqId dto.FriendRequestID) (*models.FriendRequest, error) {
+func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
-	frReq, err := sc.RepoFriendReq.FetchById(reqId)
+	frReq, err := sc.RepoFriendReq.FetchById(ctx, reqId)
 
 	if err != nil {
-		return nil, fmt.Errorf("DeclineFriendRequest: FetchById: %w", err)
+		return nil, fmt.Errorf("DeclineFriendRequest: RepoFriendReq.FetchById: %w", err)
 	}
 
 	if frReq == nil {
@@ -25,15 +26,15 @@ func (sc *SocialUsecase) DeclineFriendRequest(reqId dto.FriendRequestID) (*model
 		return nil, ErrBadStatus
 	}
 
-	transition := &dto.ChangeStatus{
+	transition := &dto.UpdateFriendRequest{
 		ReqID: reqId,
-		StatusID: dto.FriendRequestStatus(models.FriendRequestStatusDeclined),
+		Status: dto.FriendRequestStatus(models.FriendRequestStatusDeclined),
 	}
 
-	res, err := sc.RepoFriendReq.UpdateStatus(transition)
+	res, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)
 
 	if err != nil {
-		return nil, fmt.Errorf("DeclineFriendRequest: UpdateStatus: %w", err)
+		return nil, fmt.Errorf("DeclineFriendRequest: RepoFriendReq.UpdateStatus: %w", err)
 	}
 
 	return res, nil

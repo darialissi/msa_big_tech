@@ -21,55 +21,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Status int32
-
-const (
-	Status_PENDING  Status = 0
-	Status_ACCEPTED Status = 1
-	Status_DECLINED Status = 2
-)
-
-// Enum value maps for Status.
-var (
-	Status_name = map[int32]string{
-		0: "PENDING",
-		1: "ACCEPTED",
-		2: "DECLINED",
-	}
-	Status_value = map[string]int32{
-		"PENDING":  0,
-		"ACCEPTED": 1,
-		"DECLINED": 2,
-	}
-)
-
-func (x Status) Enum() *Status {
-	p := new(Status)
-	*p = x
-	return p
-}
-
-func (x Status) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Status) Descriptor() protoreflect.EnumDescriptor {
-	return file_social_proto_enumTypes[0].Descriptor()
-}
-
-func (Status) Type() protoreflect.EnumType {
-	return &file_social_proto_enumTypes[0]
-}
-
-func (x Status) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Status.Descriptor instead.
-func (Status) EnumDescriptor() ([]byte, []int) {
-	return file_social_proto_rawDescGZIP(), []int{0}
-}
-
 // Отправление запроса "В Друзья"
 type SendFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -608,7 +559,7 @@ func (x *ListFriendsResponse) GetFriendIds() []string {
 type FriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
-	Status        Status                 `protobuf:"varint,2,opt,name=status,proto3,enum=github.com.darialissi.msa_big_tech.social.Status" json:"status,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	FromUserId    string                 `protobuf:"bytes,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
 	ToUserId      string                 `protobuf:"bytes,4,opt,name=to_user_id,json=toUserId,proto3" json:"to_user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -652,11 +603,11 @@ func (x *FriendRequest) GetRequestId() string {
 	return ""
 }
 
-func (x *FriendRequest) GetStatus() Status {
+func (x *FriendRequest) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return Status_PENDING
+	return ""
 }
 
 func (x *FriendRequest) GetFromUserId() string {
@@ -702,19 +653,15 @@ const file_social_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\"4\n" +
 	"\x13ListFriendsResponse\x12\x1d\n" +
 	"\n" +
-	"friend_ids\x18\x01 \x03(\tR\tfriendIds\"\xb9\x01\n" +
+	"friend_ids\x18\x01 \x03(\tR\tfriendIds\"\x86\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\tR\trequestId\x12I\n" +
-	"\x06status\x18\x02 \x01(\x0e21.github.com.darialissi.msa_big_tech.social.StatusR\x06status\x12 \n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\x12 \n" +
 	"\ffrom_user_id\x18\x03 \x01(\tR\n" +
 	"fromUserId\x12\x1c\n" +
 	"\n" +
-	"to_user_id\x18\x04 \x01(\tR\btoUserId*1\n" +
-	"\x06Status\x12\v\n" +
-	"\aPENDING\x10\x00\x12\f\n" +
-	"\bACCEPTED\x10\x01\x12\f\n" +
-	"\bDECLINED\x10\x02B\xb4\x02\n" +
+	"to_user_id\x18\x04 \x01(\tR\btoUserIdB\xb4\x02\n" +
 	"-com.github.com.darialissi.msa_big_tech.socialB\vSocialProtoP\x01Z4github.com/darialissi/msa_big_tech/social/pkg;social\xa2\x02\x05GCDMS\xaa\x02'Github.Com.Darialissi.MsaBigTech.Social\xca\x02'Github\\Com\\Darialissi\\MsaBigTech\\Social\xe2\x023Github\\Com\\Darialissi\\MsaBigTech\\Social\\GPBMetadata\xea\x02+Github::Com::Darialissi::MsaBigTech::Socialb\x06proto3"
 
 var (
@@ -729,35 +676,32 @@ func file_social_proto_rawDescGZIP() []byte {
 	return file_social_proto_rawDescData
 }
 
-var file_social_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_social_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_social_proto_goTypes = []any{
-	(Status)(0),                          // 0: github.com.darialissi.msa_big_tech.social.Status
-	(*SendFriendRequestRequest)(nil),     // 1: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
-	(*SendFriendRequestResponse)(nil),    // 2: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
-	(*ListFriendRequestsRequest)(nil),    // 3: github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest
-	(*ListFriendRequestsResponse)(nil),   // 4: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse
-	(*AcceptFriendRequestRequest)(nil),   // 5: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
-	(*AcceptFriendRequestResponse)(nil),  // 6: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse
-	(*DeclineFriendRequestRequest)(nil),  // 7: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest
-	(*DeclineFriendRequestResponse)(nil), // 8: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse
-	(*RemoveFriendRequest)(nil),          // 9: github.com.darialissi.msa_big_tech.social.RemoveFriendRequest
-	(*RemoveFriendResponse)(nil),         // 10: github.com.darialissi.msa_big_tech.social.RemoveFriendResponse
-	(*ListFriendsRequest)(nil),           // 11: github.com.darialissi.msa_big_tech.social.ListFriendsRequest
-	(*ListFriendsResponse)(nil),          // 12: github.com.darialissi.msa_big_tech.social.ListFriendsResponse
-	(*FriendRequest)(nil),                // 13: github.com.darialissi.msa_big_tech.social.FriendRequest
+	(*SendFriendRequestRequest)(nil),     // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
+	(*SendFriendRequestResponse)(nil),    // 1: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
+	(*ListFriendRequestsRequest)(nil),    // 2: github.com.darialissi.msa_big_tech.social.ListFriendRequestsRequest
+	(*ListFriendRequestsResponse)(nil),   // 3: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse
+	(*AcceptFriendRequestRequest)(nil),   // 4: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestRequest
+	(*AcceptFriendRequestResponse)(nil),  // 5: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse
+	(*DeclineFriendRequestRequest)(nil),  // 6: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestRequest
+	(*DeclineFriendRequestResponse)(nil), // 7: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse
+	(*RemoveFriendRequest)(nil),          // 8: github.com.darialissi.msa_big_tech.social.RemoveFriendRequest
+	(*RemoveFriendResponse)(nil),         // 9: github.com.darialissi.msa_big_tech.social.RemoveFriendResponse
+	(*ListFriendsRequest)(nil),           // 10: github.com.darialissi.msa_big_tech.social.ListFriendsRequest
+	(*ListFriendsResponse)(nil),          // 11: github.com.darialissi.msa_big_tech.social.ListFriendsResponse
+	(*FriendRequest)(nil),                // 12: github.com.darialissi.msa_big_tech.social.FriendRequest
 }
 var file_social_proto_depIdxs = []int32{
-	13, // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	13, // 1: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse.friend_requests:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	13, // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	13, // 3: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	0,  // 4: github.com.darialissi.msa_big_tech.social.FriendRequest.status:type_name -> github.com.darialissi.msa_big_tech.social.Status
-	5,  // [5:5] is the sub-list for method output_type
-	5,  // [5:5] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	12, // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
+	12, // 1: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse.friend_requests:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
+	12, // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
+	12, // 3: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
+	4,  // [4:4] is the sub-list for method output_type
+	4,  // [4:4] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_social_proto_init() }
@@ -770,14 +714,13 @@ func file_social_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_social_proto_rawDesc), len(file_social_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_social_proto_goTypes,
 		DependencyIndexes: file_social_proto_depIdxs,
-		EnumInfos:         file_social_proto_enumTypes,
 		MessageInfos:      file_social_proto_msgTypes,
 	}.Build()
 	File_social_proto = out.File

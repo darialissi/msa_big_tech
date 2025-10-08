@@ -62,13 +62,7 @@ message ListFriendsResponse {
 // Объекты
 message FriendRequest {
   string request_id = 1;
-  Status status = 2;
+  string status = 2;
   string from_user_id = 3;
   string to_user_id = 4;
-}
-
-enum Status {
-  PENDING = 0;
-  ACCEPTED = 1;
-  DECLINED = 2;
 }

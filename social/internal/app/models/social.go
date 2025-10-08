@@ -2,12 +2,12 @@ package models
 
 import (
 	"strings"
+    "time"
 )
 
 type UserID string
-type FriendID string
 type FriendRequestID string
-type FriendRequestStatus uint64
+type FriendRequestStatus int64
 
 
 type FriendRequest struct {
@@ -15,12 +15,13 @@ type FriendRequest struct {
 	Status FriendRequestStatus
 	FromUserID UserID
 	ToUserID UserID
+    CreatedAt time.Time
 }
 
 type UserFriend struct {
-	ID uint64
-	UserId UserID
-	FriendId UserID
+	UserID UserID
+	FriendID UserID
+    CreatedAt time.Time
 }
 
 const (

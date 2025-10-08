@@ -1,9 +1,9 @@
 package dto
 
+
 type UserID string
-type FriendID string
 type FriendRequestID string
-type FriendRequestStatus uint64
+type FriendRequestStatus int64
 
 
 type SendFriendRequest struct {
@@ -12,22 +12,22 @@ type SendFriendRequest struct {
 }
 
 type SaveFriendRequest struct {
-	StatusID FriendRequestStatus
+	Status FriendRequestStatus
 	FromUserID UserID
 	ToUserID UserID
 }
 
-type ChangeStatus struct {
+type UpdateFriendRequest struct {
 	ReqID FriendRequestID
-	StatusID FriendRequestStatus
+	Status FriendRequestStatus
 }
 
 type SaveFriend struct {
 	UserID UserID
-	FriendID FriendID
+	FriendID UserID
 }
 
 type RemoveFriend struct {
 	UserID UserID
-	FriendID FriendID
+	FriendID UserID
 }

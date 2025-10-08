@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/google/uuid"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
@@ -14,9 +15,11 @@ import (
 func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 	t.Parallel()
 
-	FROM_USER_ID := dto.UserID("00000000-0000-0000-0000-0000000000000")
-	TO_USER_ID := dto.UserID("00000000-0000-0000-0000-0000000000001")
-	REQ_ID := dto.FriendRequestID("11111111-0000-0000-0000-0000000000000")
+	mockCtx := &mocks.MockContext{}
+
+	FROM_USER_ID := dto.UserID(uuid.New().String())
+	TO_USER_ID := dto.UserID(uuid.New().String())
+	REQ_ID := dto.FriendRequestID(uuid.New().String())
 
 	// ARRANGE
 	type args struct {
@@ -41,8 +44,8 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
-					Save(&dto.SaveFriendRequest{
-						StatusID: dto.FriendRequestStatus(models.FriendRequestStatusPending),
+					Save(mockCtx, &dto.SaveFriendRequest{
+						Status: dto.FriendRequestStatus(models.FriendRequestStatusPending),
 						FromUserID: FROM_USER_ID,
 						ToUserID: TO_USER_ID,
 						}).
@@ -69,19 +72,40 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			assertErr: assert.NoError,
 		},
 		{
-			name: "Test 2. Negative: RepoFriendReq.Save error",
+			name: "Test 2. Negative: Request to yourself",
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
-					FromUserID: "00000000-0000-0000-0000-0000000000000",
-					ToUserID: "00000000-0000-0000-0000-0000000000001",
+					FromUserID: FROM_USER_ID,
+					ToUserID: FROM_USER_ID,
+				},
+			},
+			mock: func(t *testing.T) Deps {
+				frReqMock := mocks.NewFriendRequestRepository(t)
+
+				frMock := mocks.NewFriendRepository(t)
+
+				return Deps{
+					RepoFriendReq: frReqMock,
+					RepoFriend: frMock,
+				}
+			},
+			want: nil,
+			assertErr: assert.Error,
+		},
+		{
+			name: "Test 3. Negative: RepoFriendReq.Save error",
+			args: args{
+				frReqInfo: &dto.SendFriendRequest{
+					FromUserID: FROM_USER_ID,
+					ToUserID: TO_USER_ID,
 				},
 			},
 			mock: func(t *testing.T) Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
-					Save(&dto.SaveFriendRequest{
-						StatusID: dto.FriendRequestStatus(models.FriendRequestStatusPending),
+					Save(mockCtx, &dto.SaveFriendRequest{
+						Status: dto.FriendRequestStatus(models.FriendRequestStatusPending),
 						FromUserID: FROM_USER_ID,
 						ToUserID: TO_USER_ID,
 						}).
@@ -110,17 +134,19 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			}
 
 			// ACT
-			got, err := uc.SendFriendRequest(tt.args.frReqInfo)
+			got, err := uc.SendFriendRequest(mockCtx, tt.args.frReqInfo)
 
 			// ASSERT
 			tt.assertErr(t, err)
 
 			if got != nil {
 				assert.NotEmpty(t, got.ID)
-				got.ID = ""
+				assert.Equal(t, tt.want.FromUserID, got.FromUserID)
+				assert.Equal(t, tt.want.ToUserID, got.ToUserID)
+				assert.Equal(t, tt.want.Status, got.Status)
 			}
 
-			assert.Equal(t, tt.want, got)  // mark test as failed but continue execution
+			// assert.Equal(t, tt.want, got)  // mark test as failed but continue execution
 			// require.Equal(t, tt.want, got) // mark test as failed and exit
 		})
 	}

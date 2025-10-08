@@ -3,6 +3,8 @@
 package mocks
 
 import (
+	context "context"
+
 	dto "github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 	mock "github.com/stretchr/testify/mock"
 
@@ -22,9 +24,9 @@ func (_m *FriendRepository) EXPECT() *FriendRepository_Expecter {
 	return &FriendRepository_Expecter{mock: &_m.Mock}
 }
 
-// Delete provides a mock function with given fields: fr
-func (_m *FriendRepository) Delete(fr *dto.RemoveFriend) (*models.UserFriend, error) {
-	ret := _m.Called(fr)
+// Delete provides a mock function with given fields: ctx, fr
+func (_m *FriendRepository) Delete(ctx context.Context, fr *dto.RemoveFriend) (*models.UserFriend, error) {
+	ret := _m.Called(ctx, fr)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Delete")
@@ -32,19 +34,19 @@ func (_m *FriendRepository) Delete(fr *dto.RemoveFriend) (*models.UserFriend, er
 
 	var r0 *models.UserFriend
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*dto.RemoveFriend) (*models.UserFriend, error)); ok {
-		return rf(fr)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.RemoveFriend) (*models.UserFriend, error)); ok {
+		return rf(ctx, fr)
 	}
-	if rf, ok := ret.Get(0).(func(*dto.RemoveFriend) *models.UserFriend); ok {
-		r0 = rf(fr)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.RemoveFriend) *models.UserFriend); ok {
+		r0 = rf(ctx, fr)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.UserFriend)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(*dto.RemoveFriend) error); ok {
-		r1 = rf(fr)
+	if rf, ok := ret.Get(1).(func(context.Context, *dto.RemoveFriend) error); ok {
+		r1 = rf(ctx, fr)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -58,14 +60,15 @@ type FriendRepository_Delete_Call struct {
 }
 
 // Delete is a helper method to define mock.On call
+//   - ctx context.Context
 //   - fr *dto.RemoveFriend
-func (_e *FriendRepository_Expecter) Delete(fr interface{}) *FriendRepository_Delete_Call {
-	return &FriendRepository_Delete_Call{Call: _e.mock.On("Delete", fr)}
+func (_e *FriendRepository_Expecter) Delete(ctx interface{}, fr interface{}) *FriendRepository_Delete_Call {
+	return &FriendRepository_Delete_Call{Call: _e.mock.On("Delete", ctx, fr)}
 }
 
-func (_c *FriendRepository_Delete_Call) Run(run func(fr *dto.RemoveFriend)) *FriendRepository_Delete_Call {
+func (_c *FriendRepository_Delete_Call) Run(run func(ctx context.Context, fr *dto.RemoveFriend)) *FriendRepository_Delete_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.RemoveFriend))
+		run(args[0].(context.Context), args[1].(*dto.RemoveFriend))
 	})
 	return _c
 }
@@ -75,14 +78,14 @@ func (_c *FriendRepository_Delete_Call) Return(_a0 *models.UserFriend, _a1 error
 	return _c
 }
 
-func (_c *FriendRepository_Delete_Call) RunAndReturn(run func(*dto.RemoveFriend) (*models.UserFriend, error)) *FriendRepository_Delete_Call {
+func (_c *FriendRepository_Delete_Call) RunAndReturn(run func(context.Context, *dto.RemoveFriend) (*models.UserFriend, error)) *FriendRepository_Delete_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// FetchManyByUserId provides a mock function with given fields: userId
-func (_m *FriendRepository) FetchManyByUserId(userId dto.UserID) ([]*models.UserFriend, error) {
-	ret := _m.Called(userId)
+// FetchManyByUserId provides a mock function with given fields: ctx, userId
+func (_m *FriendRepository) FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error) {
+	ret := _m.Called(ctx, userId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FetchManyByUserId")
@@ -90,19 +93,19 @@ func (_m *FriendRepository) FetchManyByUserId(userId dto.UserID) ([]*models.User
 
 	var r0 []*models.UserFriend
 	var r1 error
-	if rf, ok := ret.Get(0).(func(dto.UserID) ([]*models.UserFriend, error)); ok {
-		return rf(userId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.UserID) ([]*models.UserFriend, error)); ok {
+		return rf(ctx, userId)
 	}
-	if rf, ok := ret.Get(0).(func(dto.UserID) []*models.UserFriend); ok {
-		r0 = rf(userId)
+	if rf, ok := ret.Get(0).(func(context.Context, dto.UserID) []*models.UserFriend); ok {
+		r0 = rf(ctx, userId)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*models.UserFriend)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(dto.UserID) error); ok {
-		r1 = rf(userId)
+	if rf, ok := ret.Get(1).(func(context.Context, dto.UserID) error); ok {
+		r1 = rf(ctx, userId)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -116,14 +119,15 @@ type FriendRepository_FetchManyByUserId_Call struct {
 }
 
 // FetchManyByUserId is a helper method to define mock.On call
+//   - ctx context.Context
 //   - userId dto.UserID
-func (_e *FriendRepository_Expecter) FetchManyByUserId(userId interface{}) *FriendRepository_FetchManyByUserId_Call {
-	return &FriendRepository_FetchManyByUserId_Call{Call: _e.mock.On("FetchManyByUserId", userId)}
+func (_e *FriendRepository_Expecter) FetchManyByUserId(ctx interface{}, userId interface{}) *FriendRepository_FetchManyByUserId_Call {
+	return &FriendRepository_FetchManyByUserId_Call{Call: _e.mock.On("FetchManyByUserId", ctx, userId)}
 }
 
-func (_c *FriendRepository_FetchManyByUserId_Call) Run(run func(userId dto.UserID)) *FriendRepository_FetchManyByUserId_Call {
+func (_c *FriendRepository_FetchManyByUserId_Call) Run(run func(ctx context.Context, userId dto.UserID)) *FriendRepository_FetchManyByUserId_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(dto.UserID))
+		run(args[0].(context.Context), args[1].(dto.UserID))
 	})
 	return _c
 }
@@ -133,14 +137,14 @@ func (_c *FriendRepository_FetchManyByUserId_Call) Return(_a0 []*models.UserFrie
 	return _c
 }
 
-func (_c *FriendRepository_FetchManyByUserId_Call) RunAndReturn(run func(dto.UserID) ([]*models.UserFriend, error)) *FriendRepository_FetchManyByUserId_Call {
+func (_c *FriendRepository_FetchManyByUserId_Call) RunAndReturn(run func(context.Context, dto.UserID) ([]*models.UserFriend, error)) *FriendRepository_FetchManyByUserId_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// Save provides a mock function with given fields: fr
-func (_m *FriendRepository) Save(fr *dto.SaveFriend) (*models.UserFriend, error) {
-	ret := _m.Called(fr)
+// Save provides a mock function with given fields: ctx, fr
+func (_m *FriendRepository) Save(ctx context.Context, fr *dto.SaveFriend) (*models.UserFriend, error) {
+	ret := _m.Called(ctx, fr)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Save")
@@ -148,19 +152,19 @@ func (_m *FriendRepository) Save(fr *dto.SaveFriend) (*models.UserFriend, error)
 
 	var r0 *models.UserFriend
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*dto.SaveFriend) (*models.UserFriend, error)); ok {
-		return rf(fr)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.SaveFriend) (*models.UserFriend, error)); ok {
+		return rf(ctx, fr)
 	}
-	if rf, ok := ret.Get(0).(func(*dto.SaveFriend) *models.UserFriend); ok {
-		r0 = rf(fr)
+	if rf, ok := ret.Get(0).(func(context.Context, *dto.SaveFriend) *models.UserFriend); ok {
+		r0 = rf(ctx, fr)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.UserFriend)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(*dto.SaveFriend) error); ok {
-		r1 = rf(fr)
+	if rf, ok := ret.Get(1).(func(context.Context, *dto.SaveFriend) error); ok {
+		r1 = rf(ctx, fr)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -174,14 +178,15 @@ type FriendRepository_Save_Call struct {
 }
 
 // Save is a helper method to define mock.On call
+//   - ctx context.Context
 //   - fr *dto.SaveFriend
-func (_e *FriendRepository_Expecter) Save(fr interface{}) *FriendRepository_Save_Call {
-	return &FriendRepository_Save_Call{Call: _e.mock.On("Save", fr)}
+func (_e *FriendRepository_Expecter) Save(ctx interface{}, fr interface{}) *FriendRepository_Save_Call {
+	return &FriendRepository_Save_Call{Call: _e.mock.On("Save", ctx, fr)}
 }
 
-func (_c *FriendRepository_Save_Call) Run(run func(fr *dto.SaveFriend)) *FriendRepository_Save_Call {
+func (_c *FriendRepository_Save_Call) Run(run func(ctx context.Context, fr *dto.SaveFriend)) *FriendRepository_Save_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.SaveFriend))
+		run(args[0].(context.Context), args[1].(*dto.SaveFriend))
 	})
 	return _c
 }
@@ -191,7 +196,7 @@ func (_c *FriendRepository_Save_Call) Return(_a0 *models.UserFriend, _a1 error) 
 	return _c
 }
 
-func (_c *FriendRepository_Save_Call) RunAndReturn(run func(*dto.SaveFriend) (*models.UserFriend, error)) *FriendRepository_Save_Call {
+func (_c *FriendRepository_Save_Call) RunAndReturn(run func(context.Context, *dto.SaveFriend) (*models.UserFriend, error)) *FriendRepository_Save_Call {
 	_c.Call.Return(run)
 	return _c
 }

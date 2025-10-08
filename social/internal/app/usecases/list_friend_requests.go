@@ -2,18 +2,19 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
 
-func (sc *SocialUsecase) ListFriendRequests(userId dto.UserID) ([]*models.FriendRequest, error) {
+func (sc *SocialUsecase) ListFriendRequests(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error) {
 
-	frReqs, err := sc.RepoFriendReq.FetchManyByUserId(userId)
+	frReqs, err := sc.RepoFriendReq.FetchManyByUserId(ctx, userId)
 
 	if err != nil {
-		return nil, fmt.Errorf("ListFriendRequests: FetchManyByUserId: %w", err)
+		return nil, fmt.Errorf("ListFriendRequests: RepoFriendReq.FetchManyByUserId: %w", err)
 	}
 
 	if len(frReqs) == 0 {

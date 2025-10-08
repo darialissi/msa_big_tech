@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net"
-	"database/sql"
+	"context"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -18,8 +18,16 @@ import (
 
 func main() {
     // DI
-    friendRepo := friend_repo.NewRepository(&sql.DB{})
-    friendReqRepo := friend_req_repo.NewRepository(&sql.DB{})
+	ctx := context.Background()
+
+	pool, err := NewPostgresConnection(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
+
+    friendRepo := friend_repo.NewRepository(pool)
+    friendReqRepo := friend_req_repo.NewRepository(pool)
     
     deps := usecases.Deps{
         RepoFriend:  friendRepo,

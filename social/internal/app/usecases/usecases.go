@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+    "context"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
@@ -10,30 +11,30 @@ import (
 
 type SocialUsecases interface {
 	// Отправление запроса "В Друзья"
-    SendFriendRequest(req *dto.SendFriendRequest) (*models.FriendRequest, error)
+    SendFriendRequest(ctx context.Context, req *dto.SendFriendRequest) (*models.FriendRequest, error)
 	// Получение списка входящих запросов "В Друзья" пользователя
-    ListFriendRequests(userId dto.UserID) ([]*models.FriendRequest, error)
+    ListFriendRequests(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error)
 	// Принятие заявки "В Друзья"
-    AcceptFriendRequest(reqId dto.FriendRequestID) (*models.FriendRequest, error)
+    AcceptFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error)
 	// Отклонение заявки "В Друзья"
-    DeclineFriendRequest(reqId dto.FriendRequestID) (*models.FriendRequest, error)
+    DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error)
 	// Удаление из "Друзей"
-    RemoveFriend(fr *dto.RemoveFriend) (*models.UserFriend, error)
+    RemoveFriend(ctx context.Context, fr *dto.RemoveFriend) (*models.UserFriend, error)
 	// Получение списка "Друзей" пользователя
-    ListFriends(userId dto.UserID) ([]*models.UserFriend, error)
+    ListFriends(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error)
 }
 
 type FriendRequestRepository interface {
-    Save(req *dto.SaveFriendRequest) (*models.FriendRequest, error)
-    UpdateStatus(req *dto.ChangeStatus) (*models.FriendRequest, error)
-    FetchById(reqId dto.FriendRequestID) (*models.FriendRequest, error)
-    FetchManyByUserId(userId dto.UserID) ([]*models.FriendRequest, error)
+    Save(ctx context.Context, in *dto.SaveFriendRequest) (*models.FriendRequest, error)
+    UpdateStatus(ctx context.Context, in *dto.UpdateFriendRequest) (*models.FriendRequest, error)
+    FetchById(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error)
+    FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error)
 }
 
 type FriendRepository interface {
-    Save(fr *dto.SaveFriend) (*models.UserFriend, error)
-    Delete(fr *dto.RemoveFriend) (*models.UserFriend, error)
-    FetchManyByUserId(userId dto.UserID) ([]*models.UserFriend, error)
+    Save(ctx context.Context, in *dto.SaveFriend) (*models.UserFriend, error)
+    Delete(ctx context.Context, in *dto.RemoveFriend) (*models.UserFriend, error)
+    FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

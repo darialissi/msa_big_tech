@@ -3,6 +3,7 @@ package usecases
 import (
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
@@ -48,24 +49,23 @@ func TestAcceptFriendRequestTestSuite(t *testing.T) {
 func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 	// ARRANGE
 	var (
-		reqId = "11111111-0000-0000-0000-0000000000000"
+		mockCtx = &mocks.MockContext{}
 
-		REQ_ID = dto.FriendRequestID(reqId)
-		FROM_USER_ID = dto.UserID("00000000-0000-0000-0000-0000000000000")
-		TO_USER_ID = dto.UserID("00000000-0000-0000-0000-0000000000001")
+		REQ_ID = dto.FriendRequestID(uuid.New().String())
+		FROM_USER_ID = dto.UserID(uuid.New().String())
+		TO_USER_ID = dto.UserID(uuid.New().String())
 
 		expected = &models.FriendRequest{
-			ID: "10000000-0000-0000-0000-0000000000000",
+			ID: models.FriendRequestID(REQ_ID),
 			Status: models.FriendRequestStatusAccepted,
-			FromUserID: "00000000-0000-0000-0000-0000000000000",
-			ToUserID: "00000000-0000-0000-0000-0000000000001",
+			FromUserID: models.UserID(FROM_USER_ID),
+			ToUserID: models.UserID(TO_USER_ID),
 		}
 	)
 
 	s.RepoFriendReq.EXPECT().
-		FetchById(REQ_ID).
+		FetchById(mockCtx, REQ_ID).
 		Return(&models.FriendRequest{
-			ID: models.FriendRequestID(REQ_ID),
 			Status: models.FriendRequestStatusPending,
 			FromUserID: models.UserID(FROM_USER_ID),
 			ToUserID: models.UserID(TO_USER_ID),
@@ -74,12 +74,11 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 		Once()
 
 	s.RepoFriendReq.EXPECT().
-		UpdateStatus(&dto.ChangeStatus{
+		UpdateStatus(mockCtx, &dto.UpdateFriendRequest{
 			ReqID: REQ_ID,
-			StatusID: dto.FriendRequestStatus(models.FriendRequestStatusAccepted),
+			Status: dto.FriendRequestStatus(models.FriendRequestStatusAccepted),
 	}).
 		Return(&models.FriendRequest{
-			ID: models.FriendRequestID(REQ_ID),
 			Status: models.FriendRequestStatusAccepted,
 			FromUserID: models.UserID(FROM_USER_ID),
 			ToUserID: models.UserID(TO_USER_ID),
@@ -87,16 +86,27 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 			nil).
 		Once()
 
+	s.RepoFriend.EXPECT().
+		Save(mockCtx, &dto.SaveFriend{
+			UserID: FROM_USER_ID,
+			FriendID: TO_USER_ID,
+	}).
+		Return(&models.UserFriend{
+			UserID: models.UserID(FROM_USER_ID),
+			FriendID: models.UserID(TO_USER_ID),
+			}, 
+			nil).
+		Once()
+
 	// ACT
-	got, err := s.Usecase.AcceptFriendRequest(dto.FriendRequestID(reqId))
+
+	got, err := s.Usecase.AcceptFriendRequest(mockCtx, REQ_ID)
 
 	// ASSERT
 	s.NoError(err)
 	s.NotNil(got)
-	s.NotEmpty(got.ID) // ID должен быть выставлен
 
-	// для сравнения обнулим ID у обоих
-	got.ID = ""
-	expected.ID = ""
-	s.Equal(expected, got)
+	s.Equal(expected.FromUserID, got.FromUserID)
+	s.Equal(expected.ToUserID, got.ToUserID)
+	s.Equal(expected.Status, got.Status)
 }

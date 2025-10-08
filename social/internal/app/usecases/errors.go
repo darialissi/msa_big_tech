@@ -6,6 +6,8 @@ import (
 
 // Ошибки уровня бизнес логики
 var (
+	// Отправление запроса самому себе
+	ErrRequestToYourself = errors.New("Send friend request to yourself is impossible")
 	// У пользователя нет входящих запросов "В Друзья"
 	ErrUserNoFriendRequestsIn = errors.New("User has no incoming friend requests")
 	// У пользователя нет исходящих запросов "В Друзья"
