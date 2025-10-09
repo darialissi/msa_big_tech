@@ -3,6 +3,8 @@ package chat_grpc
 import (
 	"context"
 
+	"github.com/google/uuid"
+
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
@@ -10,14 +12,14 @@ import (
 func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectChatRequest) (*chat.CreateDirectChatResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := "00000000-0000-0000-0000-0000000000000"
+	userId := uuid.New().String()
 
 	form := &dto.CreateDirectChat{
 		CreatorID: dto.UserID(userId),
-		ParticipantID: dto.UserID(req.ParticipantId),
+		MemberID: dto.UserID(req.ParticipantId),
 	}
 
-	chatResponse, err := s.ChatUsecase.CreateDirectChat(form)
+	chatResponse, err := s.ChatUsecase.CreateDirectChat(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -28,7 +30,7 @@ func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectCh
 
 func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.GetChatResponse, error) {
 
-	res, err := s.ChatUsecase.FetchChat(dto.ChatID(req.ChatId))
+	res, err := s.ChatUsecase.FetchChat(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
 		return nil, err
@@ -37,7 +39,6 @@ func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.
 	chatResponse := &chat.Chat{
 		ChatId: string(res.ID),
 		CreatorId: string(res.CreatorID),
-		ParticipantId: string(res.ParticipantID),
 	}
 
 	return &chat.GetChatResponse{Chat: chatResponse}, nil
@@ -45,19 +46,18 @@ func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.
 
 func (s *service) ListUserChats(ctx context.Context, req *chat.ListUserChatsRequest) (*chat.ListUserChatsResponse, error) {
 
-	res, err := s.ChatUsecase.ListUserChats(dto.UserID(req.UserId))
+	res, err := s.ChatUsecase.ListUserChats(ctx, dto.UserID(req.UserId))
 
 	if err != nil {
 		return nil, err
 	}
 
-	chatResponses := make([]*chat.Chat, len(res))
+	chatResponses := make([]*chat.ChatMember, len(res))
 
     for i, ch := range res {
-        chatResponses[i] = &chat.Chat{
-			ChatId: string(ch.ID),
-			CreatorId: string(ch.CreatorID),
-			ParticipantId: string(ch.ParticipantID),
+        chatResponses[i] = &chat.ChatMember{
+			UserId: string(ch.UserID),
+			ChatId: string(ch.ChatID),
 		}
     }
 
@@ -66,7 +66,7 @@ func (s *service) ListUserChats(ctx context.Context, req *chat.ListUserChatsRequ
 
 func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembersRequest) (*chat.ListChatMembersResponse, error) {
 
-	res, err := s.ChatUsecase.ListChatMembers(dto.ChatID(req.ChatId))
+	res, err := s.ChatUsecase.ListChatMembers(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
 		return nil, err
@@ -77,7 +77,7 @@ func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembers
     for i, m := range res {
         chatMembers[i] = &chat.ChatMember{
 			UserId: string(m.UserID),
-			Role: m.Role,
+			ChatId: string(m.ChatID),
 		}
 	}
 
@@ -87,15 +87,15 @@ func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembers
 func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest) (*chat.SendMessageResponse, error) {
 
     // TODO: получить id из jwt MW
-	userId := "00000000-0000-0000-0000-0000000000000"
+	userId := uuid.New().String()
 
 	form := &dto.SendMessage{
 		Text: req.Text,
-		FromUserID: dto.UserID(userId),
-		ToChatID: dto.ChatID(req.ChatId),
+		SenderID: dto.UserID(userId),
+		ChatID: dto.ChatID(req.ChatId),
 	}
 
-	res, err := s.ChatUsecase.SendMessage(form)
+	res, err := s.ChatUsecase.SendMessage(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -104,8 +104,8 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 	chatMessage := &chat.Message{
 		MessageId: string(res.ID),
 		Text: res.Text,
-		FromUserId: string(res.FromUserID),
-		ToChatId: string(res.ChatID),
+		SenderId: string(res.SenderID),
+		ChatId: string(res.ChatID),
 	}
 
 	return &chat.SendMessageResponse{Message: chatMessage}, nil
@@ -113,7 +113,7 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 
 func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesRequest) (*chat.ListMessagesResponse, error) {
 
-	res, err := s.ChatUsecase.ListMessages(dto.ChatID(req.ChatId))
+	res, err := s.ChatUsecase.ListMessages(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
 		return nil, err
@@ -125,8 +125,8 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
         chatMessages[i] = &chat.Message{
 			MessageId: string(mes.ID),
 			Text: mes.Text,
-			FromUserId: string(mes.FromUserID),
-			ToChatId: string(mes.ChatID),
+			SenderId: string(mes.SenderID),
+			ChatId: string(mes.ChatID),
 
 		}
     }

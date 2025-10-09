@@ -272,9 +272,6 @@
         },
         "creatorId": {
           "type": "string"
-        },
-        "participantId": {
-          "type": "string"
         }
       },
       "title": "Объекты"
@@ -285,7 +282,7 @@
         "userId": {
           "type": "string"
         },
-        "role": {
+        "chatId": {
           "type": "string"
         }
       }
@@ -386,7 +383,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/chatChat"
+            "$ref": "#/definitions/chatChatMember"
           }
         }
       }
@@ -400,10 +397,10 @@
         "text": {
           "type": "string"
         },
-        "fromUserId": {
+        "senderId": {
           "type": "string"
         },
-        "toChatId": {
+        "chatId": {
           "type": "string"
         }
       }

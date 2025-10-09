@@ -11,7 +11,7 @@ import (
 
 func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
-	frReq, err := sc.RepoFriendReq.FetchById(ctx, reqId)
+	frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
 
 	if err != nil {
 		return nil, fmt.Errorf("AcceptFriendRequest: RepoFriendReq.FetchById: %w", err)
@@ -26,9 +26,9 @@ func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.Frie
 		return nil, ErrBadStatus
 	}
 
-	transition := &dto.UpdateFriendRequest{
-		ReqID: reqId,
-		Status: dto.FriendRequestStatus(models.FriendRequestStatusAccepted),
+	transition := &models.FriendRequest{
+		ID: frReq.ID,
+		Status: models.FriendRequestStatusAccepted,
 	}
 
 	updated, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)
@@ -38,9 +38,9 @@ func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.Frie
 	}
 
 	// добавление Друга
-	friend := &dto.SaveFriend{
-		UserID: dto.UserID(frReq.FromUserID),
-		FriendID: dto.UserID(frReq.ToUserID),
+	friend := &models.UserFriend{
+		UserID: frReq.FromUserID,
+		FriendID: frReq.ToUserID,
 	}
 
 	if _, err := sc.RepoFriend.Save(ctx, friend); err != nil {

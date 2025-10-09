@@ -11,7 +11,12 @@ import (
 
 func (sc *SocialUsecase) RemoveFriend(ctx context.Context, fr *dto.RemoveFriend) (*models.UserFriend, error) {
 
-	friend, err := sc.RepoFriend.Delete(ctx, fr)
+	in := &models.UserFriend{
+		UserID: models.UserID(fr.UserID),
+		FriendID: models.UserID(fr.FriendID),
+	}
+
+	friend, err := sc.RepoFriend.Delete(ctx, in)
 
 	if err != nil {
 		return nil, fmt.Errorf("RemoveFriend: RepoFriend.Delete: %w", err)

@@ -246,7 +246,7 @@ func (x *ListUserChatsRequest) GetUserId() string {
 
 type ListUserChatsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chats         []*Chat                `protobuf:"bytes,1,rep,name=chats,proto3" json:"chats,omitempty"`
+	Chats         []*ChatMember          `protobuf:"bytes,1,rep,name=chats,proto3" json:"chats,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -281,7 +281,7 @@ func (*ListUserChatsResponse) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *ListUserChatsResponse) GetChats() []*Chat {
+func (x *ListUserChatsResponse) GetChats() []*ChatMember {
 	if x != nil {
 		return x.Chats
 	}
@@ -665,7 +665,6 @@ type Chat struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	CreatorId     string                 `protobuf:"bytes,2,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	ParticipantId string                 `protobuf:"bytes,3,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -714,17 +713,10 @@ func (x *Chat) GetCreatorId() string {
 	return ""
 }
 
-func (x *Chat) GetParticipantId() string {
-	if x != nil {
-		return x.ParticipantId
-	}
-	return ""
-}
-
 type ChatMember struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
+	ChatId        string                 `protobuf:"bytes,2,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -766,9 +758,9 @@ func (x *ChatMember) GetUserId() string {
 	return ""
 }
 
-func (x *ChatMember) GetRole() string {
+func (x *ChatMember) GetChatId() string {
 	if x != nil {
-		return x.Role
+		return x.ChatId
 	}
 	return ""
 }
@@ -777,8 +769,8 @@ type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
-	FromUserId    string                 `protobuf:"bytes,3,opt,name=from_user_id,json=fromUserId,proto3" json:"from_user_id,omitempty"`
-	ToChatId      string                 `protobuf:"bytes,4,opt,name=to_chat_id,json=toChatId,proto3" json:"to_chat_id,omitempty"`
+	SenderId      string                 `protobuf:"bytes,3,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`
+	ChatId        string                 `protobuf:"bytes,4,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -827,16 +819,16 @@ func (x *Message) GetText() string {
 	return ""
 }
 
-func (x *Message) GetFromUserId() string {
+func (x *Message) GetSenderId() string {
 	if x != nil {
-		return x.FromUserId
+		return x.SenderId
 	}
 	return ""
 }
 
-func (x *Message) GetToChatId() string {
+func (x *Message) GetChatId() string {
 	if x != nil {
-		return x.ToChatId
+		return x.ChatId
 	}
 	return ""
 }
@@ -856,9 +848,9 @@ const file_chat_proto_rawDesc = "" +
 	"\x0fGetChatResponse\x12A\n" +
 	"\x04chat\x18\x01 \x01(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x04chat\"/\n" +
 	"\x14ListUserChatsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"\\\n" +
-	"\x15ListUserChatsResponse\x12C\n" +
-	"\x05chats\x18\x01 \x03(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x05chats\"1\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"b\n" +
+	"\x15ListUserChatsResponse\x12I\n" +
+	"\x05chats\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\x05chats\"1\n" +
 	"\x16ListChatMembersRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\"h\n" +
 	"\x17ListChatMembersResponse\x12M\n" +
@@ -876,24 +868,21 @@ const file_chat_proto_rawDesc = "" +
 	"\x15StreamMessagesRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\"b\n" +
 	"\x16StreamMessagesResponse\x12H\n" +
-	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\"e\n" +
+	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\">\n" +
 	"\x04Chat\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x1d\n" +
 	"\n" +
-	"creator_id\x18\x02 \x01(\tR\tcreatorId\x12%\n" +
-	"\x0eparticipant_id\x18\x03 \x01(\tR\rparticipantId\"9\n" +
+	"creator_id\x18\x02 \x01(\tR\tcreatorId\">\n" +
 	"\n" +
 	"ChatMember\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x12\n" +
-	"\x04role\x18\x02 \x01(\tR\x04role\"|\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x17\n" +
+	"\achat_id\x18\x02 \x01(\tR\x06chatId\"r\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\x12 \n" +
-	"\ffrom_user_id\x18\x03 \x01(\tR\n" +
-	"fromUserId\x12\x1c\n" +
-	"\n" +
-	"to_chat_id\x18\x04 \x01(\tR\btoChatIdB\xa4\x02\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1b\n" +
+	"\tsender_id\x18\x03 \x01(\tR\bsenderId\x12\x17\n" +
+	"\achat_id\x18\x04 \x01(\tR\x06chatIdB\xa4\x02\n" +
 	"+com.github.com.darialissi.msa_big_tech.chatB\tChatProtoP\x01Z0github.com/darialissi/msa_big_tech/chat/pkg;chat\xa2\x02\x05GCDMC\xaa\x02%Github.Com.Darialissi.MsaBigTech.Chat\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Chat\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Chat\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Chatb\x06proto3"
 
 var (
@@ -930,7 +919,7 @@ var file_chat_proto_goTypes = []any{
 }
 var file_chat_proto_depIdxs = []int32{
 	14, // 0: github.com.darialissi.msa_big_tech.chat.GetChatResponse.chat:type_name -> github.com.darialissi.msa_big_tech.chat.Chat
-	14, // 1: github.com.darialissi.msa_big_tech.chat.ListUserChatsResponse.chats:type_name -> github.com.darialissi.msa_big_tech.chat.Chat
+	15, // 1: github.com.darialissi.msa_big_tech.chat.ListUserChatsResponse.chats:type_name -> github.com.darialissi.msa_big_tech.chat.ChatMember
 	15, // 2: github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse.members:type_name -> github.com.darialissi.msa_big_tech.chat.ChatMember
 	16, // 3: github.com.darialissi.msa_big_tech.chat.SendMessageResponse.message:type_name -> github.com.darialissi.msa_big_tech.chat.Message
 	16, // 4: github.com.darialissi.msa_big_tech.chat.ListMessagesResponse.messages:type_name -> github.com.darialissi.msa_big_tech.chat.Message

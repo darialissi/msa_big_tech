@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
@@ -8,12 +9,12 @@ import (
 )
 
 
-func (ch *ChatUsecase) ListUserChats(userId dto.UserID) ([]*models.DirectChat, error) {
+func (ch *ChatUsecase) ListUserChats(ctx context.Context, userId dto.UserID) ([]*models.ChatMember, error) {
 
-	res, err := ch.repoChat.FetchManyByUserId(userId)
+	res, err := ch.repoChatMember.FetchManyByUserId(ctx, models.UserID(userId))
 
 	if err != nil {
-		return nil, fmt.Errorf("ListUserChats: FetchManyByUserId : %w", err)
+		return nil, fmt.Errorf("ListUserChats: repoChatMember.FetchManyByUserId: %w", err)
 	}
 
 	if len(res) == 0 {

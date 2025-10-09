@@ -2,17 +2,31 @@ package friend_request
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
-	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
 
-func (r *Repository) Save(ctx context.Context, in *dto.SaveFriendRequest) (*models.FriendRequest, error) {
-	row := FromSaveDTO(in)
+func (r *Repository) Save(ctx context.Context, in *models.FriendRequest) (*models.FriendRequest, error) {
+	row, err := FromModel(in)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if v1, v2, v3 := row.FromUserID.String(), row.ToUserID.String(), models.FriendRequestStatus(row.Status).String(); v1 == "" || v2 == "" || v3 == "UNKNOWN" {
+		return nil, fmt.Errorf(
+			"invalid args: row.FromUserID=%s, row.ToUserID=%s, row.Status=%d %s", 
+			v1, 
+			v2,
+			row.Status,
+			v3,
+		)
+	}
 
 	query := r.sb.
 		Insert(friendRequestsTable).
@@ -21,7 +35,7 @@ func (r *Repository) Save(ctx context.Context, in *dto.SaveFriendRequest) (*mode
 			friendRequestsTableColumnToUserID, 
 			friendRequestsTableColumnStatus,
 			).
-		Values(row.Values()...).
+		Values(row.FromUserID, row.ToUserID, row.Status).
 		Suffix("RETURNING " + strings.Join(friendRequestsTableColumns, ","))
 
 	var outRow FriendRequestRow
@@ -32,8 +46,21 @@ func (r *Repository) Save(ctx context.Context, in *dto.SaveFriendRequest) (*mode
 	return ToModel(&outRow), nil
 }
 
-func (r *Repository) UpdateStatus(ctx context.Context, in *dto.UpdateFriendRequest) (*models.FriendRequest, error) {
-	row := FromUpdateDTO(in)
+func (r *Repository) UpdateStatus(ctx context.Context, in *models.FriendRequest) (*models.FriendRequest, error) {
+	row, err := FromModel(in)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if v1, v2 := row.ID.String(), models.FriendRequestStatus(row.Status).String(); v1 == "" || v2 == "UNKNOWN" {
+		return nil, fmt.Errorf(
+			"invalid args: row.ID=%s, row.Status=%d %s", 
+			v1, 
+			row.Status,
+			v2,
+		)
+	}
 
 	query := r.sb.
 		Update(friendRequestsTable).
@@ -49,7 +76,7 @@ func (r *Repository) UpdateStatus(ctx context.Context, in *dto.UpdateFriendReque
 	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchById(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
+func (r *Repository) FetchById(ctx context.Context, reqId models.FriendRequestID) (*models.FriendRequest, error) {
 
 	query := r.sb.
 		Select(friendRequestsTableColumns...).
@@ -64,7 +91,7 @@ func (r *Repository) FetchById(ctx context.Context, reqId dto.FriendRequestID) (
 	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error) {
+func (r *Repository) FetchManyByUserId(ctx context.Context, userId models.UserID) ([]*models.FriendRequest, error) {
 
 	query := r.sb.
 		Select(friendRequestsTableColumns...).

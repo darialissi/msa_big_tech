@@ -2,11 +2,11 @@ package friend_request
 
 import (
 	"time"
+	"fmt"
 
 	"github.com/google/uuid"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
-	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
 // FriendRequestRow — «плоская» проекция строки таблицы friend_requests
@@ -30,6 +30,7 @@ func ToModel(r *FriendRequestRow) *models.FriendRequest {
 	if r == nil {
 		return nil
 	}
+
 	return &models.FriendRequest{
 		ID: models.FriendRequestID(r.ID.String()),
 		Status: models.FriendRequestStatus(r.Status),
@@ -40,42 +41,43 @@ func ToModel(r *FriendRequestRow) *models.FriendRequest {
 	}
 }
 
-// FromSaveDTO конвертирует dto в FriendRequestRow для INSERT
-func FromSaveDTO(d *dto.SaveFriendRequest) FriendRequestRow {
-	if d == nil {
-		return FriendRequestRow{}
+// FromModel конвертирует доменную модель в FriendRequestRow для INSERT/UPDATE/DELETE
+func FromModel(m *models.FriendRequest) (FriendRequestRow, error) {
+	if m == nil {
+		return FriendRequestRow{}, fmt.Errorf("model is nil")
+	}
+	
+	var ID uuid.UUID
+	var fromUserID uuid.UUID
+	var toUserID uuid.UUID
+	var err error
+
+	// Универсальная конвертация, поля могут быть пропущены (прописываются явно в запросе репо)
+	if string(m.ID) != "" {
+		ID, err = uuid.Parse(string(m.ID))
+		if err != nil {
+			return FriendRequestRow{}, fmt.Errorf("invalid id: %w", err)
+		}
 	}
 
-	parsedFromUserID, err := uuid.Parse(string(d.FromUserID))
-	if err != nil {
-		return FriendRequestRow{}
+	if string(m.FromUserID) != "" {
+		fromUserID, err = uuid.Parse(string(m.FromUserID))
+		if err != nil {
+			return FriendRequestRow{}, fmt.Errorf("invalid from_user_id: %w", err)
+		}
 	}
 
-	parsedToUserID, err := uuid.Parse(string(d.ToUserID))
-	if err != nil {
-		return FriendRequestRow{}
+	if string(m.ToUserID) != "" {
+		toUserID, err = uuid.Parse(string(m.ToUserID))
+		if err != nil {
+			return FriendRequestRow{}, fmt.Errorf("invalid to_user_id: %w", err)
+		}
 	}
 
 	return FriendRequestRow{
-		FromUserID: parsedFromUserID,
-		ToUserID: parsedToUserID,
-		Status: uint64(d.Status),
-	}
-}
-
-// FromUpdateDTO конвертирует доменную модель в FriendRequestRow для UPDATE
-func FromUpdateDTO(d *dto.UpdateFriendRequest) FriendRequestRow {
-	if d == nil {
-		return FriendRequestRow{}
-	}
-
-	parsedReqID, err := uuid.Parse(string(d.ReqID))
-	if err != nil {
-		return FriendRequestRow{}
-	}
-
-	return FriendRequestRow{
-		ID: parsedReqID,
-		Status: uint64(d.Status),
-	}
+		ID: ID,
+		FromUserID: fromUserID,
+		ToUserID: toUserID,
+		Status: uint64(m.Status),
+	}, nil
 }

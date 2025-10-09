@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+    "context"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
@@ -10,32 +11,37 @@ import (
 
 type ChatUsecases interface {
 	// Создание личного чата
-    CreateDirectChat(chat *dto.CreateDirectChat) (*models.DirectChat, error)
+    CreateDirectChat(ctx context.Context, chat *dto.CreateDirectChat) (*models.DirectChat, error)
 	// Получение чата
-    FetchChat(chatId dto.ChatID) (*models.DirectChat, error)
+    FetchChat(ctx context.Context, chatId dto.ChatID) (*models.DirectChat, error)
 	// Получение списка чатов пользователя
-    ListUserChats(userId dto.UserID) ([]*models.DirectChat, error)
+    ListUserChats(ctx context.Context, userId dto.UserID) ([]*models.ChatMember, error)
 	// Получение списка участников чата
-    ListChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
+    ListChatMembers(ctx context.Context, chatId dto.ChatID) ([]*models.ChatMember, error)
 	// Отправление сообщения
-    SendMessage(m *dto.SendMessage) (*models.Message, error)
+    SendMessage(ctx context.Context, m *dto.SendMessage) (*models.Message, error)
 	// Получение истории сообщений чата
-    ListMessages(chatId dto.ChatID) ([]*models.Message, error)
+    ListMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error)
 	// Серверный стрим новых сообщений
-    StreamMessages(chatId dto.ChatID) ([]*models.Message, error)
+    StreamMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error)
 }
 
-type ChatRepository interface {
-    Save(chat *dto.CreateDirectChat) (*models.DirectChat, error)
-    FetchById(chatId dto.ChatID) (*models.DirectChat, error)
-    FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error)
-    FetchManyByUserId(userId dto.UserID) ([]*models.DirectChat, error)
+type ChatRepository interface {                                
+    Save(ctx context.Context, in *models.DirectChat) (*models.DirectChat, error)
+    FetchById(ctx context.Context, in models.ChatID) (*models.DirectChat, error)
+}
+
+type ChatMemberRepository interface {       
+    Save(ctx context.Context, in *models.ChatMember) (*models.ChatMember, error)    
+    SaveMultiple(ctx context.Context, members []*models.ChatMember) ([]*models.ChatMember, error)                        
+    FetchManyByUserId(ctx context.Context, chatId models.UserID) ([]*models.ChatMember, error)                 
+    FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.ChatMember, error)
 }
 
 type MessageRepository interface {
-    Save(message *dto.SendMessage) (*models.Message, error)
-    FetchById(messageId dto.MessageID) (*models.Message, error)
-    FetchManyByChatId(chatId dto.ChatID) ([]*models.Message, error)
+    Save(ctx context.Context, in *models.Message) (*models.Message, error)
+    FetchById(ctx context.Context, messageId models.MessageID) (*models.Message, error)
+    FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.Message, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции
@@ -44,6 +50,7 @@ var _ ChatUsecases = (*ChatUsecase)(nil)
 type Deps struct {
     RepoChat ChatRepository
     RepoMessage MessageRepository
+	RepoChatMember ChatMemberRepository
 }
 
 func (d *Deps) Valid() error {
@@ -59,11 +66,13 @@ func (d *Deps) Valid() error {
 type ChatUsecase struct {
     repoChat ChatRepository
     repoMessage MessageRepository
+	repoChatMember ChatMemberRepository
 }
 
 func NewChatUsecase(deps Deps) *ChatUsecase {
     return &ChatUsecase{
         repoChat: deps.RepoChat, // переупаковка
         repoMessage: deps.RepoMessage,
+        repoChatMember: deps.RepoChatMember,
     }
 }

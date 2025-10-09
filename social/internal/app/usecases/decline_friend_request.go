@@ -11,7 +11,7 @@ import (
 
 func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
-	frReq, err := sc.RepoFriendReq.FetchById(ctx, reqId)
+	frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
 
 	if err != nil {
 		return nil, fmt.Errorf("DeclineFriendRequest: RepoFriendReq.FetchById: %w", err)
@@ -26,9 +26,9 @@ func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.Fri
 		return nil, ErrBadStatus
 	}
 
-	transition := &dto.UpdateFriendRequest{
-		ReqID: reqId,
-		Status: dto.FriendRequestStatus(models.FriendRequestStatusDeclined),
+	transition := &models.FriendRequest{
+		ID: frReq.ID,
+		Status: models.FriendRequestStatusDeclined,
 	}
 
 	res, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)

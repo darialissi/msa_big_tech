@@ -2,14 +2,14 @@ package friend
 
 import (
 	"time"
+	"fmt"
 
 	"github.com/google/uuid"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
-	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
-// FriendRequestRow — «плоская» проекция строки таблицы friend_requests
+// FriendRow — «плоская» проекция строки таблицы friends
 // Nullable поля представлены sql.Null*.
 type FriendRow struct {
 	UserID  	uuid.UUID		`db:"user_id"`
@@ -36,46 +36,33 @@ func ToModel(r *FriendRow) *models.UserFriend {
 	}
 }
 
-// FromSaveDTO конвертирует dto в FriendRow для INSERT
-func FromSaveDTO(d *dto.SaveFriend) FriendRow {
-	if d == nil {
-		return FriendRow{}
+// FromModel конвертирует доменную модель в FriendRow для INSERT/UPDATE/DELETE
+func FromModel(m *models.UserFriend) (FriendRow, error) {
+	if m == nil {
+		return FriendRow{}, fmt.Errorf("model is nil")
+	}
+	
+	var userID uuid.UUID
+	var friendID uuid.UUID
+	var err error
+
+	// Универсальная конвертация, поля могут быть пропущены (прописываются явно в запросе репо)
+	if string(m.UserID) != "" {
+		userID, err = uuid.Parse(string(m.UserID))
+		if err != nil {
+			return FriendRow{}, fmt.Errorf("invalid user_id: %w", err)
+		}
 	}
 
-	parsedUserID, err := uuid.Parse(string(d.UserID))
-	if err != nil {
-		return FriendRow{}
-	}
-
-	parsedFriendID, err := uuid.Parse(string(d.FriendID))
-	if err != nil {
-		return FriendRow{}
-	}
-
-	return FriendRow{
-		UserID: parsedUserID,
-		FriendID: parsedFriendID,
-	}
-}
-
-// FromDeleteDTO конвертирует доменную модель в FriendRow для DELETE
-func FromDeleteDTO(d *dto.RemoveFriend) FriendRow {
-	if d == nil {
-		return FriendRow{}
-	}
-
-	parsedUserID, err := uuid.Parse(string(d.UserID))
-	if err != nil {
-		return FriendRow{}
-	}
-
-	parsedFriendID, err := uuid.Parse(string(d.FriendID))
-	if err != nil {
-		return FriendRow{}
+	if string(m.FriendID) != "" {
+		friendID, err = uuid.Parse(string(m.FriendID))
+		if err != nil {
+			return FriendRow{}, fmt.Errorf("invalid friend_id: %w", err)
+		}
 	}
 
 	return FriendRow{
-		UserID: parsedUserID,
-		FriendID: parsedFriendID,
-	}
+		UserID: userID,
+		FriendID: friendID,
+	}, nil
 }

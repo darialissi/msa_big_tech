@@ -17,9 +17,9 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 	mockCtx := &mocks.MockContext{}
 
-	FROM_USER_ID := dto.UserID(uuid.New().String())
-	TO_USER_ID := dto.UserID(uuid.New().String())
-	REQ_ID := dto.FriendRequestID(uuid.New().String())
+	REQ_ID := models.FriendRequestID(uuid.New().String())
+	FROM_USER_ID := models.UserID(uuid.New().String())
+	TO_USER_ID := models.UserID(uuid.New().String())
 
 	// ARRANGE
 	type args struct {
@@ -36,24 +36,24 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			name: "Test 1. Positive",
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
-					FromUserID: FROM_USER_ID,
-					ToUserID: TO_USER_ID,
+					FromUserID: dto.UserID(FROM_USER_ID),
+					ToUserID: dto.UserID(TO_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
-					Save(mockCtx, &dto.SaveFriendRequest{
-						Status: dto.FriendRequestStatus(models.FriendRequestStatusPending),
+					Save(mockCtx, &models.FriendRequest{
+						Status: models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
 						ToUserID: TO_USER_ID,
 						}).
 					Return(&models.FriendRequest{
-						ID: models.FriendRequestID(REQ_ID),
+						ID: REQ_ID,
 						Status: models.FriendRequestStatusPending,
-						FromUserID: models.UserID(FROM_USER_ID),
-						ToUserID: models.UserID(TO_USER_ID),
+						FromUserID: FROM_USER_ID,
+						ToUserID: TO_USER_ID,
 					}, nil).
 					Once()
 
@@ -75,8 +75,8 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			name: "Test 2. Negative: Request to yourself",
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
-					FromUserID: FROM_USER_ID,
-					ToUserID: FROM_USER_ID,
+					FromUserID: dto.UserID(FROM_USER_ID),
+					ToUserID: dto.UserID(FROM_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
@@ -96,16 +96,16 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			name: "Test 3. Negative: RepoFriendReq.Save error",
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
-					FromUserID: FROM_USER_ID,
-					ToUserID: TO_USER_ID,
+					FromUserID: dto.UserID(FROM_USER_ID),
+					ToUserID: dto.UserID(TO_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
-					Save(mockCtx, &dto.SaveFriendRequest{
-						Status: dto.FriendRequestStatus(models.FriendRequestStatusPending),
+					Save(mockCtx, &models.FriendRequest{
+						Status: models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
 						ToUserID: TO_USER_ID,
 						}).

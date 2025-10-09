@@ -7,11 +7,11 @@ type MessageID string
 
 type CreateDirectChat struct {
 	CreatorID UserID
-	ParticipantID UserID
+	MemberID UserID
 }
 
 type SendMessage struct {
 	Text string
-	FromUserID UserID
-	ToChatID ChatID
+	SenderID UserID
+	ChatID ChatID
 }

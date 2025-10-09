@@ -17,10 +17,10 @@ func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFri
 
 	// TODO: проверить сущестование пользователя через клиента Users Service
 
-	reqFr := &dto.SaveFriendRequest{
-		Status: dto.FriendRequestStatus(models.FriendRequestStatusPending),
-		FromUserID: req.FromUserID,
-		ToUserID: req.ToUserID,
+	reqFr := &models.FriendRequest{
+		Status: models.FriendRequestStatusPending,
+		FromUserID: models.UserID(req.FromUserID),
+		ToUserID: models.UserID(req.ToUserID),
 	}
 
 	frReq, err := sc.RepoFriendReq.Save(ctx, reqFr)

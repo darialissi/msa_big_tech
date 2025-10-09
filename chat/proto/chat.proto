@@ -29,7 +29,7 @@ message ListUserChatsRequest {
 }
 
 message ListUserChatsResponse {
-  repeated Chat chats = 1;
+  repeated ChatMember chats = 1;
 }
 
 // Получение списка участников чата
@@ -74,17 +74,16 @@ message StreamMessagesResponse {
 message Chat {
   string chat_id = 1;
   string creator_id = 2;
-  string participant_id = 3;
 }
 
 message ChatMember {
   string user_id = 1;
-  string role = 2;
+  string chat_id = 2;
 }
 
 message Message {
   string message_id = 1;
   string text = 2;
-  string from_user_id = 3;
-  string to_chat_id = 4;
+  string sender_id = 3;
+  string chat_id = 4;
 }

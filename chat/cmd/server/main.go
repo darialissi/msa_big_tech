@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"log"
 	"net"
 
@@ -10,6 +10,7 @@ import (
 
 	chat_grpc "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
 	chat_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat"
+	chat_member_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat_member"
 	message_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/message"
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases"
@@ -18,12 +19,22 @@ import (
 
 func main() {
     // DI
-    chatRepo := chat_repo.NewRepository(&sql.DB{})
-    messageRepo := message_repo.NewRepository(&sql.DB{})
+	ctx := context.Background()
+
+	pool, err := NewPostgresConnection(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
+
+    chatRepo := chat_repo.NewRepository(pool)
+    chatMemberRepo := chat_member_repo.NewRepository(pool)
+    messageRepo := message_repo.NewRepository(pool)
     
     deps := usecases.Deps{
         RepoChat:  chatRepo,
         RepoMessage: messageRepo,
+		RepoChatMember: chatMemberRepo,
     }
 
 	if err := deps.Valid(); err != nil {

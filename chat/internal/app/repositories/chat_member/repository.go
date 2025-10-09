@@ -1,4 +1,4 @@
-package message
+package chat_member
 
 import (
 	"context"

@@ -1,27 +1,57 @@
 package chat
 
 import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/Masterminds/squirrel"
+
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
-	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
 
 
-func (r *Repository) Save(chat *dto.CreateDirectChat) (*models.DirectChat, error) {
+func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.DirectChat, error) {
+	row, err := FromModel(in)
 
-	return &models.DirectChat{}, nil
+	if err != nil {
+		return nil, err
+	}
+
+	if v1 := row.CreatorID.String(); v1 == "" {
+		return nil, fmt.Errorf(
+			"invalid args: row.CreatorID=%s", 
+			v1,
+		)
+	}
+
+	query := r.sb.
+		Insert(chatsTable).
+		Columns(
+			chatsTableColumnCreatorID, 
+			).
+		Values(row.CreatorID).
+		Suffix("RETURNING " + strings.Join(chatsTableColumns, ","))
+
+	var outRow ChatRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		return nil, err
+	}
+
+	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchById(chatId dto.ChatID) (*models.DirectChat, error) {
+func (r *Repository) FetchById(ctx context.Context, chatId models.ChatID) (*models.DirectChat, error) {
 
-	return &models.DirectChat{}, nil
-}
+	query := r.sb.
+		Select(chatsTableColumns...).
+		From(chatsTable).
+		Where(squirrel.Eq{chatsTableColumnID: string(chatId)})
 
-func (r *Repository) FetchChatMembers(chatId dto.ChatID) ([]*models.ChatParticipant, error) {
+	var outRow ChatRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil { // возвращает запись или ошибку при отсутствии
+		return nil, err // ошибка, если не найдена запись
+	}
 
-	return []*models.ChatParticipant{}, nil
-}
-
-func (r *Repository) FetchManyByUserId(userId dto.UserID) ([]*models.DirectChat, error) {
-
-	return []*models.DirectChat{}, nil
+	return ToModel(&outRow), nil
 }

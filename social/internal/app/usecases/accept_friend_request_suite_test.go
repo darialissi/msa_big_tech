@@ -51,61 +51,64 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 	var (
 		mockCtx = &mocks.MockContext{}
 
-		REQ_ID = dto.FriendRequestID(uuid.New().String())
-		FROM_USER_ID = dto.UserID(uuid.New().String())
-		TO_USER_ID = dto.UserID(uuid.New().String())
+		REQ_ID = models.FriendRequestID(uuid.New().String())
+		FROM_USER_ID = models.UserID(uuid.New().String())
+		TO_USER_ID = models.UserID(uuid.New().String())
 
 		expected = &models.FriendRequest{
-			ID: models.FriendRequestID(REQ_ID),
+			ID: REQ_ID,
 			Status: models.FriendRequestStatusAccepted,
-			FromUserID: models.UserID(FROM_USER_ID),
-			ToUserID: models.UserID(TO_USER_ID),
+			FromUserID: FROM_USER_ID,
+			ToUserID: TO_USER_ID,
 		}
 	)
 
 	s.RepoFriendReq.EXPECT().
 		FetchById(mockCtx, REQ_ID).
 		Return(&models.FriendRequest{
+			ID: REQ_ID,
 			Status: models.FriendRequestStatusPending,
-			FromUserID: models.UserID(FROM_USER_ID),
-			ToUserID: models.UserID(TO_USER_ID),
+			FromUserID: FROM_USER_ID,
+			ToUserID: TO_USER_ID,
 			}, 
 			nil).
 		Once()
 
 	s.RepoFriendReq.EXPECT().
-		UpdateStatus(mockCtx, &dto.UpdateFriendRequest{
-			ReqID: REQ_ID,
-			Status: dto.FriendRequestStatus(models.FriendRequestStatusAccepted),
+		UpdateStatus(mockCtx, &models.FriendRequest{
+			ID: REQ_ID,
+			Status: models.FriendRequestStatusAccepted,
 	}).
 		Return(&models.FriendRequest{
+			ID: REQ_ID,
 			Status: models.FriendRequestStatusAccepted,
-			FromUserID: models.UserID(FROM_USER_ID),
-			ToUserID: models.UserID(TO_USER_ID),
+			FromUserID: FROM_USER_ID,
+			ToUserID: TO_USER_ID,
 			}, 
 			nil).
 		Once()
 
 	s.RepoFriend.EXPECT().
-		Save(mockCtx, &dto.SaveFriend{
+		Save(mockCtx, &models.UserFriend{
 			UserID: FROM_USER_ID,
 			FriendID: TO_USER_ID,
 	}).
 		Return(&models.UserFriend{
-			UserID: models.UserID(FROM_USER_ID),
-			FriendID: models.UserID(TO_USER_ID),
+			UserID: FROM_USER_ID,
+			FriendID: TO_USER_ID,
 			}, 
 			nil).
 		Once()
 
 	// ACT
 
-	got, err := s.Usecase.AcceptFriendRequest(mockCtx, REQ_ID)
+	got, err := s.Usecase.AcceptFriendRequest(mockCtx, dto.FriendRequestID(REQ_ID))
 
 	// ASSERT
 	s.NoError(err)
 	s.NotNil(got)
 
+	s.Equal(expected.ID, got.ID)
 	s.Equal(expected.FromUserID, got.FromUserID)
 	s.Equal(expected.ToUserID, got.ToUserID)
 	s.Equal(expected.Status, got.Status)

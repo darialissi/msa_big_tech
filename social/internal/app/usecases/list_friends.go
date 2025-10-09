@@ -11,7 +11,7 @@ import (
 
 func (sc *SocialUsecase) ListFriends(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error) {
 
-	friends, err := sc.RepoFriend.FetchManyByUserId(ctx, userId)
+	friends, err := sc.RepoFriend.FetchManyByUserId(ctx, models.UserID(userId))
 
 	if err != nil {
 		return nil, fmt.Errorf("ListFriends: RepoFriend.FetchManyByUserId: %w", err)

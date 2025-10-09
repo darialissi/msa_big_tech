@@ -25,16 +25,16 @@ type SocialUsecases interface {
 }
 
 type FriendRequestRepository interface {
-    Save(ctx context.Context, in *dto.SaveFriendRequest) (*models.FriendRequest, error)
-    UpdateStatus(ctx context.Context, in *dto.UpdateFriendRequest) (*models.FriendRequest, error)
-    FetchById(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error)
-    FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.FriendRequest, error)
+    Save(ctx context.Context, in *models.FriendRequest) (*models.FriendRequest, error)
+    UpdateStatus(ctx context.Context, in *models.FriendRequest) (*models.FriendRequest, error)
+    FetchById(ctx context.Context, reqId models.FriendRequestID) (*models.FriendRequest, error)
+    FetchManyByUserId(ctx context.Context, userId models.UserID) ([]*models.FriendRequest, error)
 }
 
 type FriendRepository interface {
-    Save(ctx context.Context, in *dto.SaveFriend) (*models.UserFriend, error)
-    Delete(ctx context.Context, in *dto.RemoveFriend) (*models.UserFriend, error)
-    FetchManyByUserId(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error)
+    Save(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error)
+    Delete(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error)
+    FetchManyByUserId(ctx context.Context, userId models.UserID) ([]*models.UserFriend, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции
