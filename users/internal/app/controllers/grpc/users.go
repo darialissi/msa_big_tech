@@ -5,6 +5,8 @@ import (
 
 	"buf.build/go/protovalidate"
 
+	"github.com/google/uuid"
+
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
 	users "github.com/darialissi/msa_big_tech/users/pkg"
@@ -23,16 +25,16 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 	}
 
     // TODO: получить id из jwt MW
-	userId := "00000000-0000-0000-0000-0000000000000"
+	userId := uuid.New().String()
 
 	form := &dto.CreateUser{
 		ID: dto.UserID(userId),
 		Nickname: req.Nickname,
 		Bio: req.Bio,
-		Avatar: dto.Url(req.AvatarUrl),
+		AvatarUrl: dto.Url(req.AvatarUrl),
 	}
 
-	res, err := s.UsersUsecase.CreateUser(form)
+	res, err := s.UsersUsecase.CreateUser(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -42,7 +44,7 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
-		AvatarUrl: res.Avatar,
+		AvatarUrl: res.AvatarUrl,
 	}
 
 	return &users.CreateProfileResponse{UserProfile: userProfile}, nil
@@ -60,16 +62,16 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 	}
 	
     // TODO: получить id из jwt MW
-	userId := "00000000-0000-0000-0000-0000000000000"
+	userId := uuid.New().String()
 
 	form := &dto.UpdateUser{
 		ID: dto.UserID(userId),
 		Nickname: req.Nickname,
 		Bio: req.Bio,
-		Avatar: dto.Url(req.AvatarUrl),
+		AvatarUrl: dto.Url(req.AvatarUrl),
 	}
 
-	res, err := s.UsersUsecase.UpdateUser(form)
+	res, err := s.UsersUsecase.UpdateUser(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -79,7 +81,7 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
-		AvatarUrl: res.Avatar,
+		AvatarUrl: res.AvatarUrl,
 	}
 	
 	return &users.UpdateProfileResponse{UserProfile: userProfile}, nil
@@ -87,7 +89,7 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 
 func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDRequest) (*users.GetProfileByIDResponse, error) {
 
-	res, err := s.UsersUsecase.GetProfileByID(dto.UserID(req.UserId))
+	res, err := s.UsersUsecase.GetProfileByID(ctx, dto.UserID(req.UserId))
 
 	if err != nil {
 		return nil, err
@@ -97,7 +99,7 @@ func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDR
 		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
-		AvatarUrl: res.Avatar,
+		AvatarUrl: res.AvatarUrl,
 	}
 
 	return &users.GetProfileByIDResponse{UserProfile: userProfile}, nil
@@ -105,7 +107,7 @@ func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDR
 
 func (s *service) GetProfileByNickname(ctx context.Context, req *users.GetProfileByNicknameRequest) (*users.GetProfileByNicknameResponse, error) {
 
-	res, err := s.UsersUsecase.GetProfileByNickname(req.Nickname)
+	res, err := s.UsersUsecase.GetProfileByNickname(ctx, req.Nickname)
 
 	if err != nil {
 		return nil, err
@@ -115,7 +117,7 @@ func (s *service) GetProfileByNickname(ctx context.Context, req *users.GetProfil
 		Id: string(res.ID),
 		Nickname: res.Nickname,
 		Bio: res.Bio,
-		AvatarUrl: res.Avatar,
+		AvatarUrl: res.AvatarUrl,
 	}
 
 	return &users.GetProfileByNicknameResponse{UserProfile: userProfile}, nil

@@ -1,37 +1,39 @@
 package usecases
 
 import (
+	"context"
+
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
 )
 
 type UsersUsecases interface {
 	// Создание профиля пользователя
-	CreateUser(u *dto.CreateUser) (*models.User, error)
+	CreateUser(ctx context.Context, u *dto.CreateUser) (*models.User, error)
 	// Обновление профиля пользователя
-	UpdateUser(u *dto.UpdateUser) (*models.User, error)
+	UpdateUser(ctx context.Context, u *dto.UpdateUser) (*models.User, error)
 	// Получение профиля пользователя по id
-	GetProfileByID(id dto.UserID) (*models.User, error)
+	GetProfileByID(ctx context.Context, id dto.UserID) (*models.User, error)
 	// Получение профиля пользователя по nickname
-	GetProfileByNickname(nickname string) (*models.User, error)
+	GetProfileByNickname(ctx context.Context, nickname string) (*models.User, error)
 }
 
 type UsersRepository interface {
-    Save(user *dto.CreateUser) (*models.User, error)
-    Update(user *dto.UpdateUser) (*models.User, error)
-    FetchById(id dto.UserID) (*models.User, error)
-    FetchByNickname(nickname string) (*models.User, error)
+    Save(ctx context.Context, in *models.User) (*models.User, error)
+    Update(ctx context.Context, in *models.User) (*models.User, error)
+    FetchById(ctx context.Context, id models.UserID) (*models.User, error)
+    FetchByNickname(ctx context.Context, nickname string) (*models.User, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции
 var _ UsersUsecases = (*UsersUsecase)(nil)
 
 type UsersUsecase struct {
-    repo UsersRepository
+    repoUsers UsersRepository
 }
 
 func NewUsersUsecase(repo UsersRepository) *UsersUsecase {
     return &UsersUsecase{
-        repo: repo,
+        repoUsers: repo,
     }
 }

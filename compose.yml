@@ -41,6 +41,12 @@ services:
       - 5434:5432
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
       
   chat_migrations:
     build:
@@ -51,7 +57,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - chat_postgres
+      chat_postgres:
+        condition: service_healthy
 
   social:
     container_name: social_service
@@ -73,6 +80,12 @@ services:
       - 5435:5432
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
       
   social_migrations:
     build:
@@ -83,7 +96,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - social_postgres
+      social_postgres:
+        condition: service_healthy
 
   users:
     container_name: users_service
@@ -105,6 +119,24 @@ services:
       - 5436:5432
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+      
+  users_migrations:
+    build:
+      context: ./users
+      dockerfile: Dockerfile.migrations
+    env_file:
+      - ./users/.env
+    networks:
+      - app-network
+    depends_on:
+      users_postgres:
+        condition: service_healthy
 
   gateway:
     container_name: gateway_service

@@ -8,12 +8,12 @@ type CreateUser struct {
 	ID UserID
 	Nickname string
 	Bio string
-	Avatar Url
+	AvatarUrl Url
 }
 
 type UpdateUser struct {
 	ID UserID
 	Nickname string
 	Bio string
-	Avatar Url
+	AvatarUrl Url
 }

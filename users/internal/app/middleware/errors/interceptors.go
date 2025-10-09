@@ -31,7 +31,7 @@ func ErrorsUnaryInterceptor() grpc.UnaryServerInterceptor {
 			err = status.Error(codes.InvalidArgument, err.Error())
 		case errors.Is(err, usecases.ErrExistedNickname):
 			err = status.Error(codes.AlreadyExists, err.Error())
-		case errors.Is(err, usecases.ErrProfileEmpty):
+		case errors.Is(err, usecases.ErrNoProfileFound):
 			err = status.Error(codes.NotFound, err.Error())
 		default:
 			err = status.Error(codes.Unknown, err.Error())

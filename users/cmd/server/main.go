@@ -1,14 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net"
+	"context"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	users_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/users"
+	user_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/user"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
 	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
 	users "github.com/darialissi/msa_big_tech/users/pkg"
@@ -17,7 +17,15 @@ import (
 
 func main() {
     // DI
-    usersRepo := users_repo.NewRepository(&sql.DB{})
+	ctx := context.Background()
+
+	pool, err := NewPostgresConnection(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
+
+    usersRepo := user_repo.NewRepository(pool)
     
     usersUC := usecases.NewUsersUsecase(usersRepo)
 	
