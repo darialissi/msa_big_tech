@@ -20,21 +20,10 @@ type Login struct {
 	Password Password
 }
 
-type SaveCred struct {
-	Email string
-    PasswordHash string
-}
-
 type UpdateCred struct {
 	ID UserID
 	Email string
     Password Password
-}
-
-type UpdateCredSave struct {
-	ID UserID
-	Email string
-    PasswordHash string
 }
 
 type AuthRefresh struct {

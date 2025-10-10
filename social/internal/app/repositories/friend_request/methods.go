@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"errors"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 )
@@ -84,8 +86,11 @@ func (r *Repository) FetchById(ctx context.Context, reqId models.FriendRequestID
 		Where(squirrel.Eq{friendRequestsTableColumnID: string(reqId)})
 
 	var outRow FriendRequestRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil { // возвращает запись или ошибку при отсутствии
-		return nil, err // ошибка, если не найдена запись
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
+			return nil, nil
+		}
+    	return nil, err
 	}
 
 	return ToModel(&outRow), nil

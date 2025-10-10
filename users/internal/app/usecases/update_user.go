@@ -15,7 +15,7 @@ func (uc *UsersUsecase) UpdateUser(ctx context.Context, u *dto.UpdateUser) (*mod
 	userProfile, err := uc.repoUsers.FetchById(ctx, models.UserID(u.ID))
 
 	if err != nil {
-		return nil, fmt.Errorf("UpdateUser: epoUsers.FetchById: %w", err)
+		return nil, fmt.Errorf("UpdateUser: repoUsers.FetchById: %w", err)
 	}
 
 	if userProfile.Nickname != u.Nickname {

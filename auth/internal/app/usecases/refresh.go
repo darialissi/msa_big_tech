@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
@@ -9,7 +10,7 @@ import (
 )
 
 
-func (ac *AuthUsecase) Refresh(a *dto.AuthRefresh) (*models.Auth, error) {
+func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models.Auth, error) {
 	// обновление токенов, запись в хранилище
 
 	authUser, err := utils.GenerateJWT(a.ID)
@@ -22,8 +23,8 @@ func (ac *AuthUsecase) Refresh(a *dto.AuthRefresh) (*models.Auth, error) {
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
-	if err := ac.RepoToken.Save(authRefresh); err != nil {
-		return nil, fmt.Errorf("Refresh: Save: %w", err)
+	if err := ac.RepoToken.Save(ctx, authRefresh); err != nil {
+		return nil, fmt.Errorf("Refresh: RepoToken.Save: %w", err)
 	}
 
 	return authUser, nil

@@ -6,11 +6,11 @@ import (
 
 type Repository struct {
 	mu sync.RWMutex
-	db map[string]string // key-value
+	kv map[string]string // key-value
 }
 
 func NewRepository() *Repository {
 	return &Repository{
-		db: make(map[string]string),
+		kv: make(map[string]string),
 	}
 }

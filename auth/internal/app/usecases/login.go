@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -11,9 +12,9 @@ import (
 )
 
 
-func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
+func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, error) {
 	// проверка наличия пользователя, проверка пароля, генерация токенов и запись refresh
-	user, err := ac.RepoAuth.FetchByEmail(a.Email)
+	user, err := ac.RepoAuth.FetchByEmail(ctx, a.Email)
 
 	if err != nil {
 		return nil, ErrNotExistedUser
@@ -36,8 +37,8 @@ func (ac *AuthUsecase) Login(a *dto.Login) (*models.Auth, error) {
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
-	if err := ac.RepoToken.Save(authRefresh); err != nil {
-		return nil, fmt.Errorf("Login: Save: %w", err)
+	if err := ac.RepoToken.Save(ctx, authRefresh); err != nil {
+		return nil, fmt.Errorf("Login: RepoToken.Save: %w", err)
 	}
 
 	return authUser, nil

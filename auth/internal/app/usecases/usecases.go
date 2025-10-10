@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+    "context"
 
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
@@ -10,25 +11,25 @@ import (
 
 type AuthUsecases interface {
 	// Регистрация
-    Register(a *dto.Register) (*models.User, error)
+    Register(ctx context.Context, a *dto.Register) (*models.User, error)
 	// Логин
-    Login(a *dto.Login) (*models.Auth, error)
+    Login(ctx context.Context, a *dto.Login) (*models.Auth, error)
 	// Обновление токенов
-    Refresh(a *dto.AuthRefresh) (*models.Auth, error)
+    Refresh(ctx context.Context, a *dto.AuthRefresh) (*models.Auth, error)
 	// Обновление email/password
-    UpdateCred(a *dto.UpdateCred) (*models.User, error)
+    UpdateCred(ctx context.Context, a *dto.UpdateCred) (*models.User, error)
 }
 
 type AuthRepository interface {
-    Save(user *dto.SaveCred) (*models.User, error)
-    Update(user *dto.UpdateCredSave) (*models.User, error)
-    FetchById(userId dto.UserID) (*models.User, error)
-    FetchByEmail(email string) (*models.User, error)
+    Save(ctx context.Context, in *models.User) (*models.User, error)
+    Update(ctx context.Context, in *models.User) (*models.User, error)
+    FetchById(ctx context.Context, userId models.UserID) (*models.User, error)
+    FetchByEmail(ctx context.Context, email string) (*models.User, error)
 }
 
 type TokenRepository interface {
-	Save(auth *dto.AuthRefresh) (error)
-    Fetch(userId dto.UserID) (string, error)
+	Save(ctx context.Context, auth *dto.AuthRefresh) (error)
+    FetchById(ctx context.Context, userId models.UserID) (string, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

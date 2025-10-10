@@ -2,10 +2,12 @@ package user
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 )
@@ -84,8 +86,11 @@ func (r *Repository) FetchById(ctx context.Context, id models.UserID) (*models.U
 		Where(squirrel.Eq{usersTableColumnID: id})
 
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil { // возвращает запись или ошибку при отсутствии
-		return nil, err // ошибка, если не найдена запись
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) { // Запись не найдена
+			return nil, nil
+		}
+    	return nil, err
 	}
 
 	return ToModel(&outRow), nil
@@ -99,8 +104,11 @@ func (r *Repository) FetchByNickname(ctx context.Context, nickname string) (*mod
 		Where(squirrel.Eq{usersTableColumnNickname: nickname})
 
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil { // возвращает запись или ошибку при отсутствии
-		return nil, err // ошибка, если не найдена запись
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) { // Запись не найдена
+			return nil, nil
+		}
+    	return nil, err
 	}
 
 	return ToModel(&outRow), nil

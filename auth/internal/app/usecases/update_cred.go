@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
   	"golang.org/x/crypto/bcrypt"
 
@@ -10,18 +11,24 @@ import (
 )
 
 
-func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
+func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*models.User, error) {
     // валидация, проверка уникальности email, обновление кредов в бд
 	if !a.Password.IsValid() {
 		return nil, ErrWeakPassword
 	}
 
-	user, err := ac.RepoAuth.FetchByEmail(a.Email)
+	user, err := ac.RepoAuth.FetchById(ctx, models.UserID(a.ID))
 
-	if err != nil  {
-		return nil, fmt.Errorf("UpdateCred: FetchByEmail: %w", err)
-	} else if user != nil && dto.UserID(user.ID) != a.ID {
-		return nil, ErrRegisteredEmail
+	if err != nil {
+		return nil, fmt.Errorf("UpdateCred: RepoAuth.FetchById %w", err)
+	}
+
+	if user.Email != a.Email {
+		if existed, err := ac.RepoAuth.FetchByEmail(ctx, a.Email); err != nil {
+			return nil, fmt.Errorf("UpdateUser: RepoAuth.FetchByEmail: %w", err)
+		} else if existed != nil {
+			return nil, ErrRegisteredEmail
+		}
 	}
 
 	passwordBytes := []byte(a.Password)
@@ -31,13 +38,13 @@ func (ac *AuthUsecase) UpdateCred(a *dto.UpdateCred) (*models.User, error) {
 		return nil, fmt.Errorf("UpdateCred: GenerateFromPassword: %w", err)
 	}
 
-	userInp := &dto.UpdateCredSave{
-		ID: dto.UserID(user.ID),
+	model := &models.User{
+		ID: user.ID,
 		Email: a.Email,
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
-	if _, err := ac.RepoAuth.Update(userInp); err != nil {
+	if _, err := ac.RepoAuth.Update(ctx, model); err != nil {
 		return nil, fmt.Errorf("UpdateCred: Update: %w", err)
 	}
 

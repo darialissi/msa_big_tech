@@ -9,7 +9,7 @@ services:
     networks:
       - app-network
     depends_on:
-      - auth_postgres
+      - auth_migrations
 
   auth_postgres:
     image: postgres:latest
@@ -20,6 +20,24 @@ services:
       - 5433:5432
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+      
+  auth_migrations:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile.migrations
+    env_file:
+      - ./auth/.env
+    networks:
+      - app-network
+    depends_on:
+      auth_postgres:
+        condition: service_healthy
 
   chat:
     container_name: chat_service

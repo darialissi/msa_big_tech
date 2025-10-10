@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"log"
 	"net"
 	"path/filepath"
@@ -34,7 +34,15 @@ func init() {
 
 func main() {
     // DI
-    authRepo := auth_repo.NewRepository(&sql.DB{})
+	ctx := context.Background()
+
+	pool, err := NewPostgresConnection(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer pool.Close()
+
+    authRepo := auth_repo.NewRepository(pool)
     tokenRepo := token_repo.NewRepository()
     
     deps := usecases.Deps{

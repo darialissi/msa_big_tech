@@ -27,7 +27,7 @@ func (s *service) Register(ctx context.Context, req *auth.RegisterRequest) (*aut
 		Password: dto.Password(req.Password),
 	}
 
-	userResponse, err := s.AuthUsecase.Register(form)
+	userResponse, err := s.AuthUsecase.Register(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -52,7 +52,7 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 		Password: dto.Password(req.Password),
 	}
 
-	authUser, err := s.AuthUsecase.Login(form)
+	authUser, err := s.AuthUsecase.Login(ctx, form)
 
 	if err != nil {
 		return nil, err
@@ -71,7 +71,7 @@ func (s *service) Refresh(ctx context.Context, req *auth.RefreshRequest) (*auth.
 		RefreshToken: req.RefreshToken,
 	}
 
-	authUser, err := s.AuthUsecase.Refresh(form)
+	authUser, err := s.AuthUsecase.Refresh(ctx, form)
 
 	if err != nil {
 		return nil, err

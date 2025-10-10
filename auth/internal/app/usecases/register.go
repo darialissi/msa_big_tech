@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"fmt"
+	"context"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -10,14 +11,14 @@ import (
 )
 
 
-func (ac *AuthUsecase) Register(a *dto.Register) (*models.User, error) {
+func (ac *AuthUsecase) Register(ctx context.Context, a *dto.Register) (*models.User, error) {
     // валидация, проверка уникальности данных, хеширование пароля, запись в бд
 	if !a.Password.IsValid() {
 		return nil, ErrWeakPassword
 	}
 
-	if existed, err := ac.RepoAuth.FetchByEmail(a.Email); err != nil  {
-		return nil, fmt.Errorf("Register: FetchByEmail: %w", err)
+	if existed, err := ac.RepoAuth.FetchByEmail(ctx, a.Email); err != nil  {
+		return nil, fmt.Errorf("Register: RepoAuth.FetchByEmail: %w", err)
 	} else if existed != nil {
 		return nil, ErrRegisteredEmail
 	}
@@ -29,15 +30,15 @@ func (ac *AuthUsecase) Register(a *dto.Register) (*models.User, error) {
 		return nil, fmt.Errorf("Register: GenerateFromPassword: %w", err)
 	}
 
-	credInp := &dto.SaveCred{
+	model := &models.User{
 		Email: a.Email,
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
-	user, err := ac.RepoAuth.Save(credInp)
+	user, err := ac.RepoAuth.Save(ctx, model)
 
 	if err != nil {
-		return nil, fmt.Errorf("Register: Save: %w", err)
+		return nil, fmt.Errorf("Register: RepoAuth.Save: %w", err)
 	}
 
 	return user, nil

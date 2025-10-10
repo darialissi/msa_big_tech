@@ -4,8 +4,10 @@ import (
 	"context"
 	"strings"
 	"fmt"
+	"errors"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 )
@@ -72,7 +74,10 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 
 	var outRow FriendRow
 	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
-		return nil, err
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
+			return nil, nil
+		}
+    	return nil, err
 	}
 
 	return ToModel(&outRow), nil

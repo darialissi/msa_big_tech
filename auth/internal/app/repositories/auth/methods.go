@@ -1,51 +1,113 @@
 package auth
 
 import (
+	"context"
+	"errors"
+	"fmt"
+	"strings"
+
+	"github.com/Masterminds/squirrel"
+	"github.com/jackc/pgx/v5"
+
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
-	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 )
 
 
-func (r *Repository) Save(user *dto.SaveCred) (*models.User, error) {
-	r.db.Exec(
-		"INSERT INTO users (email, password_hash) VALUES (?, ?)",
-		user.Email, user.PasswordHash,
-	)
+func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, error) {
+	row, err := FromModel(in)
 
-	//
+	if err != nil {
+		return nil, err
+	}
 
-	return &models.User{}, nil
+	if v1, v2 := row.Email, row.PasswordHash; v1 == "" || v2 == "" {
+		return nil, fmt.Errorf(
+			"invalid args: row.Email=%s row.PasswordHash=%s", 
+			v1,
+			v2,
+		)
+	}
+
+	query := r.sb.
+		Insert(authUsersTable).
+		Columns(
+			authUsersTableColumnEmail, 
+			authUsersTableColumnPasswordHash,
+			).
+		Values(row.Email, row.PasswordHash).
+		Suffix("RETURNING " + strings.Join(authUsersTableColumns, ","))
+
+	var outRow AuthUserRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		return nil, err
+	}
+
+	return ToModel(&outRow), nil
 }
 
-func (r *Repository) Update(user *dto.UpdateCredSave) (*models.User, error) {
-	r.db.Exec(
-		"UPDATE users SET nickname=?, bio=?, avatar_url=? WHERE id=?",
-		user.Email, user.PasswordHash, user.ID,
-	)
+func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User, error) {
+	row, err := FromModel(in)
 
-	//
+	if err != nil {
+		return nil, err
+	}
 
-	return &models.User{}, nil
+	if v1, v2, v3 := row.ID.String(), row.Email, row.PasswordHash; v1 == "" || v2 == "" || v3 == "" {
+		return nil, fmt.Errorf(
+			"invalid args: row.ID=%s row.Email=%s row.PasswordHash=%s", 
+			v1,
+			v2,
+			v3,
+		)
+	}
+
+	query := r.sb.
+		Update(authUsersTable).
+		Set(authUsersTableColumnEmail, row.Email).
+		Set(authUsersTableColumnPasswordHash, row.PasswordHash).
+		Where(squirrel.Eq{authUsersTableColumnID: row.ID}).
+		Suffix("RETURNING " + strings.Join(authUsersTableColumns, ","))
+
+	var outRow AuthUserRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		return nil, err
+	}
+
+	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchById(userId dto.UserID) (*models.User, error) {
-	r.db.Exec(
-		"SELECT * FROM users WHERE id=?",
-		userId,
-	)
+func (r *Repository) FetchById(ctx context.Context, userId models.UserID) (*models.User, error) {
 
-	//
+	query := r.sb.
+		Select(authUsersTableColumns...).
+		From(authUsersTable).
+		Where(squirrel.Eq{authUsersTableColumnID: string(userId)})
 
-	return &models.User{}, nil
+	var outRow AuthUserRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
+			return nil, nil
+		}
+    	return nil, err
+	}
+
+	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchByEmail(email string) (*models.User, error) {
-	r.db.Exec(
-		"SELECT * FROM users WHERE email=?",
-		email,
-	)
+func (r *Repository) FetchByEmail(ctx context.Context, email string) (*models.User, error) {
 
-	//
+	query := r.sb.
+		Select(authUsersTableColumns...).
+		From(authUsersTable).
+		Where(squirrel.Eq{authUsersTableColumnEmail: email})
 
-	return &models.User{}, nil
+	var outRow AuthUserRow
+	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
+			return nil, nil
+		}
+    	return nil, err
+	}
+
+	return ToModel(&outRow), nil
 }
