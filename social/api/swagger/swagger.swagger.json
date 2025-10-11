@@ -320,9 +320,15 @@
     "socialListFriendsRequest": {
       "type": "object",
       "properties": {
+        "userId": {
+          "type": "string"
+        },
         "limit": {
           "type": "string",
           "format": "uint64"
+        },
+        "cursor": {
+          "type": "string"
         }
       },
       "title": "Получение списка \"Друзей\""

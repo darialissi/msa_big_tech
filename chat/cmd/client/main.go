@@ -6,10 +6,11 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/status"    
-	"google.golang.org/protobuf/encoding/protojson"           
+	"google.golang.org/grpc/status"
 
-	"github.com/darialissi/msa_big_tech/chat/pkg"                                              
+	"github.com/google/uuid"
+
+	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
 
 func main() {
@@ -23,16 +24,20 @@ func main() {
 
 	cli := chat.NewChatServiceClient(conn)
 
+	chatId := ""
+	userId := uuid.New().String()
+
 	{
 		ctx := context.Background()
 
 		resp, err := cli.CreateDirectChat(ctx, &chat.CreateDirectChatRequest{
-			ParticipantId: "00000000-0000-0000-0000-0000000000000",
+			ParticipantId: userId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.CreateDirectChat: %s\n", status.Code(err).String())
 		} else {
-			log.Printf("chat id: %d\n", resp.ChatId)
+			chatId = resp.ChatId
+			log.Printf("cli.CreateDirectChat: %s\n", resp)
 		}
 	}
 
@@ -40,18 +45,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetChat(ctx, &chat.GetChatRequest{
-			ChatId: "00000000-0000-0000-0000-0000000000000",
+			ChatId: chatId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.GetChat: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			chat, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("chat: %s", string(chat))
-			}
+			log.Printf("cli.GetChat: %s\n", resp)
 		}
 	}
 
@@ -59,18 +58,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListUserChats(ctx, &chat.ListUserChatsRequest{
-			UserId: "00000000-0000-0000-0000-0000000000000",
+			UserId: userId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.ListUserChats: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			chats, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("chats: %s", string(chats))
-			}
+			log.Printf("cli.ListUserChats: %s\n", resp)
 		}
 	}
 
@@ -78,18 +71,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListChatMembers(ctx, &chat.ListChatMembersRequest{
-			ChatId: "00000000-0000-0000-0000-0000000000000",
+			ChatId: chatId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.ListChatMembers: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			members, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("members ids: %s", string(members))
-			}
+			log.Printf("cli.ListChatMembers: %s\n", resp)
 		}
 	}
 
@@ -97,19 +84,13 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.SendMessage(ctx, &chat.SendMessageRequest{
-			ChatId: "00000000-0000-0000-0000-0000000000000",
-			Text: "hi from client",
+			ChatId: chatId,
+			Text: "hi from script",
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.SendMessage: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			message, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("message: %s", string(message))
-			}
+			log.Printf("cli.SendMessage: %s\n", resp)
 		}
 	}
 
@@ -117,19 +98,13 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListMessages(ctx, &chat.ListMessagesRequest{
-			ChatId: "00000000-0000-0000-0000-0000000000000",
+			ChatId: chatId,
 			Limit: 5,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.ListMessages: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			messages, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("messages: %s", string(messages))
-			}
+			log.Printf("cli.ListMessages: %s\n", resp)
 		}
 	}
 
@@ -137,18 +112,13 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.StreamMessages(ctx, &chat.StreamMessagesRequest{
-			ChatId: "00000000-0000-0000-0000-0000000000000",
+			ChatId: chatId,
+			SinceUnixMs: 1760210300,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.StreamMessages: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			resp, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("resp stream: %s", string(resp))
-			}
+			log.Printf("cli.StreamMessages: %s\n", resp)
 		}
 	}
 }

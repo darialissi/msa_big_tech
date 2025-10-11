@@ -479,6 +479,7 @@ type ListMessagesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Cursor        string                 `protobuf:"bytes,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -525,6 +526,13 @@ func (x *ListMessagesRequest) GetLimit() uint64 {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ListMessagesRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
 }
 
 type ListMessagesResponse struct {
@@ -575,6 +583,7 @@ func (x *ListMessagesResponse) GetMessages() []*Message {
 type StreamMessagesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ChatId        string                 `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	SinceUnixMs   int64                  `protobuf:"varint,2,opt,name=since_unix_ms,json=sinceUnixMs,proto3" json:"since_unix_ms,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -616,9 +625,16 @@ func (x *StreamMessagesRequest) GetChatId() string {
 	return ""
 }
 
+func (x *StreamMessagesRequest) GetSinceUnixMs() int64 {
+	if x != nil {
+		return x.SinceUnixMs
+	}
+	return 0
+}
+
 type StreamMessagesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Stream        *Message               `protobuf:"bytes,1,opt,name=stream,proto3" json:"stream,omitempty"`
+	Stream        []*Message             `protobuf:"bytes,1,rep,name=stream,proto3" json:"stream,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -653,7 +669,7 @@ func (*StreamMessagesResponse) Descriptor() ([]byte, []int) {
 	return file_chat_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *StreamMessagesResponse) GetStream() *Message {
+func (x *StreamMessagesResponse) GetStream() []*Message {
 	if x != nil {
 		return x.Stream
 	}
@@ -859,16 +875,18 @@ const file_chat_proto_rawDesc = "" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\"a\n" +
 	"\x13SendMessageResponse\x12J\n" +
-	"\amessage\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\amessage\"D\n" +
+	"\amessage\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\amessage\"\\\n" +
 	"\x13ListMessagesRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x04R\x05limit\"d\n" +
+	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
+	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"d\n" +
 	"\x14ListMessagesResponse\x12L\n" +
-	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\"0\n" +
+	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\"T\n" +
 	"\x15StreamMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\"b\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\"\n" +
+	"\rsince_unix_ms\x18\x02 \x01(\x03R\vsinceUnixMs\"b\n" +
 	"\x16StreamMessagesResponse\x12H\n" +
-	"\x06stream\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\">\n" +
+	"\x06stream\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\">\n" +
 	"\x04Chat\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x1d\n" +
 	"\n" +

@@ -112,7 +112,8 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 }
 
 func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesRequest) (*chat.ListMessagesResponse, error) {
-
+	
+	// TODO: Добавить курсорную пагинацию
 	res, err := s.ChatUsecase.ListMessages(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
@@ -136,5 +137,28 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
 
 func (s *service) StreamMessages(ctx context.Context, req *chat.StreamMessagesRequest) (*chat.StreamMessagesResponse, error) {
 
-	return &chat.StreamMessagesResponse{Stream: &chat.Message{}}, nil
+	form := &dto.StreamMessages{
+		ChatID: dto.ChatID(req.ChatId),
+		SinceUnix: req.SinceUnixMs,
+	}
+
+	res, err := s.ChatUsecase.StreamMessages(ctx, form)
+
+	if err != nil {
+		return nil, err
+	}
+
+	chatMessages := make([]*chat.Message, len(res))
+
+    for i, mes := range res {
+        chatMessages[i] = &chat.Message{
+			MessageId: string(mes.ID),
+			Text: mes.Text,
+			SenderId: string(mes.SenderID),
+			ChatId: string(mes.ChatID),
+
+		}
+    }
+
+	return &chat.StreamMessagesResponse{Stream: chatMessages}, nil
 }

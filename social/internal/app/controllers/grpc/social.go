@@ -35,7 +35,7 @@ func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendR
 	return &social.SendFriendRequestResponse{FriendRequest: resp}, nil
 }
 
-func (s *service) ListRequests(ctx context.Context, req *social.ListFriendRequestsRequest) (*social.ListFriendRequestsResponse, error) {
+func (s *service) ListFriendRequests(ctx context.Context, req *social.ListFriendRequestsRequest) (*social.ListFriendRequestsResponse, error) {
 
 	res, err := s.SocialUsecase.ListFriendRequests(ctx, dto.UserID(req.UserId))
 
@@ -114,12 +114,9 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 
 func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsRequest) (*social.ListFriendsResponse, error) {
 
-	// TODO: реализовать пагинацию
+	// TODO: реализовать курсорную пагинацию
 
-    // TODO: получить id из jwt MW
-	userId := uuid.New().String()
-
-	res, err := s.SocialUsecase.ListFriends(ctx, dto.UserID(userId))
+	res, err := s.SocialUsecase.ListFriends(ctx, dto.UserID(req.UserId))
 
 	if err != nil {
 		return nil, err

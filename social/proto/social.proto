@@ -52,7 +52,9 @@ message RemoveFriendResponse {
 
 // Получение списка "Друзей"
 message ListFriendsRequest {
+  string user_id = 1;
   uint64 limit = 2;
+  string cursor = 3;
 }
 
 message ListFriendsResponse {

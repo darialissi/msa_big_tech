@@ -6,10 +6,11 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/status"    
-	"google.golang.org/protobuf/encoding/protojson"           
+	"google.golang.org/grpc/status"
 
-	"github.com/darialissi/msa_big_tech/social/pkg"                                              
+	"github.com/google/uuid"
+
+	social "github.com/darialissi/msa_big_tech/social/pkg"
 )
 
 func main() {
@@ -23,16 +24,20 @@ func main() {
 
 	cli := social.NewSocialServiceClient(conn)
 
+	userId := uuid.New().String()
+	frReq := ""
+
 	{
 		ctx := context.Background()
 
 		resp, err := cli.SendFriendRequest(ctx, &social.SendFriendRequestRequest{
-			UserId: "00000000-0000-0000-0000-0000000000000",
+			UserId: userId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.SendFriendRequest: %s\n", status.Code(err).String())
 		} else {
-			log.Printf("request id: %d\n", resp.FriendRequest.RequestId)
+			frReq = resp.FriendRequest.RequestId
+			log.Printf("cli.SendFriendRequest: %s\n", resp)
 		}
 	}
 
@@ -40,18 +45,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListFriendRequests(ctx, &social.ListFriendRequestsRequest{
-			UserId: "00000000-0000-0000-0000-0000000000000",
+			UserId: userId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.ListFriendRequests: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			requests, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("requests: %s", string(requests))
-			}
+			log.Printf("cli.ListFriendRequests: %s\n", resp)
 		}
 	}
 
@@ -59,12 +58,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.AcceptFriendRequest(ctx, &social.AcceptFriendRequestRequest{
-			FriendRequestId: "00000000-0000-0000-0000-0000000000000",
+			FriendRequestId: frReq,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.AcceptFriendRequest: %s\n", status.Code(err).String())
 		} else {
-			log.Printf("request id: %d; request status: %s\n", resp.FriendRequest.RequestId, resp.FriendRequest.Status)
+			log.Printf("cli.AcceptFriendRequest: %s\n", resp.FriendRequest)
 		}
 	}
 
@@ -75,20 +74,9 @@ func main() {
 			FriendRequestId: "00000000-0000-0000-0000-0000000000000",
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.DeclineFriendRequest: %s\n", status.Code(err).String())
 		} else {
-			log.Printf("request id: %d; request status: %s\n", resp.FriendRequest.RequestId, resp.FriendRequest.Status)
-		}
-	}
-
-	{
-		ctx := context.Background()
-
-		resp, err := cli.RemoveFriend(ctx, &social.RemoveFriendRequest{})
-		if err != nil {
-			log.Fatalln(status.Code(err).String())
-		} else {
-			log.Printf("response: %s\n", resp)
+			log.Printf("cli.DeclineFriendRequest: %s\n", resp.FriendRequest)
 		}
 	}
 
@@ -96,18 +84,13 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.ListFriends(ctx, &social.ListFriendsRequest{
+			UserId: userId,
 			Limit: 5,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.ListFriends: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			ids, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("friends user ids: %s", string(ids))
-			}
+			log.Printf("cli.ListFriends: %s\n", resp)
 		}
 	}
 }

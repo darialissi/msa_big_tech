@@ -6,7 +6,7 @@ require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/darialissi/msa_big_tech/lib v0.0.0
+	github.com/darialissi/msa_big_tech/lib v0.0.0-20251011161837-1ebbcb32b2de
 	github.com/georgysavva/scany/v2 v2.1.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.6.0
@@ -17,8 +17,6 @@ require (
 	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.9
 )
-
-replace github.com/darialissi/msa_big_tech/lib => ../lib
 
 require (
 	cel.dev/expr v0.24.0 // indirect

@@ -8,6 +8,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/darialissi/msa_big_tech/lib/config"
+	"github.com/darialissi/msa_big_tech/lib/postgres"
+
 	user_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/user"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
 	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
@@ -16,10 +19,17 @@ import (
 
 
 func main() {
-    // DI
+
+	appEnvs := config.AppConfig()
+	dbEnvs := config.DbConfig(appEnvs.GetMode())
+
+	if appErr, dbErr := appEnvs.Validate(), dbEnvs.Validate(); appErr != nil || dbErr != nil {
+		log.Fatalf("failed to load env: appErr=%v dbErr=%v", appErr, dbErr)
+	}
+
 	ctx := context.Background()
 
-	pool, err := NewPostgresConnection(ctx)
+	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,7 +41,7 @@ func main() {
 	
     implementation := users_grpc.NewServer(usersUC) // наша реализация сервера
 
-	lis, err := net.Listen("tcp", ":8086")
+	lis, err := net.Listen("tcp", ":50056")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

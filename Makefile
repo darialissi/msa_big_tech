@@ -38,10 +38,10 @@ up:
     
 # Билд отдельных сервисов
 server:
-	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/client
+	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/server 
 
 client:
-	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/server 
+	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/client
 	
 # Объявляем, что текущие команды не являются файлами и
 # интсрументируем Makefile не искать изменения в файловой системе

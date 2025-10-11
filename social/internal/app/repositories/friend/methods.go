@@ -54,7 +54,7 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 
 	if v1, v2 := row.UserID.String(), row.FriendID.String(); v1 == "" || v2 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.FriendID=%s", 
+			"invalid args: row.UserID=%s, row.FriendID=%s", 
 			v1,
 			v2,
 		)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"errors"
+	"time"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
@@ -70,6 +71,28 @@ func (r *Repository) FetchManyByChatId(ctx context.Context, chatId models.ChatID
 		Select(messagesTableColumns...).
 		From(messagesTable).
 		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)})
+
+	var outRows []MessageRow
+	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+		return nil, err // только ошибка БД
+	}
+
+	res := make([]*models.Message, len(outRows))
+
+	for i, outRow := range outRows {
+		res[i] = ToModel(&outRow)
+	}
+
+	return res, nil
+}
+
+func (r *Repository) StreamMany(ctx context.Context, chatId models.ChatID, sinceUx time.Time) ([]*models.Message, error) {
+
+	query := r.sb.
+		Select(messagesTableColumns...).
+		From(messagesTable).
+		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)}).
+		Where(squirrel.Gt{messagesTableColumnCreatedAt: sinceUx})
 
 	var outRows []MessageRow
 	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс

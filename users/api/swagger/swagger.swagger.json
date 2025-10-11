@@ -276,6 +276,9 @@
     "usersUpdateProfileRequest": {
       "type": "object",
       "properties": {
+        "userId": {
+          "type": "string"
+        },
         "nickname": {
           "type": "string"
         },

@@ -10,6 +10,8 @@ import (
 
 
 func (ch *ChatUsecase) CreateDirectChat(ctx context.Context, req *dto.CreateDirectChat) (*models.DirectChat, error) {
+	
+	// TODO: проверить существование пользователей
 
 	model := &models.DirectChat{
 		CreatorID: models.UserID(req.CreatorID),

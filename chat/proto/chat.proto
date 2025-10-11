@@ -55,6 +55,7 @@ message SendMessageResponse {
 message ListMessagesRequest {
   string chat_id = 1;
   uint64 limit = 2;
+  string cursor = 3;
 }
 
 message ListMessagesResponse {
@@ -64,10 +65,11 @@ message ListMessagesResponse {
 // Серверный стрим новых сообщений
 message StreamMessagesRequest {
   string chat_id = 1;
+  int64 since_unix_ms = 2;
 }
 
 message StreamMessagesResponse {
-  Message stream = 1;
+  repeated Message stream = 1;
 }
 
 // Объекты

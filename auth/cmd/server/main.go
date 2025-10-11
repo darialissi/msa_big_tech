@@ -56,7 +56,7 @@ func main() {
 	
     implementation := auth_grpc.NewServer(authUC)
 
-	lis, err := net.Listen("tcp", ":8083")
+	lis, err := net.Listen("tcp", ":50053")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

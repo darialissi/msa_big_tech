@@ -15,3 +15,8 @@ type SendMessage struct {
 	SenderID UserID
 	ChatID ChatID
 }
+
+type StreamMessages struct {
+	ChatID ChatID
+	SinceUnix int64
+}

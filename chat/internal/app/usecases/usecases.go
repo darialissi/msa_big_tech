@@ -3,6 +3,7 @@ package usecases
 import (
 	"errors"
     "context"
+    "time"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
@@ -23,7 +24,7 @@ type ChatUsecases interface {
 	// Получение истории сообщений чата
     ListMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error)
 	// Серверный стрим новых сообщений
-    StreamMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error)
+    StreamMessages(ctx context.Context, st *dto.StreamMessages) ([]*models.Message, error)
 }
 
 type ChatRepository interface {                                
@@ -42,6 +43,7 @@ type MessageRepository interface {
     Save(ctx context.Context, in *models.Message) (*models.Message, error)
     FetchById(ctx context.Context, messageId models.MessageID) (*models.Message, error)
     FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.Message, error)
+    StreamMany(ctx context.Context, chatId models.ChatID, sinceUx time.Time) ([]*models.Message, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

@@ -469,7 +469,9 @@ func (x *RemoveFriendResponse) GetFriendId() string {
 // Получение списка "Друзей"
 type ListFriendsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Cursor        string                 `protobuf:"bytes,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -504,11 +506,25 @@ func (*ListFriendsRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{10}
 }
 
+func (x *ListFriendsRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
 func (x *ListFriendsRequest) GetLimit() uint64 {
 	if x != nil {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ListFriendsRequest) GetCursor() string {
+	if x != nil {
+		return x.Cursor
+	}
+	return ""
 }
 
 type ListFriendsResponse struct {
@@ -648,9 +664,11 @@ const file_social_proto_rawDesc = "" +
 	"\x13RemoveFriendRequest\x12\x1b\n" +
 	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"3\n" +
 	"\x14RemoveFriendResponse\x12\x1b\n" +
-	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"*\n" +
-	"\x12ListFriendsRequest\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x04R\x05limit\"4\n" +
+	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"[\n" +
+	"\x12ListFriendsRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
+	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"4\n" +
 	"\x13ListFriendsResponse\x12\x1d\n" +
 	"\n" +
 	"friend_ids\x18\x01 \x03(\tR\tfriendIds\"\x86\x01\n" +

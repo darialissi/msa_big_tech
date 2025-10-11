@@ -7,9 +7,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/protojson"
 
-	"github.com/darialissi/msa_big_tech/users/pkg"
+	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
 
 func main() {
@@ -23,24 +22,21 @@ func main() {
 
 	cli := users.NewUsersServiceClient(conn)
 
+	userId := ""
+
 	{
 		ctx := context.Background()
 
 		resp, err := cli.CreateProfile(ctx, &users.CreateProfileRequest{
-			Nickname: "???",
-			Bio: "I'm client",
+			Nickname: "test_me",
+			Bio: "info",
 			AvatarUrl: "http://avatar",
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.CreateProfile: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			profile, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("user profile: %s", string(profile))
-			}
+			userId = resp.UserProfile.Id
+			log.Printf("cli.CreateProfile: %s\n", resp)
 		}
 	}
 
@@ -48,20 +44,15 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.UpdateProfile(ctx, &users.UpdateProfileRequest{
-			Nickname: "???",
-			Bio: "I'm client",
-			AvatarUrl: "http://avatar",
+			UserId: userId,
+			Nickname: "test_me_2",
+			Bio: "",
+			AvatarUrl: "http://avatar.me",
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.UpdateProfile: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			profile, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("user profile: %s", string(profile))
-			}
+			log.Printf("cli.UpdateProfile: %s\n", resp)
 		}
 	}
 
@@ -69,18 +60,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetProfileByID(ctx, &users.GetProfileByIDRequest{
-			UserId: "00000000-0000-0000-0000-0000000000000",
+			UserId: userId,
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.GetProfileByID: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			profile, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("user profile: %s", string(profile))
-			}
+			log.Printf("cli.GetProfileByID: %s\n", resp)
 		}
 	}
 
@@ -88,37 +73,12 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetProfileByNickname(ctx, &users.GetProfileByNicknameRequest{
-			Nickname: "new_client_nickname",
+			Nickname: "helloworld",
 		})
 		if err != nil {
-			log.Fatalln(status.Code(err).String())
+			log.Printf("cli.GetProfileByNickname: %s\n", status.Code(err).String())
 		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			profile, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("user profile: %s", string(profile))
-			}
-		}
-	}
-
-	{
-		ctx := context.Background()
-
-		resp, err := cli.SearchByQuery(ctx, &users.SearchByQueryRequest{
-			Query: "nickname=='client_nickname'",
-		})
-		if err != nil {
-			log.Fatalln(status.Code(err).String())
-		} else {
-			// для Marshal proto сообщений в JSON необходимо использовать пакет protojson
-			profiles, err := protojson.Marshal(resp)
-			if err != nil {
-				log.Fatalf("protojson.Marshal error: %v", err)
-			} else {
-				log.Printf("user profile: %s", string(profiles))
-			}
+			log.Printf("cli.GetProfileByNickname: %s\n", resp)
 		}
 	}
 }

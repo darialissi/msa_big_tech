@@ -130,6 +130,7 @@ func (x *CreateProfileResponse) GetUserProfile() *UserProfile {
 // Обновление профиля
 type UpdateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
 	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
@@ -165,6 +166,13 @@ func (x *UpdateProfileRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UpdateProfileRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProfileRequest) Descriptor() ([]byte, []int) {
 	return file_users_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *UpdateProfileRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
 }
 
 func (x *UpdateProfileRequest) GetNickname() string {
@@ -587,8 +595,9 @@ const file_users_proto_rawDesc = "" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15CreateProfileResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\x88\x01\n" +
-	"\x14UpdateProfileRequest\x125\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\xa1\x01\n" +
+	"\x14UpdateProfileRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x125\n" +
 	"\bnickname\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
 	"\x03bio\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x03bio\x12\x1d\n" +
 	"\n" +

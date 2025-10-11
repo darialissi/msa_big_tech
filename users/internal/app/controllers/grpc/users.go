@@ -60,12 +60,9 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
     if err = v.Validate(req); err != nil {
 		return nil, models.ErrValidationFailed
 	}
-	
-    // TODO: получить id из jwt MW
-	userId := uuid.New().String()
 
 	form := &dto.UpdateUser{
-		ID: dto.UserID(userId),
+		ID: dto.UserID(req.UserId),
 		Nickname: req.Nickname,
 		Bio: req.Bio,
 		AvatarUrl: dto.Url(req.AvatarUrl),

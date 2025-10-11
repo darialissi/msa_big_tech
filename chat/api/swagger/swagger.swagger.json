@@ -351,6 +351,9 @@
         "limit": {
           "type": "string",
           "format": "uint64"
+        },
+        "cursor": {
+          "type": "string"
         }
       },
       "title": "Получение истории сообщений чата"
@@ -418,6 +421,10 @@
       "properties": {
         "chatId": {
           "type": "string"
+        },
+        "sinceUnixMs": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "Серверный стрим новых сообщений"
@@ -426,7 +433,11 @@
       "type": "object",
       "properties": {
         "stream": {
-          "$ref": "#/definitions/chatMessage"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/chatMessage"
+          }
         }
       }
     },

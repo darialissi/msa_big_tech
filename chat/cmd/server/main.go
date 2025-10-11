@@ -8,20 +8,29 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/darialissi/msa_big_tech/lib/config"
+	"github.com/darialissi/msa_big_tech/lib/postgres"
+
 	chat_grpc "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
 	chat_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat"
 	chat_member_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat_member"
 	message_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/message"
-	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases"
+	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
 
-
 func main() {
-    // DI
+
+	appEnvs := config.AppConfig()
+	dbEnvs := config.DbConfig(appEnvs.GetMode())
+
+	if appErr, dbErr := appEnvs.Validate(), dbEnvs.Validate(); appErr != nil || dbErr != nil {
+		log.Fatalf("failed to load env: appErr=%v dbErr=%v", appErr, dbErr)
+	}
+
 	ctx := context.Background()
 
-	pool, err := NewPostgresConnection(ctx)
+	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,6 +40,7 @@ func main() {
     chatMemberRepo := chat_member_repo.NewRepository(pool)
     messageRepo := message_repo.NewRepository(pool)
     
+    // DI
     deps := usecases.Deps{
         RepoChat:  chatRepo,
         RepoMessage: messageRepo,
@@ -45,7 +55,7 @@ func main() {
 
 	implementation := chat_grpc.NewServer(chatUC) // наша реализация сервера
 
-	lis, err := net.Listen("tcp", ":8084")
+	lis, err := net.Listen("tcp", ":50054")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

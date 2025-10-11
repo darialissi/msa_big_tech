@@ -8,6 +8,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/darialissi/msa_big_tech/lib/config"
+	"github.com/darialissi/msa_big_tech/lib/postgres"
+
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases"
 	friend_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend"
 	friend_req_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend_request"
@@ -17,10 +20,17 @@ import (
 
 
 func main() {
-    // DI
+
+	appEnvs := config.AppConfig()
+	dbEnvs := config.DbConfig(appEnvs.GetMode())
+
+	if appErr, dbErr := appEnvs.Validate(), dbEnvs.Validate(); appErr != nil || dbErr != nil {
+		log.Fatalf("failed to load env: appErr=%v dbErr=%v", appErr, dbErr)
+	}
+
 	ctx := context.Background()
 
-	pool, err := NewPostgresConnection(ctx)
+	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,6 +39,7 @@ func main() {
     friendRepo := friend_repo.NewRepository(pool)
     friendReqRepo := friend_req_repo.NewRepository(pool)
     
+    // DI
     deps := usecases.Deps{
         RepoFriend:  friendRepo,
         RepoFriendReq: friendReqRepo,
@@ -41,7 +52,7 @@ func main() {
 	
     implementation := social_grpc.NewServer(socialUC) // наша реализация сервера
 
-	lis, err := net.Listen("tcp", ":8085")
+	lis, err := net.Listen("tcp", ":50055")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
