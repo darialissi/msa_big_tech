@@ -1,38 +1,35 @@
-### Вендоринг + кодогенерация отдельных сервисов
-
-Подставляем в SERVICEDIR название желаемого сервиса.
-
-```shell
-# пример для сервиса auth
-SERVICEDIR=auth make vendor generate
-```
-
 ### Билд отдельных сервисов
 
 Подставляем в SERVICEDIR название желаемого сервиса.
 
 ```shell
-# пример для сервиса auth
-SERVICEDIR=auth make build
+SERVICEDIR=auth make server
 ```
 
-Бинарники сохраняются в соответствующую директорию сервиса
+Запуск сервера
 
 ```shell
-# запуск сервера
 ./auth/bin/server
-```
-
-```shell
-# запуск клиента
-./auth/bin/client
 ```
 
 ### Поднятие сервисов в одной сети 
 
 ```shell
-docker compose up
+make up
 ```
+
+### Примеры запросов
+
+#### AuthService
+
+```shell
+grpcurl -plaintext localhost:8083 list
+```
+
+```shell
+grpcurl -plaintext -d '{"email": "test@example.com", "password": "paSS123"}' localhost:8083 github.com.darialissi.msa_big_tech.auth.AuthService/Register
+```
+
 
 ### Локальное тестирование
 

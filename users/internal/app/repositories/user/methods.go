@@ -87,7 +87,7 @@ func (r *Repository) FetchById(ctx context.Context, id models.UserID) (*models.U
 
 	var outRow UserRow
 	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) { // Запись не найдена
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
     	return nil, err
@@ -105,7 +105,7 @@ func (r *Repository) FetchByNickname(ctx context.Context, nickname string) (*mod
 
 	var outRow UserRow
 	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
-		if errors.Is(err, pgx.ErrNoRows) { // Запись не найдена
+		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
     	return nil, err

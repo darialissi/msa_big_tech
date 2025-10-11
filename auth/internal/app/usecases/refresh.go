@@ -13,7 +13,7 @@ import (
 func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models.Auth, error) {
 	// обновление токенов, запись в хранилище
 
-	authUser, err := utils.GenerateJWT(a.ID)
+	authUser, err := utils.GenerateJWT(ctx, a.ID)
 	if err != nil {
 		return nil, fmt.Errorf("Refresh: GenerateJWT: %w", err)
 	}

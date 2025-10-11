@@ -1,3 +1,5 @@
+.vscode
+*_debug_*
 vendor.protobuf
 */bin/
 *.env

@@ -27,22 +27,22 @@ func main() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 
 	// Регистрируем обработчики для gRPC-Gateway
-	err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "auth_service:8083", opts)
+	err := auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "auth_service:50053", opts)
 	if err != nil {
 		log.Fatalf("failed to connect to auth_service: %v", err)
 	}
 
-	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat_service:8084", opts)
+	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat_service:50054", opts)
 	if err != nil {
 		log.Fatalf("failed to connect to chat_service: %v", err)
 	}
 
-	err = social.RegisterSocialServiceHandlerFromEndpoint(ctx, mux, "social_service:8085", opts)
+	err = social.RegisterSocialServiceHandlerFromEndpoint(ctx, mux, "social_service:50055", opts)
 	if err != nil {
 		log.Fatalf("failed to connect to social_service: %v", err)
 	}
 
-	err = users.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, "users_service:8086", opts)
+	err = users.RegisterUsersServiceHandlerFromEndpoint(ctx, mux, "users_service:50056", opts)
 	if err != nil {
 		log.Fatalf("failed to connect to users_service: %v", err)
 	}

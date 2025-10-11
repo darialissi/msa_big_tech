@@ -2,7 +2,7 @@ package utils
 
 import (
 	"time"
-	"os"
+	"context"
 
 	"github.com/golang-jwt/jwt"
 
@@ -10,17 +10,13 @@ import (
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 )
 
+func GenerateJWT(ctx context.Context, userId dto.UserID) (*models.Auth, error) {
+	secretKey, ok := ctx.Value("jwtSecret").(string)
+	if !ok {
+		return nil, ErrSecretNotFound
+	}
 
-func getEnv(key string, defaultValue string) string {
-    if value, exists := os.LookupEnv(key); exists {
-		return value
-    }
-
-    return defaultValue
-}
-
-func GenerateJWT(userId dto.UserID) (*models.Auth, error) {
-	signingKey := []byte(getEnv("JWT_SECRET", ""))
+	signingKey := []byte(secretKey)
 
 	// Access token
 	accessClaims := &jwt.StandardClaims{

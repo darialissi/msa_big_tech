@@ -27,7 +27,7 @@ func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, e
 		return nil, ErrBadCredentials
 	}
 
-	authUser, err := utils.GenerateJWT(dto.UserID(user.ID))
+	authUser, err := utils.GenerateJWT(ctx, dto.UserID(user.ID))
 	if err != nil {
 		return nil, fmt.Errorf("Login: GenerateJWT: %w", err)
 	}

@@ -40,7 +40,7 @@ func (password Password) IsValid() bool {
 		switch {
 			case unicode.IsUpper(r): hasUpper = true
 			case unicode.IsLower(r): hasLower = true
-			case unicode.IsDigit(r): hasUpper = true
+			case unicode.IsDigit(r): hasDigit = true
 		}
 	}
 

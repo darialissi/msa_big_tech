@@ -4,13 +4,12 @@ import (
 	"context"
 	"log"
 	"net"
-	"path/filepath"
-	"runtime"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/joho/godotenv"
+	"github.com/darialissi/msa_big_tech/lib/config"
+	"github.com/darialissi/msa_big_tech/lib/postgres"
 
 	auth_grpc "github.com/darialissi/msa_big_tech/auth/internal/app/controllers/grpc"
 	auth_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/auth"
@@ -19,29 +18,29 @@ import (
 	auth "github.com/darialissi/msa_big_tech/auth/pkg"
 )
 
-// init is invoked before main()
-func init() {
-    // abs path
-    _, filename, _, _ := runtime.Caller(0)
-    rootDir := filepath.Join(filepath.Dir(filename), "../..")
-    envPath := filepath.Join(rootDir, ".env")
-
-    // loads values from .env into the system
-    if err := godotenv.Load(envPath); err != nil {
-        log.Print(err)
-    }
-}
 
 func main() {
-    // DI
-	ctx := context.Background()
+	appEnvs := config.AppConfig()
+	dbEnvs := config.DbConfig(appEnvs.GetMode())
+	jwtEnvs := config.JWTConfig()
 
-	pool, err := NewPostgresConnection(ctx)
+	if appErr, dbErr, jwtErr := appEnvs.Validate(), dbEnvs.Validate(), jwtEnvs.Validate(); appErr != nil || dbErr != nil || jwtErr != nil {
+		log.Fatalf("failed to load env: appErr=%v dbErr=%v jwtErr=%v", appErr, dbErr, jwtErr)
+	}
+
+	// TODO: вынести в middleware
+	jwtSecret := jwtEnvs.GetSecret()
+
+    // прокидываем jwtSecret в контекст
+    ctx := context.WithValue(context.Background(), "jwtSecret", jwtSecret)
+
+	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer pool.Close()
 
+    // DI
     authRepo := auth_repo.NewRepository(pool)
     tokenRepo := token_repo.NewRepository()
     
@@ -62,7 +61,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// TODO: добавить JWTInterceptor
 	server := grpc.NewServer()
+	// server := grpc.NewServer(
+    //     grpc.UnaryInterceptor(interceptors.JWTInterceptor(jwtSecret)),
+    // )
+	
 	auth.RegisterAuthServiceServer(server, implementation) // регистрация обработчиков
 
 	reflection.Register(server) // регистрируем дополнительные обработчики
@@ -71,6 +75,4 @@ func main() {
 	if err := server.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-	// Register:
-	// grpcurl -plaintext -d '{"Email": "hi", "Password": "bye"}' localhost:8083 AuthService/Register
 }

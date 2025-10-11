@@ -21,7 +21,6 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	go install github.com/bufbuild/buf/cmd/buf@latest
-	go install github.com/yoheimuta/protolint/cmd/protolint@latest
 
 .buf-generate:
 	cd $(CURDIR) && $(LOCAL_BIN)/buf generate
@@ -32,10 +31,16 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 
 # Генерация кода из protobuf
 generate: .bin-deps .buf-generate .tidy
+
+# Запуск приложения
+up:
+	docker compose up
     
-# Билд приложения
-build:
+# Билд отдельных сервисов
+server:
 	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/client
+
+client:
 	cd $(CURDIR) && go build -o $(LOCAL_BIN) $(CURDIR)/cmd/server 
 	
 # Объявляем, что текущие команды не являются файлами и
