@@ -15,3 +15,9 @@ type RemoveFriend struct {
 	UserID UserID
 	FriendID UserID
 }
+
+type ListFriends struct {
+	UserID UserID
+	Limit uint64
+	Cursor UserID
+}

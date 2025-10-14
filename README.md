@@ -4,6 +4,19 @@
 make up
 ```
 
+### Накатка миграций отдельных сервисов 
+
+Подставляем в SERVICEDIR название желаемого сервиса.
+
+```shell
+SERVICEDIR=auth make migrate
+```
+
+```shell
+# без установки зависимостей
+SERVICEDIR=auth make fast-migrate
+```
+
 ### Примеры запросов
 
 Запросы можно прогнать через скрипт клиента.
@@ -115,3 +128,7 @@ grpcurl -plaintext -d '{"nickname": "hello-world"}' localhost:8086 github.com.da
 ### Локальное тестирование
 
 Пока написаны только unit тесты на *usecases* сервиса *social*
+
+```shell
+SERVICEDER=social make test
+```

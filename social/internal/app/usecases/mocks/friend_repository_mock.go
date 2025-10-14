@@ -140,6 +140,75 @@ func (_c *FriendRepository_FetchManyByUserId_Call) RunAndReturn(run func(context
 	return _c
 }
 
+// FetchManyByUserIdCursor provides a mock function with given fields: ctx, userId, cursor
+func (_m *FriendRepository) FetchManyByUserIdCursor(ctx context.Context, userId models.UserID, cursor *models.Cursor) ([]*models.UserFriend, *models.Cursor, error) {
+	ret := _m.Called(ctx, userId, cursor)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FetchManyByUserIdCursor")
+	}
+
+	var r0 []*models.UserFriend
+	var r1 *models.Cursor
+	var r2 error
+	if rf, ok := ret.Get(0).(func(context.Context, models.UserID, *models.Cursor) ([]*models.UserFriend, *models.Cursor, error)); ok {
+		return rf(ctx, userId, cursor)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, models.UserID, *models.Cursor) []*models.UserFriend); ok {
+		r0 = rf(ctx, userId, cursor)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*models.UserFriend)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, models.UserID, *models.Cursor) *models.Cursor); ok {
+		r1 = rf(ctx, userId, cursor)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*models.Cursor)
+		}
+	}
+
+	if rf, ok := ret.Get(2).(func(context.Context, models.UserID, *models.Cursor) error); ok {
+		r2 = rf(ctx, userId, cursor)
+	} else {
+		r2 = ret.Error(2)
+	}
+
+	return r0, r1, r2
+}
+
+// FriendRepository_FetchManyByUserIdCursor_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FetchManyByUserIdCursor'
+type FriendRepository_FetchManyByUserIdCursor_Call struct {
+	*mock.Call
+}
+
+// FetchManyByUserIdCursor is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userId models.UserID
+//   - cursor *models.Cursor
+func (_e *FriendRepository_Expecter) FetchManyByUserIdCursor(ctx interface{}, userId interface{}, cursor interface{}) *FriendRepository_FetchManyByUserIdCursor_Call {
+	return &FriendRepository_FetchManyByUserIdCursor_Call{Call: _e.mock.On("FetchManyByUserIdCursor", ctx, userId, cursor)}
+}
+
+func (_c *FriendRepository_FetchManyByUserIdCursor_Call) Run(run func(ctx context.Context, userId models.UserID, cursor *models.Cursor)) *FriendRepository_FetchManyByUserIdCursor_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(models.UserID), args[2].(*models.Cursor))
+	})
+	return _c
+}
+
+func (_c *FriendRepository_FetchManyByUserIdCursor_Call) Return(_a0 []*models.UserFriend, _a1 *models.Cursor, _a2 error) *FriendRepository_FetchManyByUserIdCursor_Call {
+	_c.Call.Return(_a0, _a1, _a2)
+	return _c
+}
+
+func (_c *FriendRepository_FetchManyByUserIdCursor_Call) RunAndReturn(run func(context.Context, models.UserID, *models.Cursor) ([]*models.UserFriend, *models.Cursor, error)) *FriendRepository_FetchManyByUserIdCursor_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // Save provides a mock function with given fields: ctx, in
 func (_m *FriendRepository) Save(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error) {
 	ret := _m.Called(ctx, in)

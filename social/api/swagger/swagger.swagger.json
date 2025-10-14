@@ -341,6 +341,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },

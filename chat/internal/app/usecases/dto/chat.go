@@ -16,6 +16,12 @@ type SendMessage struct {
 	ChatID ChatID
 }
 
+type ListMessages struct {
+	ChatID ChatID
+	Limit uint64
+	Cursor MessageID
+}
+
 type StreamMessages struct {
 	ChatID ChatID
 	SinceUnix int64

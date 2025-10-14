@@ -11,7 +11,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - auth_migrations
+      auth_postgres:
+        condition: service_healthy
 
   auth_postgres:
     image: postgres:latest
@@ -28,18 +29,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-      
-  auth_migrations:
-    build:
-      context: ./auth
-      dockerfile: Dockerfile.migrations
-    env_file:
-      - ./auth/.env
-    networks:
-      - app-network
-    depends_on:
-      auth_postgres:
-        condition: service_healthy
 
   chat:
     container_name: chat_service
@@ -52,7 +41,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - chat_migrations
+      chat_postgres:
+        condition: service_healthy
 
   chat_postgres:
     image: postgres:latest
@@ -70,18 +60,6 @@ services:
       retries: 10
       start_period: 10s
       
-  chat_migrations:
-    build:
-      context: ./chat
-      dockerfile: Dockerfile.migrations
-    env_file:
-      - ./chat/.env
-    networks:
-      - app-network
-    depends_on:
-      chat_postgres:
-        condition: service_healthy
-
   social:
     container_name: social_service
     build:
@@ -93,7 +71,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - social_migrations
+      social_postgres:
+        condition: service_healthy
 
   social_postgres:
     image: postgres:latest
@@ -110,18 +89,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-      
-  social_migrations:
-    build:
-      context: ./social
-      dockerfile: Dockerfile.migrations
-    env_file:
-      - ./social/.env
-    networks:
-      - app-network
-    depends_on:
-      social_postgres:
-        condition: service_healthy
 
   users:
     container_name: users_service
@@ -134,7 +101,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - users_postgres
+      users_postgres:
+        condition: service_healthy
 
   users_postgres:
     image: postgres:latest
@@ -151,18 +119,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-      
-  users_migrations:
-    build:
-      context: ./users
-      dockerfile: Dockerfile.migrations
-    env_file:
-      - ./users/.env
-    networks:
-      - app-network
-    depends_on:
-      users_postgres:
-        condition: service_healthy
 
   gateway:
     container_name: gateway_service

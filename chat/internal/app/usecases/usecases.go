@@ -22,7 +22,7 @@ type ChatUsecases interface {
 	// Отправление сообщения
     SendMessage(ctx context.Context, m *dto.SendMessage) (*models.Message, error)
 	// Получение истории сообщений чата
-    ListMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error)
+    ListMessages(ctx context.Context, lm *dto.ListMessages) ([]*models.Message, *models.Cursor, error)
 	// Серверный стрим новых сообщений
     StreamMessages(ctx context.Context, st *dto.StreamMessages) ([]*models.Message, error)
 }
@@ -42,7 +42,7 @@ type ChatMemberRepository interface {
 type MessageRepository interface {
     Save(ctx context.Context, in *models.Message) (*models.Message, error)
     FetchById(ctx context.Context, messageId models.MessageID) (*models.Message, error)
-    FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.Message, error)
+    FetchManyByChatIdCursor(ctx context.Context, chatId models.ChatID, cursor *models.Cursor) ([]*models.Message, *models.Cursor, error)
     StreamMany(ctx context.Context, chatId models.ChatID, sinceUx time.Time) ([]*models.Message, error)
 }
 

@@ -367,6 +367,9 @@
             "type": "object",
             "$ref": "#/definitions/chatMessage"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },

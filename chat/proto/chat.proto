@@ -60,6 +60,7 @@ message ListMessagesRequest {
 
 message ListMessagesResponse {
   repeated Message messages = 1;
+  string next_cursor = 2;
 }
 
 // Серверный стрим новых сообщений

@@ -9,17 +9,22 @@ import (
 )
 
 
-func (ch *ChatUsecase) ListMessages(ctx context.Context, chatId dto.ChatID) ([]*models.Message, error) {
+func (ch *ChatUsecase) ListMessages(ctx context.Context, lm *dto.ListMessages) ([]*models.Message, *models.Cursor, error) {
 
-	res, err := ch.repoMessage.FetchManyByChatId(ctx, models.ChatID(chatId))
+	cursor := &models.Cursor{
+		NextCursor: models.MessageID(lm.Cursor),
+	}
+	chatId := models.ChatID(lm.ChatID)
+
+	messages, nextCursor, err := ch.repoMessage.FetchManyByChatIdCursor(ctx, chatId, cursor)
 
 	if err != nil {
-		return nil, fmt.Errorf("ListMessages: repoMessage.FetchManyByChatId: %w", err)
+		return nil, nextCursor, fmt.Errorf("ListMessages: repoMessage.FetchManyByChatIdCursor: %w", err)
 	}
 
-	if len(res) == 0 {
-		return nil, ErrNoMessages
+	if len(messages) == 0 {
+		return nil, nextCursor, ErrNoMessages
 	}
 
-	return res, nil
+	return messages, nextCursor, nil
 }

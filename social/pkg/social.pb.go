@@ -530,6 +530,7 @@ func (x *ListFriendsRequest) GetCursor() string {
 type ListFriendsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FriendIds     []string               `protobuf:"bytes,1,rep,name=friend_ids,json=friendIds,proto3" json:"friend_ids,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -569,6 +570,13 @@ func (x *ListFriendsResponse) GetFriendIds() []string {
 		return x.FriendIds
 	}
 	return nil
+}
+
+func (x *ListFriendsResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
 }
 
 // Объекты
@@ -668,10 +676,12 @@ const file_social_proto_rawDesc = "" +
 	"\x12ListFriendsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"4\n" +
+	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"U\n" +
 	"\x13ListFriendsResponse\x12\x1d\n" +
 	"\n" +
-	"friend_ids\x18\x01 \x03(\tR\tfriendIds\"\x86\x01\n" +
+	"friend_ids\x18\x01 \x03(\tR\tfriendIds\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\"\x86\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x16\n" +

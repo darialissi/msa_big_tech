@@ -59,6 +59,7 @@ message ListFriendsRequest {
 
 message ListFriendsResponse {
   repeated string friend_ids = 1;
+  string next_cursor = 2;
 }
 
 // Объекты

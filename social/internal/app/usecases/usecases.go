@@ -1,8 +1,8 @@
 package usecases
 
 import (
+	"context"
 	"errors"
-    "context"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
@@ -20,8 +20,8 @@ type SocialUsecases interface {
     DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error)
 	// Удаление из "Друзей"
     RemoveFriend(ctx context.Context, fr *dto.RemoveFriend) (*models.UserFriend, error)
-	// Получение списка "Друзей" пользователя
-    ListFriends(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error)
+	// Получение списка "Друзей" пользователя с пагинацией
+    ListFriends(ctx context.Context, lf *dto.ListFriends) ([]*models.UserFriend, *models.Cursor, error)
 }
 
 type FriendRequestRepository interface {
@@ -35,6 +35,7 @@ type FriendRepository interface {
     Save(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error)
     Delete(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error)
     FetchManyByUserId(ctx context.Context, userId models.UserID) ([]*models.UserFriend, error)
+    FetchManyByUserIdCursor(ctx context.Context, userId models.UserID, cursor *models.Cursor) ([]*models.UserFriend, *models.Cursor, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

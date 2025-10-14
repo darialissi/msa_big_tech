@@ -114,19 +114,23 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 
 func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsRequest) (*social.ListFriendsResponse, error) {
 
-	// TODO: реализовать курсорную пагинацию
+	form := &dto.ListFriends{
+		UserID: dto.UserID(req.UserId),
+		Limit: req.Limit,
+		Cursor: dto.UserID(req.Cursor),
+	}
 
-	res, err := s.SocialUsecase.ListFriends(ctx, dto.UserID(req.UserId))
+	friends, cursor, err := s.SocialUsecase.ListFriends(ctx, form)
 
 	if err != nil {
 		return nil, err
 	}
 
-    resp := make([]string, len(res))
+    resp := make([]string, len(friends))
 
-    for i, v := range res {
+    for i, v := range friends {
         resp[i] = string(v.FriendID)
     }
 
-	return &social.ListFriendsResponse{FriendIds: resp}, nil
+	return &social.ListFriendsResponse{FriendIds: resp, NextCursor: string(cursor.NextCursor)}, nil
 }

@@ -27,3 +27,8 @@ type Message struct {
 	SenderID UserID
     CreatedAt time.Time
 }
+
+type Cursor struct {
+	NextCursor MessageID
+	Limit uint64
+}

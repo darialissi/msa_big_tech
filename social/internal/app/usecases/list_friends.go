@@ -9,17 +9,22 @@ import (
 )
 
 
-func (sc *SocialUsecase) ListFriends(ctx context.Context, userId dto.UserID) ([]*models.UserFriend, error) {
+func (sc *SocialUsecase) ListFriends(ctx context.Context, lf *dto.ListFriends) ([]*models.UserFriend, *models.Cursor, error) {
 
-	friends, err := sc.RepoFriend.FetchManyByUserId(ctx, models.UserID(userId))
+	cursor := &models.Cursor{
+		NextCursor: models.UserID(lf.Cursor),
+	}
+	userId := models.UserID(lf.UserID)
+
+	friends, nextCursor, err := sc.RepoFriend.FetchManyByUserIdCursor(ctx, userId, cursor)
 
 	if err != nil {
-		return nil, fmt.Errorf("ListFriends: RepoFriend.FetchManyByUserId: %w", err)
+		return nil, nextCursor, fmt.Errorf("ListFriends: RepoFriend.FetchManyByUserIdCursor: %w", err)
 	}
 
 	if len(friends) == 0 {
-		return nil, ErrUserNoFriends
+		return nil, nextCursor, ErrUserNoFriends
 	}
 
-	return friends, nil
+	return friends, nextCursor, nil
 }

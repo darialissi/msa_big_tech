@@ -113,16 +113,21 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 
 func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesRequest) (*chat.ListMessagesResponse, error) {
 	
-	// TODO: Добавить курсорную пагинацию
-	res, err := s.ChatUsecase.ListMessages(ctx, dto.ChatID(req.ChatId))
+	form := &dto.ListMessages{
+		ChatID: dto.ChatID(req.ChatId),
+		Limit: req.Limit,
+		Cursor: dto.MessageID(req.Cursor),
+	}
+
+	messages, nextCur, err := s.ChatUsecase.ListMessages(ctx, form)
 
 	if err != nil {
 		return nil, err
 	}
 
-	chatMessages := make([]*chat.Message, len(res))
+	chatMessages := make([]*chat.Message, len(messages))
 
-    for i, mes := range res {
+    for i, mes := range messages {
         chatMessages[i] = &chat.Message{
 			MessageId: string(mes.ID),
 			Text: mes.Text,
@@ -132,7 +137,7 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
 		}
     }
 
-	return &chat.ListMessagesResponse{Messages: chatMessages}, nil
+	return &chat.ListMessagesResponse{Messages: chatMessages, NextCursor: string(nextCur.NextCursor)}, nil
 }
 
 func (s *service) StreamMessages(ctx context.Context, req *chat.StreamMessagesRequest) (*chat.StreamMessagesResponse, error) {

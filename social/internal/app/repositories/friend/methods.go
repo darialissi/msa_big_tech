@@ -106,3 +106,42 @@ func (r *Repository) FetchManyByUserId(ctx context.Context, userId models.UserID
 
 	return res, nil
 }
+
+func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.UserID, cursor *models.Cursor) ([]*models.UserFriend, *models.Cursor, error) {
+
+	query := r.sb.
+		Select(friendsTableColumns...).
+		From(friendsTable).
+		Where(squirrel.Or{
+			squirrel.Eq{friendsTableColumnUserID: string(userId)},
+			squirrel.Eq{friendsTableColumnFriendID: string(userId)},
+		})
+
+	// добавляем курсорную пагинацию
+	if cur := string(cursor.NextCursor); cur != "" {
+		query = query.Where(squirrel.Gt{friendsTableColumnUserID: cur})
+	}
+
+	query = query.
+        OrderBy(friendsTableColumnUserID).
+        Limit(cursor.Limit)
+
+	// выполняем запрос и формируем результат
+	var outRows []FriendRow
+	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+		return nil, nil, err // только ошибка БД
+	}
+
+	res := make([]*models.UserFriend, len(outRows))
+
+	for i, outRow := range outRows {
+		res[i] = ToModel(&outRow)
+	}
+
+	// перезаписываем NextCursor
+	if len(res) > 0 {
+		cursor.NextCursor = res[len(res)-1].UserID
+	}
+
+	return res, cursor, nil
+}

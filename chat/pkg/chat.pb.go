@@ -538,6 +538,7 @@ func (x *ListMessagesRequest) GetCursor() string {
 type ListMessagesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Messages      []*Message             `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -577,6 +578,13 @@ func (x *ListMessagesResponse) GetMessages() []*Message {
 		return x.Messages
 	}
 	return nil
+}
+
+func (x *ListMessagesResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
 }
 
 // Серверный стрим новых сообщений
@@ -879,9 +887,11 @@ const file_chat_proto_rawDesc = "" +
 	"\x13ListMessagesRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"d\n" +
+	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"\x85\x01\n" +
 	"\x14ListMessagesResponse\x12L\n" +
-	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\"T\n" +
+	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\"T\n" +
 	"\x15StreamMessagesRequest\x12\x17\n" +
 	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\"\n" +
 	"\rsince_unix_ms\x18\x02 \x01(\x03R\vsinceUnixMs\"b\n" +

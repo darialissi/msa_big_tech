@@ -24,6 +24,11 @@ type UserFriend struct {
     CreatedAt time.Time
 }
 
+type Cursor struct {
+	NextCursor UserID
+	Limit uint64
+}
+
 const (
 	// FriendRequestStatusPending заявка отправлена, ожидает ответа
 	FriendRequestStatusPending FriendRequestStatus = iota + 1

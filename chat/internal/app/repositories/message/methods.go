@@ -65,16 +65,26 @@ func (r *Repository) FetchById(ctx context.Context, messageId models.MessageID) 
 	return ToModel(&outRow), nil
 }
 
-func (r *Repository) FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.Message, error) {
+func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.ChatID, cursor *models.Cursor) ([]*models.Message, *models.Cursor, error) {
 
 	query := r.sb.
 		Select(messagesTableColumns...).
 		From(messagesTable).
 		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)})
 
+	// добавляем курсорную пагинацию
+	if cur := string(cursor.NextCursor); cur != "" {
+		query = query.Where(squirrel.Lt{messagesTableColumnChatID: cur})
+	}
+
+	query = query.
+        OrderBy(messagesTableColumnChatID + " DESC").
+        Limit(cursor.Limit)
+
+	// выполняем запрос и формируем результат
 	var outRows []MessageRow
 	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
-		return nil, err // только ошибка БД
+		return nil, nil, err // только ошибка БД
 	}
 
 	res := make([]*models.Message, len(outRows))
@@ -83,7 +93,12 @@ func (r *Repository) FetchManyByChatId(ctx context.Context, chatId models.ChatID
 		res[i] = ToModel(&outRow)
 	}
 
-	return res, nil
+	// перезаписываем NextCursor
+	if len(res) > 0 {
+		cursor.NextCursor = res[len(res)-1].ID
+	}
+
+	return res, cursor, nil
 }
 
 func (r *Repository) StreamMany(ctx context.Context, chatId models.ChatID, sinceUx time.Time) ([]*models.Message, error) {
