@@ -3,8 +3,8 @@ github.com/Masterminds/squirrel v1.5.4/go.mod h1:NNaOrjSoIDfDA40n7sr2tPNZRfjzjA4
 github.com/cockroachdb/cockroach-go/v2 v2.2.0 h1:/5znzg5n373N/3ESjHF5SMLxiW4RKB05Ql//KWfeTFs=
 github.com/cockroachdb/cockroach-go/v2 v2.2.0/go.mod h1:u3MiKYGupPPjkn3ozknpMUpxPaNLTFWAya419/zv6eI=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
-github.com/darialissi/msa_big_tech/lib v0.0.0-20251018185138-25033b432d28 h1:rXRdYMaxL7rXVUN/nIy1TUD7u/KHg1sNHKm/Ix9wbcQ=
-github.com/darialissi/msa_big_tech/lib v0.0.0-20251018185138-25033b432d28/go.mod h1:jruuAztDUhWfP51v892wzWd8QJN/mTRXo05oWAWco5U=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251019121311-9f675ae1c021 h1:9uQgf8VwaVekoSsKGWkjYfnraSiF7LxS04Ug/47h2MM=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251019121311-9f675ae1c021/go.mod h1:jruuAztDUhWfP51v892wzWd8QJN/mTRXo05oWAWco5U=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

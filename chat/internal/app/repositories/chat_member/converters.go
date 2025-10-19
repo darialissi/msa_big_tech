@@ -11,8 +11,8 @@ import (
 // ChatMemberRow — «плоская» проекция строки таблицы messages
 // Nullable поля представлены sql.Null*.
 type ChatMemberRow struct {
-	ChatID    	uuid.UUID		`db:"chat_id"`
-	UserID      uuid.UUID		`db:"user_id"`
+	ChatID uuid.UUID `db:"chat_id"`
+	UserID uuid.UUID `db:"user_id"`
 }
 
 func (row *ChatMemberRow) Values() []any {
@@ -37,7 +37,7 @@ func FromModel(m *models.ChatMember) (ChatMemberRow, error) {
 	if m == nil {
 		return ChatMemberRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var chatID uuid.UUID
 	var userID uuid.UUID
 	var err error

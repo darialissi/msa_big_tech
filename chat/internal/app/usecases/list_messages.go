@@ -1,13 +1,12 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
-
 
 func (ch *ChatUsecase) ListMessages(ctx context.Context, lm *dto.ListMessages) ([]*models.Message, *models.Cursor, error) {
 

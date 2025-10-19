@@ -6,9 +6,9 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/status"               
+	"google.golang.org/grpc/status"
 
-	"github.com/darialissi/msa_big_tech/auth/pkg"                                              
+	"github.com/darialissi/msa_big_tech/auth/pkg"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.Register(ctx, &auth.RegisterRequest{
-			Email:   "me@example.com",
+			Email:    "me@example.com",
 			Password: "paSS123",
 		})
 		if err != nil {

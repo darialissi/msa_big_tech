@@ -12,25 +12,24 @@ import (
 	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
 
-
 func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileRequest) (*users.CreateProfileResponse, error) {
 
 	v, err := protovalidate.New()
-    if err != nil {
-		return nil, models.ErrValidationFailed
-    }
-
-    if err = v.Validate(req); err != nil {
+	if err != nil {
 		return nil, models.ErrValidationFailed
 	}
 
-    // TODO: получить id из jwt MW
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
 
 	form := &dto.CreateUser{
-		ID: dto.UserID(userId),
-		Nickname: req.Nickname,
-		Bio: req.Bio,
+		ID:        dto.UserID(userId),
+		Nickname:  req.Nickname,
+		Bio:       req.Bio,
 		AvatarUrl: dto.Url(req.AvatarUrl),
 	}
 
@@ -41,9 +40,9 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(res.ID),
-		Nickname: res.Nickname,
-		Bio: res.Bio,
+		Id:        string(res.ID),
+		Nickname:  res.Nickname,
+		Bio:       res.Bio,
 		AvatarUrl: res.AvatarUrl,
 	}
 
@@ -53,18 +52,18 @@ func (s *service) CreateProfile(ctx context.Context, req *users.CreateProfileReq
 func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileRequest) (*users.UpdateProfileResponse, error) {
 
 	v, err := protovalidate.New()
-    if err != nil {
+	if err != nil {
 		return nil, models.ErrValidationFailed
-    }
+	}
 
-    if err = v.Validate(req); err != nil {
+	if err = v.Validate(req); err != nil {
 		return nil, models.ErrValidationFailed
 	}
 
 	form := &dto.UpdateUser{
-		ID: dto.UserID(req.UserId),
-		Nickname: req.Nickname,
-		Bio: req.Bio,
+		ID:        dto.UserID(req.UserId),
+		Nickname:  req.Nickname,
+		Bio:       req.Bio,
 		AvatarUrl: dto.Url(req.AvatarUrl),
 	}
 
@@ -75,12 +74,12 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(res.ID),
-		Nickname: res.Nickname,
-		Bio: res.Bio,
+		Id:        string(res.ID),
+		Nickname:  res.Nickname,
+		Bio:       res.Bio,
 		AvatarUrl: res.AvatarUrl,
 	}
-	
+
 	return &users.UpdateProfileResponse{UserProfile: userProfile}, nil
 }
 
@@ -93,9 +92,9 @@ func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDR
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(res.ID),
-		Nickname: res.Nickname,
-		Bio: res.Bio,
+		Id:        string(res.ID),
+		Nickname:  res.Nickname,
+		Bio:       res.Bio,
 		AvatarUrl: res.AvatarUrl,
 	}
 
@@ -111,9 +110,9 @@ func (s *service) GetProfileByNickname(ctx context.Context, req *users.GetProfil
 	}
 
 	userProfile := &users.UserProfile{
-		Id: string(res.ID),
-		Nickname: res.Nickname,
-		Bio: res.Bio,
+		Id:        string(res.ID),
+		Nickname:  res.Nickname,
+		Bio:       res.Bio,
 		AvatarUrl: res.AvatarUrl,
 	}
 

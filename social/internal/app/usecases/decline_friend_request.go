@@ -1,17 +1,16 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
-
 func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
-    // Проверка наличия FriendRequest
+	// Проверка наличия FriendRequest
 	frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
 
 	if err != nil {
@@ -28,7 +27,7 @@ func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.Fri
 	}
 
 	transition := &models.FriendRequest{
-		ID: frReq.ID,
+		ID:     frReq.ID,
 		Status: models.FriendRequestStatusDeclined,
 	}
 

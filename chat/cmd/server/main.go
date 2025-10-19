@@ -36,22 +36,22 @@ func main() {
 	}
 	defer pool.Close()
 
-    chatRepo := chat_repo.NewRepository(pool)
-    chatMemberRepo := chat_member_repo.NewRepository(pool)
-    messageRepo := message_repo.NewRepository(pool)
-    
-    // DI
-    deps := usecases.Deps{
-        RepoChat:  chatRepo,
-        RepoMessage: messageRepo,
+	chatRepo := chat_repo.NewRepository(pool)
+	chatMemberRepo := chat_member_repo.NewRepository(pool)
+	messageRepo := message_repo.NewRepository(pool)
+
+	// DI
+	deps := usecases.Deps{
+		RepoChat:       chatRepo,
+		RepoMessage:    messageRepo,
 		RepoChatMember: chatMemberRepo,
-    }
+	}
 
 	if err := deps.Valid(); err != nil {
-        log.Fatalf("failed to create chat usecase: %v", err)
+		log.Fatalf("failed to create chat usecase: %v", err)
 	}
-    
-    chatUC := usecases.NewChatUsecase(deps)
+
+	chatUC := usecases.NewChatUsecase(deps)
 
 	implementation := chat_grpc.NewServer(chatUC) // наша реализация сервера
 

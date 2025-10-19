@@ -1,8 +1,8 @@
 package message
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -12,11 +12,11 @@ import (
 // MessageRow — «плоская» проекция строки таблицы messages
 // Nullable поля представлены sql.Null*.
 type MessageRow struct {
-	ID  		uuid.UUID		`db:"id"`
-	ChatID    	uuid.UUID		`db:"chat_id"`
-	SenderID    uuid.UUID		`db:"sender_id"`
-	Text    	string			`db:"text"`
-	CreatedAt 	time.Time       `db:"created_at"`
+	ID        uuid.UUID `db:"id"`
+	ChatID    uuid.UUID `db:"chat_id"`
+	SenderID  uuid.UUID `db:"sender_id"`
+	Text      string    `db:"text"`
+	CreatedAt time.Time `db:"created_at"`
 }
 
 func (row *MessageRow) Values() []any {
@@ -31,12 +31,11 @@ func ToModel(r *MessageRow) *models.Message {
 		return nil
 	}
 	return &models.Message{
-		ID: models.MessageID(r.ID.String()),
-		ChatID: models.ChatID(r.ChatID.String()),
-		SenderID: models.UserID(r.SenderID.String()),
-		Text: r.Text,
+		ID:        models.MessageID(r.ID.String()),
+		ChatID:    models.ChatID(r.ChatID.String()),
+		SenderID:  models.UserID(r.SenderID.String()),
+		Text:      r.Text,
 		CreatedAt: r.CreatedAt,
-
 	}
 }
 
@@ -45,7 +44,7 @@ func FromModel(m *models.Message) (MessageRow, error) {
 	if m == nil {
 		return MessageRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var ID uuid.UUID
 	var chatID uuid.UUID
 	var senderID uuid.UUID
@@ -74,9 +73,9 @@ func FromModel(m *models.Message) (MessageRow, error) {
 	}
 
 	return MessageRow{
-		ID: ID,
-		ChatID: chatID,
+		ID:       ID,
+		ChatID:   chatID,
 		SenderID: senderID,
-		Text: m.Text,
+		Text:     m.Text,
 	}, nil
 }

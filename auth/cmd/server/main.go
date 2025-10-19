@@ -18,7 +18,6 @@ import (
 	auth "github.com/darialissi/msa_big_tech/auth/pkg"
 )
 
-
 func main() {
 	appEnvs := config.AppConfig()
 	dbEnvs := config.DbConfig(appEnvs.GetMode())
@@ -31,8 +30,8 @@ func main() {
 	// TODO: вынести в middleware
 	jwtSecret := jwtEnvs.GetSecret()
 
-    // прокидываем jwtSecret в контекст
-    ctx := context.WithValue(context.Background(), "jwtSecret", jwtSecret)
+	// прокидываем jwtSecret в контекст
+	ctx := context.WithValue(context.Background(), "jwtSecret", jwtSecret)
 
 	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
 	if err != nil {
@@ -40,21 +39,21 @@ func main() {
 	}
 	defer pool.Close()
 
-    // DI
-    authRepo := auth_repo.NewRepository(pool)
-    tokenRepo := token_repo.NewRepository()
-    
-    deps := usecases.Deps{
-        RepoAuth:  authRepo,
-        RepoToken: tokenRepo,
-    }
-    
-    authUC, err := usecases.NewAuthUsecase(deps)
-    if err != nil {
-        log.Fatalf("failed to create auth usecase: %v", err)
-    }
-	
-    implementation := auth_grpc.NewServer(authUC)
+	// DI
+	authRepo := auth_repo.NewRepository(pool)
+	tokenRepo := token_repo.NewRepository()
+
+	deps := usecases.Deps{
+		RepoAuth:  authRepo,
+		RepoToken: tokenRepo,
+	}
+
+	authUC, err := usecases.NewAuthUsecase(deps)
+	if err != nil {
+		log.Fatalf("failed to create auth usecase: %v", err)
+	}
+
+	implementation := auth_grpc.NewServer(authUC)
 
 	lis, err := net.Listen("tcp", ":50053")
 	if err != nil {
@@ -64,9 +63,9 @@ func main() {
 	// TODO: добавить JWTInterceptor
 	server := grpc.NewServer()
 	// server := grpc.NewServer(
-    //     grpc.UnaryInterceptor(interceptors.JWTInterceptor(jwtSecret)),
-    // )
-	
+	//     grpc.UnaryInterceptor(interceptors.JWTInterceptor(jwtSecret)),
+	// )
+
 	auth.RegisterAuthServiceServer(server, implementation) // регистрация обработчиков
 
 	reflection.Register(server) // регистрируем дополнительные обработчики

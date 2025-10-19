@@ -1,9 +1,11 @@
 package usecases
 
 import (
+	"context"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
@@ -14,8 +16,9 @@ import (
 type AcceptFriendRequestTestSuite struct {
 	suite.Suite
 
-	RepoFriend *mocks.FriendRepository
+	RepoFriend    *mocks.FriendRepository
 	RepoFriendReq *mocks.FriendRequestRepository
+	TxMan         *mocks.TxManager
 
 	Usecase *SocialUsecase
 }
@@ -24,14 +27,16 @@ type AcceptFriendRequestTestSuite struct {
 func (s *AcceptFriendRequestTestSuite) SetupTest() {
 	s.RepoFriendReq = mocks.NewFriendRequestRepository(s.T())
 	s.RepoFriend = mocks.NewFriendRepository(s.T())
+	s.TxMan = mocks.NewTxManager(s.T())
 
-    // Инициализируем Usecase перед установкой зависимостей
-    s.Usecase = &SocialUsecase{
-        Deps: Deps{
-            RepoFriendReq: s.RepoFriendReq,
-            RepoFriend:    s.RepoFriend,
-        },
-    }
+	// Инициализируем Usecase перед установкой зависимостей
+	s.Usecase = &SocialUsecase{
+		Deps: Deps{
+			RepoFriendReq: s.RepoFriendReq,
+			RepoFriend:    s.RepoFriend,
+			TxMan:         s.TxMan,
+		},
+	}
 	// конструктор
 }
 
@@ -39,6 +44,7 @@ func (s *AcceptFriendRequestTestSuite) SetupTest() {
 func (s *AcceptFriendRequestTestSuite) TearDownTest() {
 	s.RepoFriendReq.AssertExpectations(s.T())
 	s.RepoFriend.AssertExpectations(s.T())
+	s.TxMan.AssertExpectations(s.T())
 	// деструктор
 }
 
@@ -51,53 +57,64 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 	var (
 		mockCtx = &mocks.MockContext{}
 
-		REQ_ID = models.FriendRequestID(uuid.New().String())
+		REQ_ID       = models.FriendRequestID(uuid.New().String())
 		FROM_USER_ID = models.UserID(uuid.New().String())
-		TO_USER_ID = models.UserID(uuid.New().String())
+		TO_USER_ID   = models.UserID(uuid.New().String())
 
 		expected = &models.FriendRequest{
-			ID: REQ_ID,
-			Status: models.FriendRequestStatusAccepted,
+			ID:         REQ_ID,
+			Status:     models.FriendRequestStatusAccepted,
 			FromUserID: FROM_USER_ID,
-			ToUserID: TO_USER_ID,
+			ToUserID:   TO_USER_ID,
 		}
 	)
 
 	s.RepoFriendReq.EXPECT().
 		FetchById(mockCtx, REQ_ID).
 		Return(&models.FriendRequest{
-			ID: REQ_ID,
-			Status: models.FriendRequestStatusPending,
+			ID:         REQ_ID,
+			Status:     models.FriendRequestStatusPending,
 			FromUserID: FROM_USER_ID,
-			ToUserID: TO_USER_ID,
-			}, 
+			ToUserID:   TO_USER_ID,
+		},
 			nil).
 		Once()
 
-	s.RepoFriendReq.EXPECT().
-		UpdateStatus(mockCtx, &models.FriendRequest{
-			ID: REQ_ID,
-			Status: models.FriendRequestStatusAccepted,
-	}).
-		Return(&models.FriendRequest{
-			ID: REQ_ID,
-			Status: models.FriendRequestStatusAccepted,
-			FromUserID: FROM_USER_ID,
-			ToUserID: TO_USER_ID,
-			}, 
-			nil).
-		Once()
+	// TxMan должен быть вызван первым в транзакции
+	s.TxMan.EXPECT().
+		RunReadCommitted(mockCtx, mock.MatchedBy(func(fn func(txCtx context.Context) error) bool {
+			// Внутри транзакции ожидаются вызовы UpdateStatus и Save
+			mockTxCtx := &mocks.MockContext{}
 
-	s.RepoFriend.EXPECT().
-		Save(mockCtx, &models.UserFriend{
-			UserID: FROM_USER_ID,
-			FriendID: TO_USER_ID,
-	}).
-		Return(&models.UserFriend{
-			UserID: FROM_USER_ID,
-			FriendID: TO_USER_ID,
-			}, 
-			nil).
+			s.RepoFriendReq.EXPECT().
+				UpdateStatus(mockTxCtx, &models.FriendRequest{
+					ID:     REQ_ID,
+					Status: models.FriendRequestStatusAccepted,
+				}).
+				Return(&models.FriendRequest{
+					ID:         REQ_ID,
+					Status:     models.FriendRequestStatusAccepted,
+					FromUserID: FROM_USER_ID,
+					ToUserID:   TO_USER_ID,
+				}, nil).
+				Once()
+
+			s.RepoFriend.EXPECT().
+				Save(mockTxCtx, &models.UserFriend{
+					UserID:   FROM_USER_ID,
+					FriendID: TO_USER_ID,
+				}).
+				Return(&models.UserFriend{
+					UserID:   FROM_USER_ID,
+					FriendID: TO_USER_ID,
+				}, nil).
+				Once()
+
+			// Выполняем функцию транзакции
+			err := fn(mockTxCtx)
+			return err == nil
+		})).
+		Return(nil).
 		Once()
 
 	// ACT

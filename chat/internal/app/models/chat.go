@@ -8,27 +8,26 @@ type ChatID string
 type UserID string
 type MessageID string
 
-
 type DirectChat struct {
-	ID ChatID
+	ID        ChatID
 	CreatorID UserID
-    CreatedAt time.Time
+	CreatedAt time.Time
 }
 
 type ChatMember struct {
-    ChatID   ChatID
-    UserID   UserID
+	ChatID ChatID
+	UserID UserID
 }
 
 type Message struct {
-	ID MessageID
-	Text string
-	ChatID ChatID
-	SenderID UserID
-    CreatedAt time.Time
+	ID        MessageID
+	Text      string
+	ChatID    ChatID
+	SenderID  UserID
+	CreatedAt time.Time
 }
 
 type Cursor struct {
 	NextCursor MessageID
-	Limit uint64
+	Limit      uint64
 }

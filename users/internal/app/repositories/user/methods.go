@@ -12,7 +12,6 @@ import (
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 )
 
-
 func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, error) {
 	row, err := FromModel(in)
 
@@ -22,7 +21,7 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 
 	if v1, v2 := row.ID.String(), row.Nickname; v1 == "" || v2 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s, row.Nickname=%s", 
+			"invalid args: row.ID=%s, row.Nickname=%s",
 			v1,
 			v2,
 		)
@@ -31,11 +30,11 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 	query := r.sb.
 		Insert(usersTable).
 		Columns(
-			usersTableColumnID, 
+			usersTableColumnID,
 			usersTableColumnNickname,
-			usersTableColumnAvatarUrl, 
+			usersTableColumnAvatarUrl,
 			usersTableColumnBio,
-			).
+		).
 		Values(row.ID, row.Nickname, row.AvatarUrl, row.Bio).
 		Suffix("RETURNING " + strings.Join(usersTableColumns, ","))
 
@@ -56,7 +55,7 @@ func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User,
 
 	if v1, v2 := row.ID.String(), row.Nickname; v1 == "" || v2 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s, row.Nickname=%s", 
+			"invalid args: row.ID=%s, row.Nickname=%s",
 			v1,
 			v2,
 		)
@@ -90,7 +89,7 @@ func (r *Repository) FetchById(ctx context.Context, id models.UserID) (*models.U
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil
@@ -108,7 +107,7 @@ func (r *Repository) FetchByNickname(ctx context.Context, nickname string) (*mod
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil

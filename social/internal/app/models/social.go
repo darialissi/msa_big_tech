@@ -2,31 +2,30 @@ package models
 
 import (
 	"strings"
-    "time"
+	"time"
 )
 
 type UserID string
 type FriendRequestID string
 type FriendRequestStatus int64
 
-
 type FriendRequest struct {
-	ID FriendRequestID
-	Status FriendRequestStatus
+	ID         FriendRequestID
+	Status     FriendRequestStatus
 	FromUserID UserID
-	ToUserID UserID
-    CreatedAt time.Time
+	ToUserID   UserID
+	CreatedAt  time.Time
 }
 
 type UserFriend struct {
-	UserID UserID
-	FriendID UserID
-    CreatedAt time.Time
+	UserID    UserID
+	FriendID  UserID
+	CreatedAt time.Time
 }
 
 type Cursor struct {
 	NextCursor string
-	Limit uint64
+	Limit      uint64
 }
 
 const (

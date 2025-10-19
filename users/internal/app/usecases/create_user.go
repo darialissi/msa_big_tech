@@ -1,16 +1,15 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
 )
 
-
 func (uc *UsersUsecase) CreateUser(ctx context.Context, u *dto.CreateUser) (*models.User, error) {
-    // валидация, создание профиля пользователя
+	// валидация, создание профиля пользователя
 
 	if user, err := uc.repoUsers.FetchByNickname(ctx, u.Nickname); err != nil {
 		return nil, fmt.Errorf("CreateUser: repoUsers.FetchByNickname: %w", err)
@@ -19,10 +18,10 @@ func (uc *UsersUsecase) CreateUser(ctx context.Context, u *dto.CreateUser) (*mod
 	}
 
 	model := &models.User{
-		ID: models.UserID(u.ID),
-		Nickname: u.Nickname,
+		ID:        models.UserID(u.ID),
+		Nickname:  u.Nickname,
 		AvatarUrl: string(u.AvatarUrl),
-		Bio: u.Bio,
+		Bio:       u.Bio,
 	}
 
 	user, err := uc.repoUsers.Save(ctx, model)

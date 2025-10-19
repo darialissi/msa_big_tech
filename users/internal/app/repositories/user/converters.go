@@ -12,11 +12,11 @@ import (
 // UserRow — «плоская» проекция строки таблицы friends
 // Nullable поля представлены sql.Null*.
 type UserRow struct {
-	ID  		uuid.UUID		`db:"id"`
-	Nickname    string			`db:"nickname"`
-	AvatarUrl   string			`db:"avatar_url"`
-	Bio    		string			`db:"bio"`
-	CreatedAt 	time.Time       `db:"created_at"`
+	ID        uuid.UUID `db:"id"`
+	Nickname  string    `db:"nickname"`
+	AvatarUrl string    `db:"avatar_url"`
+	Bio       string    `db:"bio"`
+	CreatedAt time.Time `db:"created_at"`
 }
 
 func (row *UserRow) Values() []any {
@@ -31,10 +31,10 @@ func ToModel(r *UserRow) *models.User {
 		return nil
 	}
 	return &models.User{
-		ID: models.UserID(r.ID.String()),
-		Nickname: r.Nickname,
+		ID:        models.UserID(r.ID.String()),
+		Nickname:  r.Nickname,
 		AvatarUrl: r.AvatarUrl,
-		Bio: r.Bio,
+		Bio:       r.Bio,
 		CreatedAt: r.CreatedAt,
 	}
 }
@@ -44,7 +44,7 @@ func FromModel(m *models.User) (UserRow, error) {
 	if m == nil {
 		return UserRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var ID uuid.UUID
 	var err error
 
@@ -57,10 +57,10 @@ func FromModel(m *models.User) (UserRow, error) {
 	}
 
 	return UserRow{
-		ID: ID,
-		Nickname: m.Nickname,
+		ID:        ID,
+		Nickname:  m.Nickname,
 		AvatarUrl: m.AvatarUrl,
-		Bio: m.Bio,
+		Bio:       m.Bio,
 		CreatedAt: m.CreatedAt,
 	}, nil
 }

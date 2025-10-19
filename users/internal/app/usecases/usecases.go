@@ -19,21 +19,21 @@ type UsersUsecases interface {
 }
 
 type UsersRepository interface {
-    Save(ctx context.Context, in *models.User) (*models.User, error)
-    Update(ctx context.Context, in *models.User) (*models.User, error)
-    FetchById(ctx context.Context, id models.UserID) (*models.User, error)
-    FetchByNickname(ctx context.Context, nickname string) (*models.User, error)
+	Save(ctx context.Context, in *models.User) (*models.User, error)
+	Update(ctx context.Context, in *models.User) (*models.User, error)
+	FetchById(ctx context.Context, id models.UserID) (*models.User, error)
+	FetchByNickname(ctx context.Context, nickname string) (*models.User, error)
 }
 
 // Проверка реализации всех методов интерфейса при компиляции
 var _ UsersUsecases = (*UsersUsecase)(nil)
 
 type UsersUsecase struct {
-    repoUsers UsersRepository
+	repoUsers UsersRepository
 }
 
 func NewUsersUsecase(repo UsersRepository) *UsersUsecase {
-    return &UsersUsecase{
-        repoUsers: repo,
-    }
+	return &UsersUsecase{
+		repoUsers: repo,
+	}
 }

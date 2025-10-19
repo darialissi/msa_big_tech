@@ -9,7 +9,6 @@ import (
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
 
-
 func (ch *ChatUsecase) StreamMessages(ctx context.Context, st *dto.StreamMessages) ([]*models.Message, error) {
 
 	res, err := ch.repoMessage.StreamMany(ctx, models.ChatID(st.ChatID), time.Unix(st.SinceUnix, 0))

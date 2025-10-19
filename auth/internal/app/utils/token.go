@@ -1,13 +1,13 @@
 package utils
 
 import (
-	"time"
 	"context"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 
-	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
+	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 )
 
 func GenerateJWT(ctx context.Context, userId dto.UserID) (*models.Auth, error) {
@@ -52,4 +52,3 @@ func GenerateJWT(ctx context.Context, userId dto.UserID) (*models.Auth, error) {
 		},
 	}, nil
 }
-

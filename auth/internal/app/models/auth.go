@@ -7,18 +7,18 @@ import (
 type UserID string
 
 type User struct {
-	ID UserID
-	Email string
-    PasswordHash string
-	CreatedAt time.Time
+	ID           UserID
+	Email        string
+	PasswordHash string
+	CreatedAt    time.Time
 }
 
 type Token struct {
-	AccessToken string
+	AccessToken  string
 	RefreshToken string
 }
 
 type Auth struct {
-	ID UserID
+	ID    UserID
 	Token Token
 }

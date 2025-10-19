@@ -1,14 +1,13 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/utils"
 )
-
 
 func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models.Auth, error) {
 	// обновление токенов, запись в хранилище
@@ -19,7 +18,7 @@ func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models
 	}
 
 	authRefresh := &dto.AuthRefresh{
-		ID: a.ID,
+		ID:           a.ID,
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 

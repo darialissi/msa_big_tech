@@ -4,7 +4,6 @@ import (
 	"errors"
 )
 
-
 type jwtEnv struct {
 	secret string
 }

@@ -8,9 +8,8 @@ import (
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
 )
 
-
 func (uc *UsersUsecase) UpdateUser(ctx context.Context, u *dto.UpdateUser) (*models.User, error) {
-    // обновление профиля пользователя
+	// обновление профиля пользователя
 
 	userProfile, err := uc.repoUsers.FetchById(ctx, models.UserID(u.ID))
 
@@ -27,10 +26,10 @@ func (uc *UsersUsecase) UpdateUser(ctx context.Context, u *dto.UpdateUser) (*mod
 	}
 
 	model := &models.User{
-		ID: models.UserID(u.ID),
-		Nickname: u.Nickname,
+		ID:        models.UserID(u.ID),
+		Nickname:  u.Nickname,
 		AvatarUrl: string(u.AvatarUrl),
-		Bio: u.Bio,
+		Bio:       u.Bio,
 	}
 
 	user, err := uc.repoUsers.Update(ctx, model)

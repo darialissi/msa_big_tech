@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/darialissi/msa_big_tech/lib v0.0.0-20251018185138-25033b432d28
+	github.com/darialissi/msa_big_tech/lib v0.0.0-20251019121311-9f675ae1c021
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	github.com/jackc/pgx/v5 v5.7.6

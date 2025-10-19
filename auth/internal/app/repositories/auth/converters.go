@@ -12,10 +12,10 @@ import (
 // AuthUserRow — «плоская» проекция строки таблицы auth_users
 // Nullable поля представлены sql.Null*.
 type AuthUserRow struct {
-	ID  			uuid.UUID		`db:"id"`
-	Email  			string			`db:"email"`
-	PasswordHash  	string			`db:"password_hash"`
-	CreatedAt 		time.Time       `db:"created_at"`
+	ID           uuid.UUID `db:"id"`
+	Email        string    `db:"email"`
+	PasswordHash string    `db:"password_hash"`
+	CreatedAt    time.Time `db:"created_at"`
 }
 
 func (row *AuthUserRow) Values() []any {
@@ -30,10 +30,10 @@ func ToModel(r *AuthUserRow) *models.User {
 		return nil
 	}
 	return &models.User{
-		ID: models.UserID(r.ID.String()),
-		Email: r.Email,
+		ID:           models.UserID(r.ID.String()),
+		Email:        r.Email,
 		PasswordHash: r.PasswordHash,
-		CreatedAt: r.CreatedAt,
+		CreatedAt:    r.CreatedAt,
 	}
 }
 
@@ -42,7 +42,7 @@ func FromModel(m *models.User) (AuthUserRow, error) {
 	if m == nil {
 		return AuthUserRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var ID uuid.UUID
 	var err error
 
@@ -55,9 +55,9 @@ func FromModel(m *models.User) (AuthUserRow, error) {
 	}
 
 	return AuthUserRow{
-		ID: ID,
-		Email: m.Email,
+		ID:           ID,
+		Email:        m.Email,
 		PasswordHash: m.PasswordHash,
-		CreatedAt: m.CreatedAt,
+		CreatedAt:    m.CreatedAt,
 	}, nil
 }

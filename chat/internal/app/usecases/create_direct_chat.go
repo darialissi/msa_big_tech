@@ -1,16 +1,15 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
 
-
 func (ch *ChatUsecase) CreateDirectChat(ctx context.Context, req *dto.CreateDirectChat) (*models.DirectChat, error) {
-	
+
 	// TODO: проверить существование пользователей
 
 	model := &models.DirectChat{
@@ -26,7 +25,7 @@ func (ch *ChatUsecase) CreateDirectChat(ctx context.Context, req *dto.CreateDire
 
 	// сохраняем участников чата
 	members := make([]*models.ChatMember, 2)
-	
+
 	members[0] = &models.ChatMember{
 		ChatID: res.ID,
 		UserID: models.UserID(req.CreatorID),

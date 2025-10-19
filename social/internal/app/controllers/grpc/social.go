@@ -12,12 +12,12 @@ import (
 
 func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendRequestRequest) (*social.SendFriendRequestResponse, error) {
 
-    // TODO: получить id из jwt MW
+	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
 
 	form := &dto.SendFriendRequest{
 		FromUserID: dto.UserID(userId),
-		ToUserID: dto.UserID(req.UserId),
+		ToUserID:   dto.UserID(req.UserId),
 	}
 
 	res, err := s.SocialUsecase.SendFriendRequest(ctx, form)
@@ -27,10 +27,10 @@ func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendR
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: string(res.ID),
-		Status: res.Status.String(),
+		RequestId:  string(res.ID),
+		Status:     res.Status.String(),
 		FromUserId: string(res.FromUserID),
-		ToUserId: string(res.ToUserID),
+		ToUserId:   string(res.ToUserID),
 	}
 
 	return &social.SendFriendRequestResponse{FriendRequest: resp}, nil
@@ -46,12 +46,12 @@ func (s *service) ListFriendRequests(ctx context.Context, req *social.ListFriend
 
 	resp := make([]*social.FriendRequest, len(res))
 
-    for i, r := range res {
-        resp[i] = &social.FriendRequest{
-			RequestId: string(r.ID),
-			Status: r.Status.String(),
+	for i, r := range res {
+		resp[i] = &social.FriendRequest{
+			RequestId:  string(r.ID),
+			Status:     r.Status.String(),
 			FromUserId: string(r.FromUserID),
-			ToUserId: string(r.ToUserID),
+			ToUserId:   string(r.ToUserID),
 		}
 	}
 
@@ -67,10 +67,10 @@ func (s *service) AcceptFriendRequest(ctx context.Context, req *social.AcceptFri
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: string(res.ID),
-		Status: res.Status.String(),
+		RequestId:  string(res.ID),
+		Status:     res.Status.String(),
 		FromUserId: string(res.FromUserID),
-		ToUserId: string(res.ToUserID),
+		ToUserId:   string(res.ToUserID),
 	}
 
 	return &social.AcceptFriendRequestResponse{FriendRequest: resp}, nil
@@ -85,10 +85,10 @@ func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineF
 	}
 
 	resp := &social.FriendRequest{
-		RequestId: string(res.ID),
-		Status: res.Status.String(),
+		RequestId:  string(res.ID),
+		Status:     res.Status.String(),
 		FromUserId: string(res.FromUserID),
-		ToUserId: string(res.ToUserID),
+		ToUserId:   string(res.ToUserID),
 	}
 
 	return &social.DeclineFriendRequestResponse{FriendRequest: resp}, nil
@@ -96,11 +96,11 @@ func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineF
 
 func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequest) (*social.RemoveFriendResponse, error) {
 
-    // TODO: получить id из jwt MW
+	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
 
 	form := &dto.RemoveFriend{
-		UserID: dto.UserID(userId),
+		UserID:   dto.UserID(userId),
 		FriendID: dto.UserID(req.FriendId),
 	}
 
@@ -110,15 +110,15 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 		return nil, err
 	}
 
-    userId, friendId := string(deleted.UserID), string(deleted.FriendID)
+	userId, friendId := string(deleted.UserID), string(deleted.FriendID)
 	// меняем местами в зависимости от req.FriendId
 	if req.FriendId != friendId {
 		userId, friendId = friendId, userId
 	}
 
-    resp := &social.UserFriend{
-		UserId: userId,
-		FriendId: friendId,
+	resp := &social.UserFriend{
+		UserId:    userId,
+		FriendId:  friendId,
 		CreatedAt: deleted.CreatedAt.Format(time.RFC3339),
 	}
 
@@ -129,7 +129,7 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 
 	form := &dto.ListFriends{
 		UserID: dto.UserID(req.UserId),
-		Limit: req.Limit,
+		Limit:  req.Limit,
 		Cursor: req.Cursor,
 	}
 
@@ -139,9 +139,9 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 		return nil, err
 	}
 
-    resp := make([]*social.UserFriend, len(friends))
+	resp := make([]*social.UserFriend, len(friends))
 
-    for i, v := range friends {
+	for i, v := range friends {
 
 		userId, friendId := string(v.UserID), string(v.FriendID)
 		// меняем местами в зависимости от req.UserId
@@ -149,12 +149,12 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 			userId, friendId = friendId, userId
 		}
 
-        resp[i] = &social.UserFriend{
-			UserId: userId,
-			FriendId: friendId,
+		resp[i] = &social.UserFriend{
+			UserId:    userId,
+			FriendId:  friendId,
 			CreatedAt: v.CreatedAt.Format(time.RFC3339),
 		}
-    }
+	}
 
 	return &social.ListFriendsResponse{Pairs: resp, NextCursor: string(cursor.NextCursor)}, nil
 }

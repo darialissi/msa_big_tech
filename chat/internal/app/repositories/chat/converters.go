@@ -1,8 +1,8 @@
 package chat
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -12,9 +12,9 @@ import (
 // ChatRow — «плоская» проекция строки таблицы messages
 // Nullable поля представлены sql.Null*.
 type ChatRow struct {
-	ID  		uuid.UUID		`db:"id"`
-	CreatorID   uuid.UUID		`db:"creator_id"`
-	CreatedAt 	time.Time       `db:"created_at"`
+	ID        uuid.UUID `db:"id"`
+	CreatorID uuid.UUID `db:"creator_id"`
+	CreatedAt time.Time `db:"created_at"`
 }
 
 func (row *ChatRow) Values() []any {
@@ -29,10 +29,9 @@ func ToModel(r *ChatRow) *models.DirectChat {
 		return nil
 	}
 	return &models.DirectChat{
-		ID: models.ChatID(r.ID.String()),
+		ID:        models.ChatID(r.ID.String()),
 		CreatorID: models.UserID(r.CreatorID.String()),
 		CreatedAt: r.CreatedAt,
-
 	}
 }
 
@@ -41,7 +40,7 @@ func FromModel(m *models.DirectChat) (ChatRow, error) {
 	if m == nil {
 		return ChatRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var ID uuid.UUID
 	var creatorID uuid.UUID
 	var err error
@@ -62,7 +61,7 @@ func FromModel(m *models.DirectChat) (ChatRow, error) {
 	}
 
 	return ChatRow{
-		ID: ID,
+		ID:        ID,
 		CreatorID: creatorID,
 	}, nil
 }

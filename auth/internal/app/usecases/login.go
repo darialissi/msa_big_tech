@@ -1,8 +1,8 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -10,7 +10,6 @@ import (
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/utils"
 )
-
 
 func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, error) {
 	// проверка наличия пользователя, проверка пароля, генерация токенов и запись refresh
@@ -22,7 +21,7 @@ func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, e
 
 	hashedBytes := []byte(user.PasswordHash)
 	passwordBytes := []byte(a.Password)
-	
+
 	if err := bcrypt.CompareHashAndPassword(hashedBytes, passwordBytes); err != nil {
 		return nil, ErrBadCredentials
 	}
@@ -33,7 +32,7 @@ func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, e
 	}
 
 	authRefresh := &dto.AuthRefresh{
-		ID: dto.UserID(authUser.ID),
+		ID:           dto.UserID(authUser.ID),
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 

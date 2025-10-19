@@ -12,7 +12,6 @@ import (
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 )
 
-
 func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, error) {
 	row, err := FromModel(in)
 
@@ -22,7 +21,7 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 
 	if v1, v2 := row.Email, row.PasswordHash; v1 == "" || v2 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.Email=%s row.PasswordHash=%s", 
+			"invalid args: row.Email=%s row.PasswordHash=%s",
 			v1,
 			v2,
 		)
@@ -31,9 +30,9 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 	query := r.sb.
 		Insert(authUsersTable).
 		Columns(
-			authUsersTableColumnEmail, 
+			authUsersTableColumnEmail,
 			authUsersTableColumnPasswordHash,
-			).
+		).
 		Values(row.Email, row.PasswordHash).
 		Suffix("RETURNING " + strings.Join(authUsersTableColumns, ","))
 
@@ -54,7 +53,7 @@ func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User,
 
 	if v1, v2, v3 := row.ID.String(), row.Email, row.PasswordHash; v1 == "" || v2 == "" || v3 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s row.Email=%s row.PasswordHash=%s", 
+			"invalid args: row.ID=%s row.Email=%s row.PasswordHash=%s",
 			v1,
 			v2,
 			v3,
@@ -88,7 +87,7 @@ func (r *Repository) FetchById(ctx context.Context, userId models.UserID) (*mode
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil
@@ -106,7 +105,7 @@ func (r *Repository) FetchByEmail(ctx context.Context, email string) (*models.Us
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil

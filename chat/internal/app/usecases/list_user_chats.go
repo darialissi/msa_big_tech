@@ -8,7 +8,6 @@ import (
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
 
-
 func (ch *ChatUsecase) ListUserChats(ctx context.Context, userId dto.UserID) ([]*models.ChatMember, error) {
 
 	res, err := ch.repoChatMember.FetchManyByUserId(ctx, models.UserID(userId))

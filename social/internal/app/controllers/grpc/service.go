@@ -13,7 +13,7 @@ type service struct {
 }
 
 func NewServer(socialUC *usecases.SocialUsecase) *service {
-    return &service{
-        SocialUsecase: socialUC,
-    }
+	return &service{
+		SocialUsecase: socialUC,
+	}
 }

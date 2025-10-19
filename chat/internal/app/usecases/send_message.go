@@ -8,13 +8,12 @@ import (
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
 
-
 func (ch *ChatUsecase) SendMessage(ctx context.Context, d *dto.SendMessage) (*models.Message, error) {
 
 	model := &models.Message{
-		ChatID: models.ChatID(d.ChatID),
+		ChatID:   models.ChatID(d.ChatID),
 		SenderID: models.UserID(d.SenderID),
-		Text: d.Text,
+		Text:     d.Text,
 	}
 
 	res, err := ch.repoMessage.Save(ctx, model)

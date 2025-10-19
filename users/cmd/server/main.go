@@ -1,9 +1,9 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
-	"context"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -11,12 +11,11 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/config"
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 
+	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
 	user_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/user"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
-	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
 	users "github.com/darialissi/msa_big_tech/users/pkg"
 )
-
 
 func main() {
 
@@ -35,11 +34,11 @@ func main() {
 	}
 	defer pool.Close()
 
-    usersRepo := user_repo.NewRepository(pool)
-    
-    usersUC := usecases.NewUsersUsecase(usersRepo)
-	
-    implementation := users_grpc.NewServer(usersUC) // наша реализация сервера
+	usersRepo := user_repo.NewRepository(pool)
+
+	usersUC := usecases.NewUsersUsecase(usersRepo)
+
+	implementation := users_grpc.NewServer(usersUC) // наша реализация сервера
 
 	lis, err := net.Listen("tcp", ":50056")
 	if err != nil {

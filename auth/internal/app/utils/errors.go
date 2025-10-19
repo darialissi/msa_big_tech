@@ -4,7 +4,6 @@ import (
 	"errors"
 )
 
-
 var (
 	// Не найден JWT_SECRET в .env
 	ErrSecretNotFound = errors.New("JWT_SECRET does not exist!")

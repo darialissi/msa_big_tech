@@ -1,14 +1,14 @@
 package token
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 )
 
-func (r *Repository) Save(ctx context.Context, auth *dto.AuthRefresh) (error) {
+func (r *Repository) Save(ctx context.Context, auth *dto.AuthRefresh) error {
 	id := string(auth.ID)
 
 	r.mu.Lock()

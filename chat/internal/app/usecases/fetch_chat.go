@@ -1,13 +1,12 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 )
-
 
 func (ch *ChatUsecase) FetchChat(ctx context.Context, chatId dto.ChatID) (*models.DirectChat, error) {
 

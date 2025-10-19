@@ -1,25 +1,24 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
 
-
 func (sc *SocialUsecase) ListFriends(ctx context.Context, lf *dto.ListFriends) ([]*models.UserFriend, *models.Cursor, error) {
 
-    if lf.Limit <= 0 {
-        lf.Limit = 10 // дефолтное значение
-    }
-    if lf.Limit > 10 {
-        lf.Limit = 50 // максимальное значение
-    }
+	if lf.Limit <= 0 {
+		lf.Limit = 10 // дефолтное значение
+	}
+	if lf.Limit > 10 {
+		lf.Limit = 50 // максимальное значение
+	}
 
 	cursor := &models.Cursor{
-		Limit: lf.Limit,
+		Limit:      lf.Limit,
 		NextCursor: lf.Cursor,
 	}
 

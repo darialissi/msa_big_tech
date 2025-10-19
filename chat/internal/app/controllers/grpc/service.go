@@ -5,7 +5,6 @@ import (
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
 
-
 type service struct {
 	// UnimplementedAuthServiceServer must be embedded to have forward compatible implementations.
 	chat.UnimplementedChatServiceServer
@@ -14,7 +13,7 @@ type service struct {
 }
 
 func NewServer(chatUC *usecases.ChatUsecase) *service {
-    return &service{
-        ChatUsecase: chatUC,
-    }
+	return &service{
+		ChatUsecase: chatUC,
+	}
 }

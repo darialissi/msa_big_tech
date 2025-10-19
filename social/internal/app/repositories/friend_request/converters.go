@@ -1,8 +1,8 @@
 package friend_request
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -12,11 +12,11 @@ import (
 // FriendRequestRow — «плоская» проекция строки таблицы friend_requests
 // Nullable поля представлены sql.Null*.
 type FriendRequestRow struct {
-	ID        	uuid.UUID		`db:"id"`
-	FromUserID  uuid.UUID		`db:"from_user_id"`
-	ToUserID    uuid.UUID		`db:"to_user_id"`
-	Status      uint64          `db:"status"`
-	CreatedAt 	time.Time       `db:"created_at"`
+	ID         uuid.UUID `db:"id"`
+	FromUserID uuid.UUID `db:"from_user_id"`
+	ToUserID   uuid.UUID `db:"to_user_id"`
+	Status     uint64    `db:"status"`
+	CreatedAt  time.Time `db:"created_at"`
 }
 
 func (row *FriendRequestRow) Values() []any {
@@ -32,12 +32,11 @@ func ToModel(r *FriendRequestRow) *models.FriendRequest {
 	}
 
 	return &models.FriendRequest{
-		ID: models.FriendRequestID(r.ID.String()),
-		Status: models.FriendRequestStatus(r.Status),
+		ID:         models.FriendRequestID(r.ID.String()),
+		Status:     models.FriendRequestStatus(r.Status),
 		FromUserID: models.UserID(r.FromUserID.String()),
-		ToUserID: models.UserID(r.ToUserID.String()),
-		CreatedAt: r.CreatedAt,
-
+		ToUserID:   models.UserID(r.ToUserID.String()),
+		CreatedAt:  r.CreatedAt,
 	}
 }
 
@@ -46,7 +45,7 @@ func FromModel(m *models.FriendRequest) (FriendRequestRow, error) {
 	if m == nil {
 		return FriendRequestRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var ID uuid.UUID
 	var fromUserID uuid.UUID
 	var toUserID uuid.UUID
@@ -75,9 +74,9 @@ func FromModel(m *models.FriendRequest) (FriendRequestRow, error) {
 	}
 
 	return FriendRequestRow{
-		ID: ID,
+		ID:         ID,
 		FromUserID: fromUserID,
-		ToUserID: toUserID,
-		Status: uint64(m.Status),
+		ToUserID:   toUserID,
+		Status:     uint64(m.Status),
 	}, nil
 }

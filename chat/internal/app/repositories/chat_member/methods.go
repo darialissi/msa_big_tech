@@ -10,8 +10,7 @@ import (
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 )
 
-
-func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.ChatMember, error)  {
+func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.ChatMember, error) {
 	row, err := FromModel(in)
 
 	if err != nil {
@@ -20,7 +19,7 @@ func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.C
 
 	if v1, v2 := row.UserID.String(), row.ChatID.String(); v1 == "" || v2 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.ChatID=%s", 
+			"invalid args: row.UserID=%s, rrow.ChatID=%s",
 			v1,
 			v2,
 		)
@@ -29,9 +28,9 @@ func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.C
 	query := r.sb.
 		Insert(chatMembersTable).
 		Columns(
-			chatMembersTableColumnChatID, 
+			chatMembersTableColumnChatID,
 			chatMembersTableColumnUserID,
-			).
+		).
 		Values(row.ChatID, row.UserID).
 		Suffix("RETURNING " + strings.Join(chatMembersTableColumns, ","))
 
@@ -44,34 +43,34 @@ func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.C
 }
 
 func (r *Repository) SaveMultiple(ctx context.Context, members []*models.ChatMember) ([]*models.ChatMember, error) {
-    if len(members) == 0 {
-        return nil, nil
-    }
+	if len(members) == 0 {
+		return nil, nil
+	}
 
-    query := r.sb.
-        Insert(chatMembersTable).
-        Columns(
-            chatMembersTableColumnChatID, 
-            chatMembersTableColumnUserID,
-        )
+	query := r.sb.
+		Insert(chatMembersTable).
+		Columns(
+			chatMembersTableColumnChatID,
+			chatMembersTableColumnUserID,
+		)
 
-    // Добавляем значения для каждой записи
-    for _, member := range members {
-        row, err := FromModel(member)
+	// Добавляем значения для каждой записи
+	for _, member := range members {
+		row, err := FromModel(member)
 
 		if err != nil {
 			return nil, err
 		}
 
-        query = query.Values(row.ChatID, row.UserID)
-    }
+		query = query.Values(row.ChatID, row.UserID)
+	}
 
-    query = query.Suffix("RETURNING " + strings.Join(chatMembersTableColumns, ","))
+	query = query.Suffix("RETURNING " + strings.Join(chatMembersTableColumns, ","))
 
-    var outRows []ChatMemberRow
-    if err := r.pool.Selectx(ctx, &outRows, query); err != nil {
-        return nil, err
-    }
+	var outRows []ChatMemberRow
+	if err := r.pool.Selectx(ctx, &outRows, query); err != nil {
+		return nil, err
+	}
 
 	res := make([]*models.ChatMember, len(outRows))
 
@@ -79,7 +78,7 @@ func (r *Repository) SaveMultiple(ctx context.Context, members []*models.ChatMem
 		res[i] = ToModel(&outRow)
 	}
 
-    return res, nil
+	return res, nil
 }
 
 func (r *Repository) FetchManyByChatId(ctx context.Context, chatId models.ChatID) ([]*models.ChatMember, error) {

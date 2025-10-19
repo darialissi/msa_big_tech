@@ -1,13 +1,12 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 )
-
 
 func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFriendRequest) (*models.FriendRequest, error) {
 
@@ -18,9 +17,9 @@ func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFri
 	// TODO: проверить сущестование пользователя через клиента Users Service
 
 	reqFr := &models.FriendRequest{
-		Status: models.FriendRequestStatusPending,
+		Status:     models.FriendRequestStatusPending,
 		FromUserID: models.UserID(req.FromUserID),
-		ToUserID: models.UserID(req.ToUserID),
+		ToUserID:   models.UserID(req.ToUserID),
 	}
 
 	frReq, err := sc.RepoFriendReq.Save(ctx, reqFr)

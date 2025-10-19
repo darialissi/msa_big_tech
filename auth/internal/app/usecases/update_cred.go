@@ -1,18 +1,17 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
-  	"golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 )
 
-
 func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*models.User, error) {
-    // валидация, проверка уникальности email, обновление кредов в бд
+	// валидация, проверка уникальности email, обновление кредов в бд
 	if !a.Password.IsValid() {
 		return nil, ErrWeakPassword
 	}
@@ -39,8 +38,8 @@ func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*mode
 	}
 
 	model := &models.User{
-		ID: user.ID,
-		Email: a.Email,
+		ID:           user.ID,
+		Email:        a.Email,
 		PasswordHash: string(hashedPasswordBytes),
 	}
 

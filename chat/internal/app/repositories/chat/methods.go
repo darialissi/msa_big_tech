@@ -2,16 +2,15 @@ package chat
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
-	"errors"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
 
 	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 )
-
 
 func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.DirectChat, error) {
 	row, err := FromModel(in)
@@ -22,7 +21,7 @@ func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.D
 
 	if v1 := row.CreatorID.String(); v1 == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.CreatorID=%s", 
+			"invalid args: row.CreatorID=%s",
 			v1,
 		)
 	}
@@ -30,8 +29,8 @@ func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.D
 	query := r.sb.
 		Insert(chatsTable).
 		Columns(
-			chatsTableColumnCreatorID, 
-			).
+			chatsTableColumnCreatorID,
+		).
 		Values(row.CreatorID).
 		Suffix("RETURNING " + strings.Join(chatsTableColumns, ","))
 
@@ -55,7 +54,7 @@ func (r *Repository) FetchById(ctx context.Context, chatId models.ChatID) (*mode
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil

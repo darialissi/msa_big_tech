@@ -85,7 +85,7 @@ func main() {
 
 		resp, err := cli.ListFriends(ctx, &social.ListFriendsRequest{
 			UserId: userId,
-			Limit: 5,
+			Limit:  5,
 		})
 		if err != nil {
 			log.Printf("cli.ListFriends: %s\n", status.Code(err).String())

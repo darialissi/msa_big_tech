@@ -4,6 +4,7 @@ package usecases
 
 //go:generate mockery --disable-version-string --with-expecter --name FriendRequestRepository --filename friend_request_repository_mock.go
 //go:generate mockery --disable-version-string --with-expecter --name FriendRepository --filename friend_repository_mock.go
+//go:generate mockery --disable-version-string --with-expecter --name TxManager --filename tx_manager_mock.go
 
 // go install github.com/gojuno/minimock/v3/cmd/minimock@latest
 

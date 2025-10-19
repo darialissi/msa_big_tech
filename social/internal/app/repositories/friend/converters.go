@@ -1,8 +1,8 @@
 package friend
 
 import (
-	"time"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -12,9 +12,9 @@ import (
 // FriendRow — «плоская» проекция строки таблицы friends
 // Nullable поля представлены sql.Null*.
 type FriendRow struct {
-	UserID  	uuid.UUID		`db:"user_id"`
-	FriendID    uuid.UUID		`db:"friend_id"`
-	CreatedAt 	time.Time       `db:"created_at"`
+	UserID    uuid.UUID `db:"user_id"`
+	FriendID  uuid.UUID `db:"friend_id"`
+	CreatedAt time.Time `db:"created_at"`
 }
 
 func (row *FriendRow) Values() []any {
@@ -29,10 +29,9 @@ func ToModel(r *FriendRow) *models.UserFriend {
 		return nil
 	}
 	return &models.UserFriend{
-		UserID: models.UserID(r.UserID.String()),
-		FriendID: models.UserID(r.FriendID.String()),
+		UserID:    models.UserID(r.UserID.String()),
+		FriendID:  models.UserID(r.FriendID.String()),
 		CreatedAt: r.CreatedAt,
-
 	}
 }
 
@@ -41,7 +40,7 @@ func FromModel(m *models.UserFriend) (FriendRow, error) {
 	if m == nil {
 		return FriendRow{}, fmt.Errorf("model is nil")
 	}
-	
+
 	var userID uuid.UUID
 	var friendID uuid.UUID
 	var err error
@@ -62,7 +61,7 @@ func FromModel(m *models.UserFriend) (FriendRow, error) {
 	}
 
 	return FriendRow{
-		UserID: userID,
+		UserID:   userID,
 		FriendID: friendID,
 	}, nil
 }

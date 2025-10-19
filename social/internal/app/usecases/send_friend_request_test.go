@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
@@ -37,7 +37,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
 					FromUserID: dto.UserID(FROM_USER_ID),
-					ToUserID: dto.UserID(TO_USER_ID),
+					ToUserID:   dto.UserID(TO_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
@@ -45,15 +45,15 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				frReqMock.EXPECT().
 					Save(mockCtx, &models.FriendRequest{
-						Status: models.FriendRequestStatusPending,
+						Status:     models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
-						ToUserID: TO_USER_ID,
-						}).
+						ToUserID:   TO_USER_ID,
+					}).
 					Return(&models.FriendRequest{
-						ID: REQ_ID,
-						Status: models.FriendRequestStatusPending,
+						ID:         REQ_ID,
+						Status:     models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
-						ToUserID: TO_USER_ID,
+						ToUserID:   TO_USER_ID,
 					}, nil).
 					Once()
 
@@ -61,13 +61,13 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				return Deps{
 					RepoFriendReq: frReqMock,
-					RepoFriend: frMock,
+					RepoFriend:    frMock,
 				}
 			},
 			want: &models.FriendRequest{
-				Status: models.FriendRequestStatusPending,
+				Status:     models.FriendRequestStatusPending,
 				FromUserID: models.UserID(FROM_USER_ID),
-				ToUserID: models.UserID(TO_USER_ID),
+				ToUserID:   models.UserID(TO_USER_ID),
 			},
 			assertErr: assert.NoError,
 		},
@@ -76,7 +76,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
 					FromUserID: dto.UserID(FROM_USER_ID),
-					ToUserID: dto.UserID(FROM_USER_ID),
+					ToUserID:   dto.UserID(FROM_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
@@ -86,10 +86,10 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				return Deps{
 					RepoFriendReq: frReqMock,
-					RepoFriend: frMock,
+					RepoFriend:    frMock,
 				}
 			},
-			want: nil,
+			want:      nil,
 			assertErr: assert.Error,
 		},
 		{
@@ -97,7 +97,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
 					FromUserID: dto.UserID(FROM_USER_ID),
-					ToUserID: dto.UserID(TO_USER_ID),
+					ToUserID:   dto.UserID(TO_USER_ID),
 				},
 			},
 			mock: func(t *testing.T) Deps {
@@ -105,10 +105,10 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				frReqMock.EXPECT().
 					Save(mockCtx, &models.FriendRequest{
-						Status: models.FriendRequestStatusPending,
+						Status:     models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
-						ToUserID: TO_USER_ID,
-						}).
+						ToUserID:   TO_USER_ID,
+					}).
 					Return(nil, errors.New("RepoFriendReq.Save error")).
 					Once()
 
@@ -116,10 +116,10 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				return Deps{
 					RepoFriendReq: frReqMock,
-					RepoFriend: frMock,
+					RepoFriend:    frMock,
 				}
 			},
-			want: nil,
+			want:      nil,
 			assertErr: assert.Error,
 		},
 	}
@@ -128,8 +128,8 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			t.Parallel()
 
 			// ARRANGE
-			deps := tt.mock(t) // создаем мок объекты
-			uc := &SocialUsecase{    // инициализируем Usecase
+			deps := tt.mock(t)    // создаем мок объекты
+			uc := &SocialUsecase{ // инициализируем Usecase
 				Deps: deps,
 			}
 

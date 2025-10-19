@@ -5,7 +5,6 @@ import (
 	auth "github.com/darialissi/msa_big_tech/auth/pkg"
 )
 
-
 type service struct {
 	// UnimplementedAuthServiceServer must be embedded to have forward compatible implementations.
 	auth.UnimplementedAuthServiceServer
@@ -14,7 +13,7 @@ type service struct {
 }
 
 func NewServer(authUC *usecases.AuthUsecase) *service {
-    return &service{
-        AuthUsecase: authUC,
-    }
+	return &service{
+		AuthUsecase: authUC,
+	}
 }

@@ -1,16 +1,15 @@
 package usecases
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/darialissi/msa_big_tech/users/internal/app/models"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases/dto"
 )
 
-
 func (uc *UsersUsecase) GetProfileByID(ctx context.Context, id dto.UserID) (*models.User, error) {
-    // получение профиля пользователя
+	// получение профиля пользователя
 
 	user, err := uc.repoUsers.FetchById(ctx, models.UserID(id))
 

@@ -4,25 +4,24 @@ type ChatID string
 type UserID string
 type MessageID string
 
-
 type CreateDirectChat struct {
 	CreatorID UserID
-	MemberID UserID
+	MemberID  UserID
 }
 
 type SendMessage struct {
-	Text string
+	Text     string
 	SenderID UserID
-	ChatID ChatID
+	ChatID   ChatID
 }
 
 type ListMessages struct {
 	ChatID ChatID
-	Limit uint64
+	Limit  uint64
 	Cursor MessageID
 }
 
 type StreamMessages struct {
-	ChatID ChatID
+	ChatID    ChatID
 	SinceUnix int64
 }

@@ -2,18 +2,17 @@ package friend
 
 import (
 	"context"
-	"strings"
-	"fmt"
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v5"
 	"github.com/darialissi/msa_big_tech/lib/postgres"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 )
-
 
 func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error) {
 	row, err := FromModel(in)
@@ -22,28 +21,28 @@ func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.U
 		return nil, err
 	}
 
-    userID := row.UserID.String()
-    friendID := row.FriendID.String()
+	userID := row.UserID.String()
+	friendID := row.FriendID.String()
 
 	if userID == "" || friendID == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.FriendID=%s", 
+			"invalid args: row.UserID=%s, rrow.FriendID=%s",
 			userID,
 			friendID,
 		)
 	}
 
-    // Сортируем ID
-    if userID > friendID {
-        row.UserID, row.FriendID = row.FriendID, row.UserID
-    }
+	// Сортируем ID
+	if userID > friendID {
+		row.UserID, row.FriendID = row.FriendID, row.UserID
+	}
 
 	query := r.sb.
 		Insert(friendsTable).
 		Columns(
-			friendsTableColumnUserID, 
+			friendsTableColumnUserID,
 			friendsTableColumnFriendID,
-			).
+		).
 		Values(row.UserID, row.FriendID).
 		Suffix("RETURNING " + strings.Join(friendsTableColumns, ","))
 
@@ -67,21 +66,21 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 		return nil, err
 	}
 
-    userID := row.UserID.String()
-    friendID := row.FriendID.String()
+	userID := row.UserID.String()
+	friendID := row.FriendID.String()
 
 	if userID == "" || friendID == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.FriendID=%s", 
+			"invalid args: row.UserID=%s, rrow.FriendID=%s",
 			userID,
 			friendID,
 		)
 	}
 
-    // Сортируем ID
-    if userID > friendID {
-        row.UserID, row.FriendID = row.FriendID, row.UserID
-    }
+	// Сортируем ID
+	if userID > friendID {
+		row.UserID, row.FriendID = row.FriendID, row.UserID
+	}
 
 	query := r.sb.
 		Delete(friendsTable).
@@ -98,7 +97,7 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
-    	return nil, err
+		return nil, err
 	}
 
 	return ToModel(&outRow), nil
@@ -140,14 +139,14 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 			squirrel.Eq{friendsTableColumnFriendID: string(userId)},
 		})
 
-    // Курсорная пагинация по created_at
-    if cur := cursor.NextCursor; cur != "" {
-        query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cur})
-    }
+	// Курсорная пагинация по created_at
+	if cur := cursor.NextCursor; cur != "" {
+		query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cur})
+	}
 
-    query = query.
-        OrderBy(friendsTableColumnCreatedAt). // Сортируем по дате создания
-        Limit(cursor.Limit)
+	query = query.
+		OrderBy(friendsTableColumnCreatedAt). // Сортируем по дате создания
+		Limit(cursor.Limit)
 
 	pool := r.db.GetQueryEngine(ctx)
 

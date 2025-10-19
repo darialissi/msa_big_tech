@@ -85,7 +85,7 @@ func main() {
 
 		resp, err := cli.SendMessage(ctx, &chat.SendMessageRequest{
 			ChatId: chatId,
-			Text: "hi from script",
+			Text:   "hi from script",
 		})
 		if err != nil {
 			log.Printf("cli.SendMessage: %s\n", status.Code(err).String())
@@ -99,7 +99,7 @@ func main() {
 
 		resp, err := cli.ListMessages(ctx, &chat.ListMessagesRequest{
 			ChatId: chatId,
-			Limit: 5,
+			Limit:  5,
 		})
 		if err != nil {
 			log.Printf("cli.ListMessages: %s\n", status.Code(err).String())
@@ -112,7 +112,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.StreamMessages(ctx, &chat.StreamMessagesRequest{
-			ChatId: chatId,
+			ChatId:      chatId,
 			SinceUnixMs: 1760210300,
 		})
 		if err != nil {

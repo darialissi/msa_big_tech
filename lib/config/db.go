@@ -5,31 +5,30 @@ import (
 	"fmt"
 )
 
-
 type DbEnv struct {
-	user string
+	user     string
 	password string
-	host string
-	port string
-	db string
+	host     string
+	port     string
+	db       string
 }
 
 func DbConfig(mode string) *DbEnv {
 	if mode == "dev" {
 		return &DbEnv{
-			host: 		getEnv("POSTGRES_HOST_DEV", ""),
-			port: 		getEnv("POSTGRES_PORT_DEV", ""),
-			user: 		getEnv("POSTGRES_USER_DEV", ""),
-			password:   getEnv("POSTGRES_PASSWORD_DEV", ""),
-			db: 		getEnv("POSTGRES_DB_DEV", ""),
+			host:     getEnv("POSTGRES_HOST_DEV", ""),
+			port:     getEnv("POSTGRES_PORT_DEV", ""),
+			user:     getEnv("POSTGRES_USER_DEV", ""),
+			password: getEnv("POSTGRES_PASSWORD_DEV", ""),
+			db:       getEnv("POSTGRES_DB_DEV", ""),
 		}
 	}
 	return &DbEnv{
-		host: 		getEnv("POSTGRES_HOST", ""),
-		port: 		getEnv("POSTGRES_PORT", ""),
-		user: 		getEnv("POSTGRES_USER", ""),
-		password:   getEnv("POSTGRES_PASSWORD", ""),
-		db: 		getEnv("POSTGRES_DB", ""),
+		host:     getEnv("POSTGRES_HOST", ""),
+		port:     getEnv("POSTGRES_PORT", ""),
+		user:     getEnv("POSTGRES_USER", ""),
+		password: getEnv("POSTGRES_PASSWORD", ""),
+		db:       getEnv("POSTGRES_DB", ""),
 	}
 }
 

@@ -28,8 +28,8 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.CreateProfile(ctx, &users.CreateProfileRequest{
-			Nickname: "test_me",
-			Bio: "info",
+			Nickname:  "test_me",
+			Bio:       "info",
 			AvatarUrl: "http://avatar",
 		})
 		if err != nil {
@@ -44,9 +44,9 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.UpdateProfile(ctx, &users.UpdateProfileRequest{
-			UserId: userId,
-			Nickname: "test_me_2",
-			Bio: "",
+			UserId:    userId,
+			Nickname:  "test_me_2",
+			Bio:       "",
 			AvatarUrl: "http://avatar.me",
 		})
 		if err != nil {
