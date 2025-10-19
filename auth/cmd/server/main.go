@@ -4,12 +4,14 @@ import (
 	"context"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/darialissi/msa_big_tech/lib/config"
 	"github.com/darialissi/msa_big_tech/lib/postgres"
+	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
 	auth_grpc "github.com/darialissi/msa_big_tech/auth/internal/app/controllers/grpc"
 	auth_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/auth"
@@ -33,19 +35,24 @@ func main() {
 	// прокидываем jwtSecret в контекст
 	ctx := context.WithValue(context.Background(), "jwtSecret", jwtSecret)
 
-	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
+	conn, err := postgres.NewConnectionPool(ctx, dbEnvs.DSN(),
+		postgres.WithMaxConnIdleTime(time.Minute),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer pool.Close()
+	defer conn.Close()
+
+	txMngr := transaction_manager.New(conn)
 
 	// DI
-	authRepo := auth_repo.NewRepository(pool)
+	authRepo := auth_repo.NewRepository(txMngr)
 	tokenRepo := token_repo.NewRepository()
 
 	deps := usecases.Deps{
 		RepoAuth:  authRepo,
 		RepoToken: tokenRepo,
+		TxMan: txMngr,
 	}
 
 	authUC, err := usecases.NewAuthUsecase(deps)

@@ -2,7 +2,6 @@ package chat_member
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -17,14 +16,6 @@ func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.C
 		return nil, err
 	}
 
-	if v1, v2 := row.UserID.String(), row.ChatID.String(); v1 == "" || v2 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.ChatID=%s",
-			v1,
-			v2,
-		)
-	}
-
 	query := r.sb.
 		Insert(chatMembersTable).
 		Columns(
@@ -34,8 +25,10 @@ func (r *Repository) Save(ctx context.Context, in *models.ChatMember) (*models.C
 		Values(row.ChatID, row.UserID).
 		Suffix("RETURNING " + strings.Join(chatMembersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow ChatMemberRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -67,8 +60,10 @@ func (r *Repository) SaveMultiple(ctx context.Context, members []*models.ChatMem
 
 	query = query.Suffix("RETURNING " + strings.Join(chatMembersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []ChatMemberRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil {
+	if err := pool.Selectx(ctx, &outRows, query); err != nil {
 		return nil, err
 	}
 
@@ -88,8 +83,10 @@ func (r *Repository) FetchManyByChatId(ctx context.Context, chatId models.ChatID
 		From(chatMembersTable).
 		Where(squirrel.Eq{chatMembersTableColumnChatID: string(chatId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []ChatMemberRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, err // только ошибка БД
 	}
 
@@ -109,8 +106,10 @@ func (r *Repository) FetchManyByUserId(ctx context.Context, userId models.UserID
 		From(chatMembersTable).
 		Where(squirrel.Eq{chatMembersTableColumnUserID: string(userId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []ChatMemberRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, err // только ошибка БД
 	}
 

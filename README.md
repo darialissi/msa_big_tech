@@ -70,15 +70,15 @@ grpcurl -plaintext -d '{"chat_id": "da4a578b-e952-4e16-a335-22a46664a5f9"}' loca
 ```
 
 ```shell
-grpcurl -plaintext -d '{"chat_id": "da4a578b-e952-4e16-a335-22a46664a5f9", "text": "hi there!"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.SendMessage
+grpcurl -plaintext -d '{"chat_id": "e00ea407-70b4-4f90-9777-62638519b0bf", "text": "hi there!"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.SendMessage
 ```
 
 ```shell
-grpcurl -plaintext -d '{"chat_id": "da4a578b-e952-4e16-a335-22a46664a5f9"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.ListMessages
+grpcurl -plaintext -d '{"chat_id": "e00ea407-70b4-4f90-9777-62638519b0bf", "limit": "5"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.ListMessages
 ```
 
 ```shell
-grpcurl -plaintext -d '{"chat_id": "da4a578b-e952-4e16-a335-22a46664a5f9", "since_unix_ms": "1760210300"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.StreamMessages
+grpcurl -plaintext -d '{"chat_id": "e00ea407-70b4-4f90-9777-62638519b0bf", "since_unix_ms": "1760210300"}' localhost:8084 github.com.darialissi.msa_big_tech.chat.ChatService.StreamMessages
 ```
 
 #### SocialService
@@ -129,10 +129,38 @@ grpcurl -plaintext -d '{"user_id": "dd3d39f1-7039-4524-a8ce-0b0555929b1f"}' loca
 grpcurl -plaintext -d '{"nickname": "hello-world"}' localhost:8086 github.com.darialissi.msa_big_tech.users.UsersService.GetProfileByNickname
 ```
 
+#### API Gateway
+
+```shell
+curl -I http://localhost:8087/
+```
+
+```shell
+curl -X POST http://localhost:8087/api/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test2@example.com", "password": "paSS123"}'
+```
+
+```shell
+curl -X POST http://localhost:8087/api/v1/friends/requests \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "ba209999-0c6c-11d2-97cf-00c04f8eea45"}'
+```
+
+```shell
+curl -X POST http://localhost:8087/api/v1/chats/5b46d785-ac49-480b-b1b3-bdd697267487/message \
+  -H "Content-Type: application/json" \
+  -d '{"text": "hi there!"}'
+```
+
+```shell
+curl -X GET http://localhost:8087/api/v1/profile/ba209999-0c6c-11d2-97cf-00c04f8eea45
+```
+
 ### Локальное тестирование
 
 Пока написаны только unit тесты на *usecases* сервиса *social*
 
 ```shell
-SERVICEDER=social make test
+SERVICEDIR=social make test
 ```

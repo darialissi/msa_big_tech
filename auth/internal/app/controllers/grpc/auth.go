@@ -5,6 +5,8 @@ import (
 
 	"buf.build/go/protovalidate"
 
+	"github.com/google/uuid"
+
 	"github.com/darialissi/msa_big_tech/auth/internal/app/models"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases/dto"
 	auth "github.com/darialissi/msa_big_tech/auth/pkg"
@@ -65,8 +67,21 @@ func (s *service) Login(ctx context.Context, req *auth.LoginRequest) (*auth.Logi
 }
 
 func (s *service) Refresh(ctx context.Context, req *auth.RefreshRequest) (*auth.RefreshResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	// TODO: получить id из jwt MW
+	userId := uuid.New().String()
+
 	form := &dto.AuthRefresh{
-		ID:           dto.UserID(req.UserId),
+		ID:           dto.UserID(userId),
 		RefreshToken: req.RefreshToken,
 	}
 

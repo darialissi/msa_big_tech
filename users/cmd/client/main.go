@@ -45,7 +45,7 @@ func main() {
 
 		resp, err := cli.UpdateProfile(ctx, &users.UpdateProfileRequest{
 			UserId:    userId,
-			Nickname:  "test_me_2",
+			Nickname:  "test_me_0",
 			Bio:       "",
 			AvatarUrl: "http://avatar.me",
 		})
@@ -73,7 +73,7 @@ func main() {
 		ctx := context.Background()
 
 		resp, err := cli.GetProfileByNickname(ctx, &users.GetProfileByNicknameRequest{
-			Nickname: "helloworld",
+			Nickname: "test_me_0",
 		})
 		if err != nil {
 			log.Printf("cli.GetProfileByNickname: %s\n", status.Code(err).String())

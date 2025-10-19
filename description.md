@@ -94,7 +94,7 @@
 | CreateDirectChat | { participant\_id }            | { chat\_id }                           | Создать личный чат              | ALREADY\_EXISTS, INVALID\_ARGUMENT    |
 | GetChat          | { chat\_id }                   | Chat                                   | Получить информацию о чате      | NOT\_FOUND, PERMISSION\_DENIED        |
 | ListUserChats    | { user\_id }                   | { chats: \[Chat] }                     | Получить список чатов           | —                                     |
-| ListChatMembers  | { chat\_id }                   | { user\_ids: \[string] }               | Получить участников             | —                                     |
+| ListChatMembers  | { chat\_id }                   | { members: \[ChatMember] }               | Получить участников             | —                                     |
 | SendMessage      | { chat\_id, text }             | Message                                | Отправить сообщение             | INVALID\_ARGUMENT, PERMISSION\_DENIED |
 | ListMessages     | { chat\_id, limit?, cursor? }   | { messages:\[Message], next\_cursor } | История сообщений               | —                                     |
 | StreamMessages   | { chat\_id, since\_unix\_ms? } | stream Message                         | Серверный стрим новых сообщений | —                                     |

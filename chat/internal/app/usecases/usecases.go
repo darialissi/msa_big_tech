@@ -48,10 +48,15 @@ type MessageRepository interface {
 // Проверка реализации всех методов интерфейса при компиляции
 var _ ChatUsecases = (*ChatUsecase)(nil)
 
+type TxManager interface {
+	RunReadCommitted(ctx context.Context, f func(txCtx context.Context) error) error
+}
+
 type Deps struct {
 	RepoChat       ChatRepository
 	RepoMessage    MessageRepository
 	RepoChatMember ChatMemberRepository
+	TxMan          TxManager
 }
 
 func (d *Deps) Valid() error {
@@ -61,6 +66,12 @@ func (d *Deps) Valid() error {
 	if d.RepoMessage == nil {
 		return errors.New("MessageRepository is required")
 	}
+	if d.RepoChatMember == nil {
+		return errors.New("RepoChatMember is required")
+	}
+	if d.TxMan == nil {
+		return errors.New("TxMan is required")
+	}
 	return nil
 }
 
@@ -68,6 +79,7 @@ type ChatUsecase struct {
 	repoChat       ChatRepository
 	repoMessage    MessageRepository
 	repoChatMember ChatMemberRepository
+	txMan          TxManager
 }
 
 func NewChatUsecase(deps Deps) *ChatUsecase {
@@ -75,5 +87,6 @@ func NewChatUsecase(deps Deps) *ChatUsecase {
 		repoChat:       deps.RepoChat, // переупаковка
 		repoMessage:    deps.RepoMessage,
 		repoChatMember: deps.RepoChatMember,
+		txMan:          deps.TxMan,
 	}
 }

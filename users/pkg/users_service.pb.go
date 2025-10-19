@@ -25,11 +25,11 @@ var File_users_service_proto protoreflect.FileDescriptor
 
 const file_users_service_proto_rawDesc = "" +
 	"\n" +
-	"\x13users_service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\vusers.proto\x1a\x1cgoogle/api/annotations.proto2\xcc\x06\n" +
+	"\x13users_service.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\vusers.proto\x1a\x1cgoogle/api/annotations.proto2\xd2\x06\n" +
 	"\fUsersService\x12\x92\x01\n" +
 	"\rCreateProfile\x12>.github.com.darialissi.msa_big_tech.users.CreateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.CreateProfileResponse\"\x00\x12\x92\x01\n" +
-	"\rUpdateProfile\x12>.github.com.darialissi.msa_big_tech.users.UpdateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.UpdateProfileResponse\"\x00\x12\xb6\x01\n" +
-	"\x0eGetProfileByID\x12?.github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest\x1a@.github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/v1/profile/{user_id}\x12\xa7\x01\n" +
+	"\rUpdateProfile\x12>.github.com.darialissi.msa_big_tech.users.UpdateProfileRequest\x1a?.github.com.darialissi.msa_big_tech.users.UpdateProfileResponse\"\x00\x12\xbc\x01\n" +
+	"\x0eGetProfileByID\x12?.github.com.darialissi.msa_big_tech.users.GetProfileByIDRequest\x1a@.github.com.darialissi.msa_big_tech.users.GetProfileByIDResponse\"'\x82\xd3\xe4\x93\x02!\x12\x1f/api/v1/profile/{user_id=str/*}\x12\xa7\x01\n" +
 	"\x14GetProfileByNickname\x12E.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameRequest\x1aF.github.com.darialissi.msa_big_tech.users.GetProfileByNicknameResponse\"\x00\x12\xae\x01\n" +
 	"\rSearchByQuery\x12>.github.com.darialissi.msa_big_tech.users.SearchByQueryRequest\x1a?.github.com.darialissi.msa_big_tech.users.SearchByQueryResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/v1/users/searchB\xb3\x02\n" +
 	",com.github.com.darialissi.msa_big_tech.usersB\x11UsersServiceProtoP\x01Z2github.com/darialissi/msa_big_tech/users/pkg;users\xa2\x02\x05GCDMU\xaa\x02&Github.Com.Darialissi.MsaBigTech.Users\xca\x02&Github\\Com\\Darialissi\\MsaBigTech\\Users\xe2\x022Github\\Com\\Darialissi\\MsaBigTech\\Users\\GPBMetadata\xea\x02*Github::Com::Darialissi::MsaBigTech::Usersb\x06proto3"

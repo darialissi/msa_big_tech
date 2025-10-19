@@ -16,7 +16,7 @@ service UsersService {
     // Получение профиля по id
     rpc GetProfileByID(GetProfileByIDRequest) returns (GetProfileByIDResponse) {
         option (google.api.http) = {
-        get: "/api/v1/profile/{user_id}"
+        get: "/api/v1/profile/{user_id=str/*}"
         };
     }
     // Получение профиля по nickname

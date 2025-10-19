@@ -9,14 +9,15 @@ import (
 )
 
 func (uc *UsersUsecase) UpdateUser(ctx context.Context, u *dto.UpdateUser) (*models.User, error) {
-	// обновление профиля пользователя
 
+	// Проверка наличия пользователя
 	userProfile, err := uc.repoUsers.FetchById(ctx, models.UserID(u.ID))
 
 	if err != nil {
 		return nil, fmt.Errorf("UpdateUser: repoUsers.FetchById: %w", err)
 	}
 
+	// Проверка уникальности Nickname
 	if userProfile.Nickname != u.Nickname {
 		if existed, err := uc.repoUsers.FetchByNickname(ctx, u.Nickname); err != nil {
 			return nil, fmt.Errorf("UpdateUser: repoUsers.FetchByNickname: %w", err)
@@ -32,6 +33,7 @@ func (uc *UsersUsecase) UpdateUser(ctx context.Context, u *dto.UpdateUser) (*mod
 		Bio:       u.Bio,
 	}
 
+	// Обновление профиля пользователя
 	user, err := uc.repoUsers.Update(ctx, model)
 	if err != nil {
 		return nil, fmt.Errorf("UpdateUser: repoUsers.Update: %w", err)

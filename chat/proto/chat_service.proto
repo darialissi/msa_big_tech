@@ -20,7 +20,7 @@ service ChatService {
     // Отправление сообщения
     rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {
         option (google.api.http) = {
-        post: "/api/v1/chats/{chat_id}/message"
+        post: "/api/v1/chats/{chat_id=str/*}/message"
         body: "*"
         };
     }

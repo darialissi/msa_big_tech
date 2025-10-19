@@ -588,28 +588,28 @@ var File_users_proto protoreflect.FileDescriptor
 
 const file_users_proto_rawDesc = "" +
 	"\n" +
-	"\vusers.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x1bbuf/validate/validate.proto\"\x88\x01\n" +
-	"\x14CreateProfileRequest\x125\n" +
-	"\bnickname\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
+	"\vusers.proto\x12(github.com.darialissi.msa_big_tech.users\x1a\x1bbuf/validate/validate.proto\"\x8b\x01\n" +
+	"\x14CreateProfileRequest\x128\n" +
+	"\bnickname\x18\x02 \x01(\tB\x1c\xbaH\x19\xc8\x01\x01r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
 	"\x03bio\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15CreateProfileResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\xa1\x01\n" +
-	"\x14UpdateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x125\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"\xa9\x01\n" +
+	"\x14UpdateProfileRequest\x12\x1f\n" +
+	"\auser_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06userId\x125\n" +
 	"\bnickname\x18\x02 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\x12\x1a\n" +
 	"\x03bio\x18\x03 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x03bio\x12\x1d\n" +
 	"\n" +
 	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\"q\n" +
 	"\x15UpdateProfileResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"0\n" +
-	"\x15GetProfileByIDRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"r\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"8\n" +
+	"\x15GetProfileByIDRequest\x12\x1f\n" +
+	"\auser_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06userId\"r\n" +
 	"\x16GetProfileByIDResponse\x12X\n" +
-	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"T\n" +
-	"\x1bGetProfileByNicknameRequest\x125\n" +
-	"\bnickname\x18\x01 \x01(\tB\x19\xbaH\x16r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\"x\n" +
+	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"W\n" +
+	"\x1bGetProfileByNicknameRequest\x128\n" +
+	"\bnickname\x18\x01 \x01(\tB\x1c\xbaH\x19\xc8\x01\x01r\x14\x10\x032\x10^[a-zA-Z0-9_-]+$R\bnickname\"x\n" +
 	"\x1cGetProfileByNicknameResponse\x12X\n" +
 	"\fuser_profile\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.users.UserProfileR\vuserProfile\"B\n" +
 	"\x14SearchByQueryRequest\x12\x14\n" +

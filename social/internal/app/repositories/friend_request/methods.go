@@ -19,16 +19,6 @@ func (r *Repository) Save(ctx context.Context, in *models.FriendRequest) (*model
 		return nil, err
 	}
 
-	if v1, v2, v3 := row.FromUserID.String(), row.ToUserID.String(), models.FriendRequestStatus(row.Status).String(); v1 == "" || v2 == "" || v3 == "UNKNOWN" {
-		return nil, fmt.Errorf(
-			"invalid args: row.FromUserID=%s, row.ToUserID=%s, row.Status=%d %s",
-			v1,
-			v2,
-			row.Status,
-			v3,
-		)
-	}
-
 	query := r.sb.
 		Insert(friendRequestsTable).
 		Columns(

@@ -34,9 +34,14 @@ type TokenRepository interface {
 // Проверка реализации всех методов интерфейса при компиляции
 var _ AuthUsecases = (*AuthUsecase)(nil)
 
+type TxManager interface {
+	RunReadCommitted(ctx context.Context, f func(txCtx context.Context) error) error
+}
+
 type Deps struct {
 	RepoAuth  AuthRepository
 	RepoToken TokenRepository
+	TxMan     TxManager
 }
 
 type AuthUsecase struct {
@@ -49,6 +54,9 @@ func NewAuthUsecase(deps Deps) (*AuthUsecase, error) {
 	}
 	if deps.RepoToken == nil {
 		return nil, errors.New("TokenRepository is required")
+	}
+	if deps.TxMan == nil {
+		return nil, errors.New("TxMan is required")
 	}
 
 	return &AuthUsecase{deps}, nil

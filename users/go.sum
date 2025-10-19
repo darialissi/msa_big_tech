@@ -10,8 +10,8 @@ github.com/antlr4-go/antlr/v4 v4.13.1 h1:SqQKkuVZ+zWkMMNkjy5FZe5mr5WURWnlpmOuzYW
 github.com/antlr4-go/antlr/v4 v4.13.1/go.mod h1:GKmUxMtwp6ZgGwZSva4eWPC5mS6vUAmOABFgjdkM7Nw=
 github.com/cockroachdb/cockroach-go/v2 v2.2.0 h1:/5znzg5n373N/3ESjHF5SMLxiW4RKB05Ql//KWfeTFs=
 github.com/cockroachdb/cockroach-go/v2 v2.2.0/go.mod h1:u3MiKYGupPPjkn3ozknpMUpxPaNLTFWAya419/zv6eI=
-github.com/darialissi/msa_big_tech/lib v0.0.0-20251011161837-1ebbcb32b2de h1:GtH/v2DJCLlb3osMxrlLjVbjnQTe5ypbfTHlMYZt+Ss=
-github.com/darialissi/msa_big_tech/lib v0.0.0-20251011161837-1ebbcb32b2de/go.mod h1:jfCAwrL0eanTHMWkk1V99jdESp2N2IfgdlQzRFjgm1A=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251019134827-589dc7428062 h1:0PhyUMJERxnUnx5OuPo2VAF4IyrCrejICE6OA6CtNFM=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251019134827-589dc7428062/go.mod h1:jruuAztDUhWfP51v892wzWd8QJN/mTRXo05oWAWco5U=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -65,6 +65,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
+github.com/vgarvardt/pgx-google-uuid/v5 v5.6.0 h1:EhPtK0mgrgaTMXpegE69hvoSOVC1Ahk8+QJ9B8b+OdU=
+github.com/vgarvardt/pgx-google-uuid/v5 v5.6.0/go.mod h1:5LtFrNEkgzxHvXPO9eOvcXsSn9/KeKYgx9kjeI2oXQI=
 go.opentelemetry.io/auto/sdk v1.1.0 h1:cH53jehLUN6UFLY71z+NDOiNJqDdPRaXzTel0sJySYA=
 go.opentelemetry.io/auto/sdk v1.1.0/go.mod h1:3wSPjt5PWp2RhlCcmmOial7AvC4DQqZb7a7wCow3W8A=
 go.opentelemetry.io/otel v1.37.0 h1:9zhNfelUvx0KBfu/gb+ZgeAfAgtWrfHJZcAqFC228wQ=

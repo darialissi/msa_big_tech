@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -19,14 +18,6 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 		return nil, err
 	}
 
-	if v1, v2 := row.Email, row.PasswordHash; v1 == "" || v2 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.Email=%s row.PasswordHash=%s",
-			v1,
-			v2,
-		)
-	}
-
 	query := r.sb.
 		Insert(authUsersTable).
 		Columns(
@@ -36,8 +27,10 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 		Values(row.Email, row.PasswordHash).
 		Suffix("RETURNING " + strings.Join(authUsersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow AuthUserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -51,15 +44,6 @@ func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User,
 		return nil, err
 	}
 
-	if v1, v2, v3 := row.ID.String(), row.Email, row.PasswordHash; v1 == "" || v2 == "" || v3 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s row.Email=%s row.PasswordHash=%s",
-			v1,
-			v2,
-			v3,
-		)
-	}
-
 	query := r.sb.
 		Update(authUsersTable).
 		Set(authUsersTableColumnEmail, row.Email).
@@ -67,8 +51,10 @@ func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User,
 		Where(squirrel.Eq{authUsersTableColumnID: row.ID}).
 		Suffix("RETURNING " + strings.Join(authUsersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow AuthUserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -82,8 +68,10 @@ func (r *Repository) FetchById(ctx context.Context, userId models.UserID) (*mode
 		From(authUsersTable).
 		Where(squirrel.Eq{authUsersTableColumnID: string(userId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow AuthUserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
@@ -100,8 +88,10 @@ func (r *Repository) FetchByEmail(ctx context.Context, email string) (*models.Us
 		From(authUsersTable).
 		Where(squirrel.Eq{authUsersTableColumnEmail: email})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow AuthUserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}

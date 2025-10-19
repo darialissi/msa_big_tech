@@ -146,9 +146,6 @@
     "authRefreshRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
-        },
         "refreshToken": {
           "type": "string"
         }

@@ -10,6 +10,7 @@ option go_package = "github.com/darialissi/msa_big_tech/users/pkg;users";
 // Создание профиля
 message CreateProfileRequest {
   string nickname = 2 [
+    (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3,
     (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
   ];
@@ -23,7 +24,9 @@ message CreateProfileResponse {
 
 // Обновление профиля
 message UpdateProfileRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
   string nickname = 2 [
     (buf.validate.field).string.min_len = 3,
     (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
@@ -38,7 +41,9 @@ message UpdateProfileResponse {
 
 // Получение профиля по id
 message GetProfileByIDRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message GetProfileByIDResponse {
@@ -48,6 +53,7 @@ message GetProfileByIDResponse {
 // Получение профиля по nickname
 message GetProfileByNicknameRequest {
   string nickname = 1 [
+    (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 3,
     (buf.validate.field).string.pattern = "^[a-zA-Z0-9_-]+$"
   ];

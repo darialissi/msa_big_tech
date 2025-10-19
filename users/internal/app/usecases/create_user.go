@@ -9,8 +9,8 @@ import (
 )
 
 func (uc *UsersUsecase) CreateUser(ctx context.Context, u *dto.CreateUser) (*models.User, error) {
-	// валидация, создание профиля пользователя
 
+	// Проверка уникальности Nickname
 	if user, err := uc.repoUsers.FetchByNickname(ctx, u.Nickname); err != nil {
 		return nil, fmt.Errorf("CreateUser: repoUsers.FetchByNickname: %w", err)
 	} else if user != nil {
@@ -24,6 +24,7 @@ func (uc *UsersUsecase) CreateUser(ctx context.Context, u *dto.CreateUser) (*mod
 		Bio:       u.Bio,
 	}
 
+	// Сохранение профиля пользователя
 	user, err := uc.repoUsers.Save(ctx, model)
 	if err != nil {
 		return nil, fmt.Errorf("CreateUser: repoUsers.Save: %w", err)

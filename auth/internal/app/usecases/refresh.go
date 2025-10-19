@@ -10,8 +10,14 @@ import (
 )
 
 func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models.Auth, error) {
-	// обновление токенов, запись в хранилище
+	// Проверка переданного refresh токена в key-value базе
+	if ref, err := ac.RepoToken.FetchById(ctx, models.UserID(a.ID)); err != nil {
+		return nil, fmt.Errorf("Refresh: RepoToken.FetchById: %w", err)
+	} else if ref != a.RefreshToken {
+		return nil, InvalidRefreshToken
+	}
 
+	// Генерация jwt токенов
 	authUser, err := utils.GenerateJWT(ctx, a.ID)
 	if err != nil {
 		return nil, fmt.Errorf("Refresh: GenerateJWT: %w", err)
@@ -22,6 +28,7 @@ func (ac *AuthUsecase) Refresh(ctx context.Context, a *dto.AuthRefresh) (*models
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
+	// Сохранение/перезапись refresh токена в key-value базе
 	if err := ac.RepoToken.Save(ctx, authRefresh); err != nil {
 		return nil, fmt.Errorf("Refresh: RepoToken.Save: %w", err)
 	}

@@ -3,7 +3,6 @@ package message
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -20,14 +19,6 @@ func (r *Repository) Save(ctx context.Context, in *models.Message) (*models.Mess
 		return nil, err
 	}
 
-	if v1, v2 := row.ChatID.String(), row.SenderID.String(); v1 == "" || v2 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.ChatID=%s, row.SenderID=%s",
-			v1,
-			v2,
-		)
-	}
-
 	query := r.sb.
 		Insert(messagesTable).
 		Columns(
@@ -38,8 +29,10 @@ func (r *Repository) Save(ctx context.Context, in *models.Message) (*models.Mess
 		Values(row.ChatID, row.SenderID, row.Text).
 		Suffix("RETURNING " + strings.Join(messagesTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow MessageRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -53,8 +46,10 @@ func (r *Repository) FetchById(ctx context.Context, messageId models.MessageID) 
 		From(messagesTable).
 		Where(squirrel.Eq{messagesTableColumnID: string(messageId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow MessageRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
@@ -71,18 +66,20 @@ func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.
 		From(messagesTable).
 		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)})
 
-	// добавляем курсорную пагинацию
+	// Курсорная пагинация по MessageId
 	if cur := string(cursor.NextCursor); cur != "" {
-		query = query.Where(squirrel.Lt{messagesTableColumnChatID: cur})
+		query = query.Where(squirrel.Lt{messagesTableColumnID: cur})
 	}
 
 	query = query.
-		OrderBy(messagesTableColumnChatID + " DESC").
+		OrderBy(messagesTableColumnID + " DESC"). // Сортируем по MessageId DESC
 		Limit(cursor.Limit)
 
-	// выполняем запрос и формируем результат
+	pool := r.db.GetQueryEngine(ctx)
+
+	// Выполняем запрос и формируем результат
 	var outRows []MessageRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, nil, err // только ошибка БД
 	}
 
@@ -92,7 +89,7 @@ func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.
 		res[i] = ToModel(&outRow)
 	}
 
-	// перезаписываем NextCursor
+	// Перезаписываем NextCursor
 	if len(res) > 0 {
 		cursor.NextCursor = res[len(res)-1].ID
 	}
@@ -108,8 +105,10 @@ func (r *Repository) StreamMany(ctx context.Context, chatId models.ChatID, since
 		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)}).
 		Where(squirrel.Gt{messagesTableColumnCreatedAt: sinceUx})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []MessageRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, err // только ошибка БД
 	}
 

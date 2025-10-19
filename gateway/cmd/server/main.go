@@ -48,8 +48,8 @@ func main() {
 	}
 
 	// Запускаем HTTP-сервер
-	log.Println("gRPC-Gateway server listening on :8087")
-	if err := http.ListenAndServe(":8087", mux); err != nil {
+	log.Println("gRPC-Gateway server listening on :50057")
+	if err := http.ListenAndServe(":50057", mux); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }

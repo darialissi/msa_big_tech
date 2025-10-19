@@ -11,17 +11,19 @@ import (
 )
 
 func (ac *AuthUsecase) Register(ctx context.Context, a *dto.Register) (*models.User, error) {
-	// валидация, проверка уникальности данных, хеширование пароля, запись в бд
+	// Валидация пароля
 	if !a.Password.IsValid() {
 		return nil, ErrWeakPassword
 	}
 
+	// Проверка уникальности email
 	if existed, err := ac.RepoAuth.FetchByEmail(ctx, a.Email); err != nil {
 		return nil, fmt.Errorf("Register: RepoAuth.FetchByEmail: %w", err)
 	} else if existed != nil {
 		return nil, ErrRegisteredEmail
 	}
 
+	// Хэширование пароля
 	passwordBytes := []byte(a.Password)
 	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
 
@@ -34,6 +36,7 @@ func (ac *AuthUsecase) Register(ctx context.Context, a *dto.Register) (*models.U
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
+	// Сохранение данных пользователя
 	user, err := ac.RepoAuth.Save(ctx, model)
 
 	if err != nil {

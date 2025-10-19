@@ -16,29 +16,42 @@ func (ch *ChatUsecase) CreateDirectChat(ctx context.Context, req *dto.CreateDire
 		CreatorID: models.UserID(req.CreatorID),
 	}
 
-	// сохраняем чат
-	res, err := ch.repoChat.Save(ctx, model)
+	var saved *models.DirectChat
+
+	// Операции сохранения данных в транзакции
+	err := ch.txMan.RunReadCommitted(ctx, func(txCtx context.Context) error {
+		// Сохранение чата
+		res, err := ch.repoChat.Save(ctx, model)
+
+		if err != nil {
+			return fmt.Errorf("CreateDirectChat: repoChat.Save: %w", err)
+		}
+
+		saved = res
+
+		// Сохранение участников чата
+		members := make([]*models.ChatMember, 2)
+
+		members[0] = &models.ChatMember{
+			ChatID: res.ID,
+			UserID: models.UserID(req.CreatorID),
+		}
+
+		members[1] = &models.ChatMember{
+			ChatID: res.ID,
+			UserID: models.UserID(req.MemberID),
+		}
+
+		if _, err = ch.repoChatMember.SaveMultiple(ctx, members); err != nil {
+			return fmt.Errorf("CreateDirectChat: repoChatMember.SaveMultiple: %w", err)
+		}
+
+		return nil
+	})
 
 	if err != nil {
-		return nil, fmt.Errorf("CreateDirectChat: repoChat.Save: %w", err)
+		return nil, err
 	}
 
-	// сохраняем участников чата
-	members := make([]*models.ChatMember, 2)
-
-	members[0] = &models.ChatMember{
-		ChatID: res.ID,
-		UserID: models.UserID(req.CreatorID),
-	}
-
-	members[1] = &models.ChatMember{
-		ChatID: res.ID,
-		UserID: models.UserID(req.MemberID),
-	}
-
-	if _, err = ch.repoChatMember.SaveMultiple(ctx, members); err != nil {
-		return nil, fmt.Errorf("CreateDirectChat: repoChatMember.SaveMultiple: %w", err)
-	}
-
-	return res, nil
+	return saved, nil
 }

@@ -28,12 +28,18 @@ type UsersRepository interface {
 // Проверка реализации всех методов интерфейса при компиляции
 var _ UsersUsecases = (*UsersUsecase)(nil)
 
-type UsersUsecase struct {
-	repoUsers UsersRepository
+type TxManager interface {
+	RunReadCommitted(ctx context.Context, f func(txCtx context.Context) error) error
 }
 
-func NewUsersUsecase(repo UsersRepository) *UsersUsecase {
+type UsersUsecase struct {
+	repoUsers UsersRepository
+	txMan     TxManager
+}
+
+func NewUsersUsecase(repo UsersRepository, txMan TxManager) *UsersUsecase {
 	return &UsersUsecase{
 		repoUsers: repo,
+		txMan:     txMan,
 	}
 }

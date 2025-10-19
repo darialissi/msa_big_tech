@@ -4,13 +4,25 @@ import (
 	"context"
 	"time"
 
+	"buf.build/go/protovalidate"
+
 	"github.com/google/uuid"
 
+	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
 	social "github.com/darialissi/msa_big_tech/social/pkg"
 )
 
 func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendRequestRequest) (*social.SendFriendRequestResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
@@ -38,6 +50,15 @@ func (s *service) SendFriendRequest(ctx context.Context, req *social.SendFriendR
 
 func (s *service) ListFriendRequests(ctx context.Context, req *social.ListFriendRequestsRequest) (*social.ListFriendRequestsResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.SocialUsecase.ListFriendRequests(ctx, dto.UserID(req.UserId))
 
 	if err != nil {
@@ -60,6 +81,15 @@ func (s *service) ListFriendRequests(ctx context.Context, req *social.ListFriend
 
 func (s *service) AcceptFriendRequest(ctx context.Context, req *social.AcceptFriendRequestRequest) (*social.AcceptFriendRequestResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.SocialUsecase.AcceptFriendRequest(ctx, dto.FriendRequestID(req.FriendRequestId))
 
 	if err != nil {
@@ -78,6 +108,15 @@ func (s *service) AcceptFriendRequest(ctx context.Context, req *social.AcceptFri
 
 func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineFriendRequestRequest) (*social.DeclineFriendRequestResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.SocialUsecase.DeclineFriendRequest(ctx, dto.FriendRequestID(req.FriendRequestId))
 
 	if err != nil {
@@ -95,6 +134,15 @@ func (s *service) DeclineFriendRequest(ctx context.Context, req *social.DeclineF
 }
 
 func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequest) (*social.RemoveFriendResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
@@ -126,6 +174,15 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 }
 
 func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsRequest) (*social.ListFriendsResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	form := &dto.ListFriends{
 		UserID: dto.UserID(req.UserId),

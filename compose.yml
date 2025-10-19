@@ -13,6 +13,12 @@ services:
     depends_on:
       auth_postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=:50053"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   auth_postgres:
     image: postgres:latest
@@ -43,6 +49,12 @@ services:
     depends_on:
       chat_postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=:50054"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   chat_postgres:
     image: postgres:latest
@@ -73,6 +85,12 @@ services:
     depends_on:
       social_postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=:50055"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   social_postgres:
     image: postgres:latest
@@ -103,6 +121,12 @@ services:
     depends_on:
       users_postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=:50056"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   users_postgres:
     image: postgres:latest
@@ -139,3 +163,4 @@ services:
 networks:
   app-network:
     driver: bridge
+    name: app-network

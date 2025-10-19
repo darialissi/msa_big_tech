@@ -8,8 +8,8 @@ import (
 )
 
 func (uc *UsersUsecase) GetProfileByNickname(ctx context.Context, nickname string) (*models.User, error) {
-	// получение профиля пользователя
 
+	// Получение профиля пользователя по Nickname
 	user, err := uc.repoUsers.FetchByNickname(ctx, nickname)
 
 	if err != nil {

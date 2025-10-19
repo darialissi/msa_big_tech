@@ -2,12 +2,17 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.chat;
 
+import "buf/validate/validate.proto";
+
 option go_package = "github.com/darialissi/msa_big_tech/chat/pkg;chat";
 
 
 // Создание личного чата
 message CreateDirectChatRequest {
-  string participant_id = 1;
+  string participant_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
 }
 
 message CreateDirectChatResponse {
@@ -16,7 +21,10 @@ message CreateDirectChatResponse {
 
 // Получение информации о чате
 message GetChatRequest {
-  string chat_id = 1;
+  string chat_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
 }
 
 message GetChatResponse {
@@ -25,7 +33,10 @@ message GetChatResponse {
 
 // Получение списка чатов пользователя
 message ListUserChatsRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
 }
 
 message ListUserChatsResponse {
@@ -34,7 +45,10 @@ message ListUserChatsResponse {
 
 // Получение списка участников чата
 message ListChatMembersRequest {
-  string chat_id = 1;
+  string chat_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
 }
 
 message ListChatMembersResponse {
@@ -43,8 +57,14 @@ message ListChatMembersResponse {
 
 // Отправление сообщения
 message SendMessageRequest {
-  string chat_id = 1;
-  string text = 2;
+  string chat_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
+  string text = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 1
+  ];
 }
 
 message SendMessageResponse {
@@ -53,7 +73,10 @@ message SendMessageResponse {
 
 // Получение истории сообщений чата
 message ListMessagesRequest {
-  string chat_id = 1;
+  string chat_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
   uint64 limit = 2;
   string cursor = 3;
 }
@@ -65,7 +88,10 @@ message ListMessagesResponse {
 
 // Серверный стрим новых сообщений
 message StreamMessagesRequest {
-  string chat_id = 1;
+  string chat_id = 1 [
+    (buf.validate.field).string.uuid = true,
+    (buf.validate.field).required = true
+  ];
   int64 since_unix_ms = 2;
 }
 

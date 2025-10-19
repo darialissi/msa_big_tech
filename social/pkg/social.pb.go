@@ -7,6 +7,7 @@
 package social
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -712,29 +713,29 @@ var File_social_proto protoreflect.FileDescriptor
 
 const file_social_proto_rawDesc = "" +
 	"\n" +
-	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\"3\n" +
-	"\x18SendFriendRequestRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"|\n" +
+	"\fsocial.proto\x12)github.com.darialissi.msa_big_tech.social\x1a\x1bbuf/validate/validate.proto\";\n" +
+	"\x18SendFriendRequestRequest\x12\x1f\n" +
+	"\auser_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06userId\"|\n" +
 	"\x19SendFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"4\n" +
-	"\x19ListFriendRequestsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x7f\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"<\n" +
+	"\x19ListFriendRequestsRequest\x12\x1f\n" +
+	"\auser_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06userId\"\x7f\n" +
 	"\x1aListFriendRequestsResponse\x12a\n" +
-	"\x0ffriend_requests\x18\x01 \x03(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\x0efriendRequests\"H\n" +
-	"\x1aAcceptFriendRequestRequest\x12*\n" +
-	"\x11friend_request_id\x18\x01 \x01(\tR\x0ffriendRequestId\"~\n" +
+	"\x0ffriend_requests\x18\x01 \x03(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\x0efriendRequests\"P\n" +
+	"\x1aAcceptFriendRequestRequest\x122\n" +
+	"\x11friend_request_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0ffriendRequestId\"~\n" +
 	"\x1bAcceptFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"I\n" +
-	"\x1bDeclineFriendRequestRequest\x12*\n" +
-	"\x11friend_request_id\x18\x01 \x01(\tR\x0ffriendRequestId\"\x7f\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"Q\n" +
+	"\x1bDeclineFriendRequestRequest\x122\n" +
+	"\x11friend_request_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x0ffriendRequestId\"\x7f\n" +
 	"\x1cDeclineFriendRequestResponse\x12_\n" +
-	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"2\n" +
-	"\x13RemoveFriendRequest\x12\x1b\n" +
-	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"a\n" +
+	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\":\n" +
+	"\x13RemoveFriendRequest\x12#\n" +
+	"\tfriend_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bfriendId\"a\n" +
 	"\x14RemoveFriendResponse\x12I\n" +
-	"\x04pair\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.social.UserFriendR\x04pair\"[\n" +
-	"\x12ListFriendsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"\x04pair\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.social.UserFriendR\x04pair\"c\n" +
+	"\x12ListFriendsRequest\x12\x1f\n" +
+	"\auser_id\x18\x01 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x06userId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
 	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"\x83\x01\n" +
 	"\x13ListFriendsResponse\x12K\n" +

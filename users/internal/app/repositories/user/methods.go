@@ -3,7 +3,6 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -19,14 +18,6 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 		return nil, err
 	}
 
-	if v1, v2 := row.ID.String(), row.Nickname; v1 == "" || v2 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s, row.Nickname=%s",
-			v1,
-			v2,
-		)
-	}
-
 	query := r.sb.
 		Insert(usersTable).
 		Columns(
@@ -38,8 +29,10 @@ func (r *Repository) Save(ctx context.Context, in *models.User) (*models.User, e
 		Values(row.ID, row.Nickname, row.AvatarUrl, row.Bio).
 		Suffix("RETURNING " + strings.Join(usersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -53,24 +46,25 @@ func (r *Repository) Update(ctx context.Context, in *models.User) (*models.User,
 		return nil, err
 	}
 
-	if v1, v2 := row.ID.String(), row.Nickname; v1 == "" || v2 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.ID=%s, row.Nickname=%s",
-			v1,
-			v2,
-		)
-	}
-
 	query := r.sb.
 		Update(usersTable).
-		Set(usersTableColumnNickname, row.Nickname).
-		Set(usersTableColumnAvatarUrl, row.AvatarUrl).
-		Set(usersTableColumnBio, row.Bio).
+		Set(usersTableColumnNickname, row.Nickname)
+
+	if row.Bio != "" {
+		query = query.Set(usersTableColumnBio, row.Bio)
+	}
+	if row.AvatarUrl != "" {
+		query = query.Set(usersTableColumnAvatarUrl, row.AvatarUrl)
+	}
+
+	query = query.
 		Where(squirrel.Eq{usersTableColumnID: row.ID}).
 		Suffix("RETURNING " + strings.Join(usersTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -84,8 +78,10 @@ func (r *Repository) FetchById(ctx context.Context, id models.UserID) (*models.U
 		From(usersTable).
 		Where(squirrel.Eq{usersTableColumnID: id})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
@@ -102,8 +98,10 @@ func (r *Repository) FetchByNickname(ctx context.Context, nickname string) (*mod
 		From(usersTable).
 		Where(squirrel.Eq{usersTableColumnNickname: nickname})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow UserRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}

@@ -10,9 +10,18 @@ import (
 
 func (ch *ChatUsecase) ListMessages(ctx context.Context, lm *dto.ListMessages) ([]*models.Message, *models.Cursor, error) {
 
+	if lm.Limit <= 0 {
+		lm.Limit = 10 // дефолтное значение
+	}
+	if lm.Limit > 10 {
+		lm.Limit = 50 // максимальное значение
+	}
+
 	cursor := &models.Cursor{
+		Limit:      lm.Limit,
 		NextCursor: models.MessageID(lm.Cursor),
 	}
+
 	chatId := models.ChatID(lm.ChatID)
 
 	messages, nextCursor, err := ch.repoMessage.FetchManyByChatIdCursor(ctx, chatId, cursor)

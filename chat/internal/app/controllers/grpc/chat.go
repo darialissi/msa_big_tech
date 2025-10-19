@@ -3,13 +3,25 @@ package chat_grpc
 import (
 	"context"
 
+	"buf.build/go/protovalidate"
+
 	"github.com/google/uuid"
 
+	"github.com/darialissi/msa_big_tech/chat/internal/app/models"
 	"github.com/darialissi/msa_big_tech/chat/internal/app/usecases/dto"
 	chat "github.com/darialissi/msa_big_tech/chat/pkg"
 )
 
 func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectChatRequest) (*chat.CreateDirectChatResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
@@ -30,6 +42,15 @@ func (s *service) CreateDirectChat(ctx context.Context, req *chat.CreateDirectCh
 
 func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.GetChatResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.ChatUsecase.FetchChat(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
@@ -45,6 +66,15 @@ func (s *service) GetChat(ctx context.Context, req *chat.GetChatRequest) (*chat.
 }
 
 func (s *service) ListUserChats(ctx context.Context, req *chat.ListUserChatsRequest) (*chat.ListUserChatsResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	res, err := s.ChatUsecase.ListUserChats(ctx, dto.UserID(req.UserId))
 
@@ -66,6 +96,15 @@ func (s *service) ListUserChats(ctx context.Context, req *chat.ListUserChatsRequ
 
 func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembersRequest) (*chat.ListChatMembersResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.ChatUsecase.ListChatMembers(ctx, dto.ChatID(req.ChatId))
 
 	if err != nil {
@@ -85,6 +124,15 @@ func (s *service) ListChatMembers(ctx context.Context, req *chat.ListChatMembers
 }
 
 func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest) (*chat.SendMessageResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	// TODO: получить id из jwt MW
 	userId := uuid.New().String()
@@ -113,6 +161,15 @@ func (s *service) SendMessage(ctx context.Context, req *chat.SendMessageRequest)
 
 func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesRequest) (*chat.ListMessagesResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	form := &dto.ListMessages{
 		ChatID: dto.ChatID(req.ChatId),
 		Limit:  req.Limit,
@@ -140,6 +197,15 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
 }
 
 func (s *service) StreamMessages(ctx context.Context, req *chat.StreamMessagesRequest) (*chat.StreamMessagesResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	form := &dto.StreamMessages{
 		ChatID:    dto.ChatID(req.ChatId),

@@ -39,7 +39,8 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "pattern": "str/[^/]+"
           }
         ],
         "tags": [

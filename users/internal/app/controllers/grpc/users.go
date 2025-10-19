@@ -85,6 +85,15 @@ func (s *service) UpdateProfile(ctx context.Context, req *users.UpdateProfileReq
 
 func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDRequest) (*users.GetProfileByIDResponse, error) {
 
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
 	res, err := s.UsersUsecase.GetProfileByID(ctx, dto.UserID(req.UserId))
 
 	if err != nil {
@@ -102,6 +111,15 @@ func (s *service) GetProfileByID(ctx context.Context, req *users.GetProfileByIDR
 }
 
 func (s *service) GetProfileByNickname(ctx context.Context, req *users.GetProfileByNicknameRequest) (*users.GetProfileByNicknameResponse, error) {
+
+	v, err := protovalidate.New()
+	if err != nil {
+		return nil, models.ErrValidationFailed
+	}
+
+	if err = v.Validate(req); err != nil {
+		return nil, models.ErrValidationFailed
+	}
 
 	res, err := s.UsersUsecase.GetProfileByNickname(ctx, req.Nickname)
 

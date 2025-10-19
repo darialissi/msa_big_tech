@@ -11,17 +11,19 @@ import (
 )
 
 func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*models.User, error) {
-	// валидация, проверка уникальности email, обновление кредов в бд
+	// Валидация пароля
 	if !a.Password.IsValid() {
 		return nil, ErrWeakPassword
 	}
 
+	// Проверка наличия пользователя
 	user, err := ac.RepoAuth.FetchById(ctx, models.UserID(a.ID))
 
 	if err != nil {
 		return nil, fmt.Errorf("UpdateCred: RepoAuth.FetchById %w", err)
 	}
 
+	// Проверка уникальности email (если были изменения)
 	if user.Email != a.Email {
 		if existed, err := ac.RepoAuth.FetchByEmail(ctx, a.Email); err != nil {
 			return nil, fmt.Errorf("UpdateUser: RepoAuth.FetchByEmail: %w", err)
@@ -30,6 +32,7 @@ func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*mode
 		}
 	}
 
+	// Хэширование пароля
 	passwordBytes := []byte(a.Password)
 	hashedPasswordBytes, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
 
@@ -43,6 +46,7 @@ func (ac *AuthUsecase) UpdateCred(ctx context.Context, a *dto.UpdateCred) (*mode
 		PasswordHash: string(hashedPasswordBytes),
 	}
 
+	// Обновление данных пользователя
 	if _, err := ac.RepoAuth.Update(ctx, model); err != nil {
 		return nil, fmt.Errorf("UpdateCred: Update: %w", err)
 	}

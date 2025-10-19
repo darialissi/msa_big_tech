@@ -26,13 +26,13 @@ var File_chat_service_proto protoreflect.FileDescriptor
 const file_chat_service_proto_rawDesc = "" +
 	"\n" +
 	"\x12chat_service.proto\x12'github.com.darialissi.msa_big_tech.chat\x1a\n" +
-	"chat.proto\x1a\x1cgoogle/api/annotations.proto2\xb2\b\n" +
+	"chat.proto\x1a\x1cgoogle/api/annotations.proto2\xb8\b\n" +
 	"\vChatService\x12\x99\x01\n" +
 	"\x10CreateDirectChat\x12@.github.com.darialissi.msa_big_tech.chat.CreateDirectChatRequest\x1aA.github.com.darialissi.msa_big_tech.chat.CreateDirectChatResponse\"\x00\x12~\n" +
 	"\aGetChat\x127.github.com.darialissi.msa_big_tech.chat.GetChatRequest\x1a8.github.com.darialissi.msa_big_tech.chat.GetChatResponse\"\x00\x12\x90\x01\n" +
 	"\rListUserChats\x12=.github.com.darialissi.msa_big_tech.chat.ListUserChatsRequest\x1a>.github.com.darialissi.msa_big_tech.chat.ListUserChatsResponse\"\x00\x12\x96\x01\n" +
-	"\x0fListChatMembers\x12?.github.com.darialissi.msa_big_tech.chat.ListChatMembersRequest\x1a@.github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse\"\x00\x12\xb4\x01\n" +
-	"\vSendMessage\x12;.github.com.darialissi.msa_big_tech.chat.SendMessageRequest\x1a<.github.com.darialissi.msa_big_tech.chat.SendMessageResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/v1/chats/{chat_id}/message\x12\x8d\x01\n" +
+	"\x0fListChatMembers\x12?.github.com.darialissi.msa_big_tech.chat.ListChatMembersRequest\x1a@.github.com.darialissi.msa_big_tech.chat.ListChatMembersResponse\"\x00\x12\xba\x01\n" +
+	"\vSendMessage\x12;.github.com.darialissi.msa_big_tech.chat.SendMessageRequest\x1a<.github.com.darialissi.msa_big_tech.chat.SendMessageResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\"%/api/v1/chats/{chat_id=str/*}/message\x12\x8d\x01\n" +
 	"\fListMessages\x12<.github.com.darialissi.msa_big_tech.chat.ListMessagesRequest\x1a=.github.com.darialissi.msa_big_tech.chat.ListMessagesResponse\"\x00\x12\x93\x01\n" +
 	"\x0eStreamMessages\x12>.github.com.darialissi.msa_big_tech.chat.StreamMessagesRequest\x1a?.github.com.darialissi.msa_big_tech.chat.StreamMessagesResponse\"\x00B\xab\x02\n" +
 	"+com.github.com.darialissi.msa_big_tech.chatB\x10ChatServiceProtoP\x01Z0github.com/darialissi/msa_big_tech/chat/pkg;chat\xa2\x02\x05GCDMC\xaa\x02%Github.Com.Darialissi.MsaBigTech.Chat\xca\x02%Github\\Com\\Darialissi\\MsaBigTech\\Chat\xe2\x021Github\\Com\\Darialissi\\MsaBigTech\\Chat\\GPBMetadata\xea\x02)Github::Com::Darialissi::MsaBigTech::Chatb\x06proto3"

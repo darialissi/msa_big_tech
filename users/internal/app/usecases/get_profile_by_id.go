@@ -9,8 +9,8 @@ import (
 )
 
 func (uc *UsersUsecase) GetProfileByID(ctx context.Context, id dto.UserID) (*models.User, error) {
-	// получение профиля пользователя
 
+	// Получение профиля пользователя по ID
 	user, err := uc.repoUsers.FetchById(ctx, models.UserID(id))
 
 	if err != nil {

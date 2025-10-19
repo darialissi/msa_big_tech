@@ -4,12 +4,14 @@ import (
 	"context"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/darialissi/msa_big_tech/lib/config"
 	"github.com/darialissi/msa_big_tech/lib/postgres"
+	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
 	chat_grpc "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
 	chat_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat"
@@ -29,22 +31,26 @@ func main() {
 	}
 
 	ctx := context.Background()
-
-	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
+	conn, err := postgres.NewConnectionPool(ctx, dbEnvs.DSN(),
+		postgres.WithMaxConnIdleTime(time.Minute),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer pool.Close()
+	defer conn.Close()
 
-	chatRepo := chat_repo.NewRepository(pool)
-	chatMemberRepo := chat_member_repo.NewRepository(pool)
-	messageRepo := message_repo.NewRepository(pool)
+	txMngr := transaction_manager.New(conn)
+
+	chatRepo := chat_repo.NewRepository(txMngr)
+	chatMemberRepo := chat_member_repo.NewRepository(txMngr)
+	messageRepo := message_repo.NewRepository(txMngr)
 
 	// DI
 	deps := usecases.Deps{
 		RepoChat:       chatRepo,
 		RepoMessage:    messageRepo,
 		RepoChatMember: chatMemberRepo,
+		TxMan:          txMngr,
 	}
 
 	if err := deps.Valid(); err != nil {

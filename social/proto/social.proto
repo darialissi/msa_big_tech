@@ -2,12 +2,16 @@ syntax = "proto3";
 
 package github.com.darialissi.msa_big_tech.social;
 
+import "buf/validate/validate.proto";
+
 option go_package = "github.com/darialissi/msa_big_tech/social/pkg;social";
 
 
 // Отправление запроса "В Друзья"
 message SendFriendRequestRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message SendFriendRequestResponse {
@@ -16,7 +20,9 @@ message SendFriendRequestResponse {
 
 // Получение списка входящих запросов
 message ListFriendRequestsRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message ListFriendRequestsResponse {
@@ -25,7 +31,9 @@ message ListFriendRequestsResponse {
 
 // Принятие заявки
 message AcceptFriendRequestRequest {
-  string friend_request_id = 1;
+  string friend_request_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message AcceptFriendRequestResponse {
@@ -34,7 +42,9 @@ message AcceptFriendRequestResponse {
 
 // Отклонение заявки
 message DeclineFriendRequestRequest {
-  string friend_request_id = 1;
+  string friend_request_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message DeclineFriendRequestResponse {
@@ -43,7 +53,9 @@ message DeclineFriendRequestResponse {
 
 // Удаление из "Друзей"
 message RemoveFriendRequest {
-  string friend_id = 1;
+  string friend_id = 1 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message RemoveFriendResponse {
@@ -52,7 +64,9 @@ message RemoveFriendResponse {
 
 // Получение списка "Друзей"
 message ListFriendsRequest {
-  string user_id = 1;
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
   uint64 limit = 2;
   string cursor = 3;
 }

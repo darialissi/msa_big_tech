@@ -3,7 +3,6 @@ package chat
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -19,13 +18,6 @@ func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.D
 		return nil, err
 	}
 
-	if v1 := row.CreatorID.String(); v1 == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.CreatorID=%s",
-			v1,
-		)
-	}
-
 	query := r.sb.
 		Insert(chatsTable).
 		Columns(
@@ -34,8 +26,10 @@ func (r *Repository) Save(ctx context.Context, in *models.DirectChat) (*models.D
 		Values(row.CreatorID).
 		Suffix("RETURNING " + strings.Join(chatsTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow ChatRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -49,8 +43,10 @@ func (r *Repository) FetchById(ctx context.Context, chatId models.ChatID) (*mode
 		From(chatsTable).
 		Where(squirrel.Eq{chatsTableColumnID: string(chatId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow ChatRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}

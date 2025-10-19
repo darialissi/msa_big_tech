@@ -14,4 +14,6 @@ var (
 	ErrRegisteredEmail = errors.New("User with this Email is already registered")
 	// Пользователь не существует
 	ErrNotExistedUser = errors.New("User does not exist")
+	// Невалидный refresh токен
+	InvalidRefreshToken = errors.New("Refresh token is invalid")
 )

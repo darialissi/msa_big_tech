@@ -12,13 +12,14 @@ import (
 )
 
 func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, error) {
-	// проверка наличия пользователя, проверка пароля, генерация токенов и запись refresh
+	// Проверка наличия пользователя
 	user, err := ac.RepoAuth.FetchByEmail(ctx, a.Email)
 
 	if err != nil {
 		return nil, ErrNotExistedUser
 	}
 
+	// Проверка правильности пароля
 	hashedBytes := []byte(user.PasswordHash)
 	passwordBytes := []byte(a.Password)
 
@@ -26,6 +27,7 @@ func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, e
 		return nil, ErrBadCredentials
 	}
 
+	// Генерация jwt токенов
 	authUser, err := utils.GenerateJWT(ctx, dto.UserID(user.ID))
 	if err != nil {
 		return nil, fmt.Errorf("Login: GenerateJWT: %w", err)
@@ -36,6 +38,7 @@ func (ac *AuthUsecase) Login(ctx context.Context, a *dto.Login) (*models.Auth, e
 		RefreshToken: authUser.Token.RefreshToken,
 	}
 
+	// Сохранение refresh токена в key-value базе
 	if err := ac.RepoToken.Save(ctx, authRefresh); err != nil {
 		return nil, fmt.Errorf("Login: RepoToken.Save: %w", err)
 	}

@@ -7,6 +7,7 @@
 package chat
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -862,38 +863,39 @@ var File_chat_proto protoreflect.FileDescriptor
 const file_chat_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\"@\n" +
-	"\x17CreateDirectChatRequest\x12%\n" +
-	"\x0eparticipant_id\x18\x01 \x01(\tR\rparticipantId\"3\n" +
+	"chat.proto\x12'github.com.darialissi.msa_big_tech.chat\x1a\x1bbuf/validate/validate.proto\"M\n" +
+	"\x17CreateDirectChatRequest\x122\n" +
+	"\x0eparticipant_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\rparticipantId\"3\n" +
 	"\x18CreateDirectChatResponse\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\")\n" +
-	"\x0eGetChatRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\"T\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\"6\n" +
+	"\x0eGetChatRequest\x12$\n" +
+	"\achat_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06chatId\"T\n" +
 	"\x0fGetChatResponse\x12A\n" +
-	"\x04chat\x18\x01 \x01(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x04chat\"/\n" +
-	"\x14ListUserChatsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"b\n" +
+	"\x04chat\x18\x01 \x01(\v2-.github.com.darialissi.msa_big_tech.chat.ChatR\x04chat\"<\n" +
+	"\x14ListUserChatsRequest\x12$\n" +
+	"\auser_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userId\"b\n" +
 	"\x15ListUserChatsResponse\x12I\n" +
-	"\x05chats\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\x05chats\"1\n" +
-	"\x16ListChatMembersRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\"h\n" +
+	"\x05chats\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\x05chats\">\n" +
+	"\x16ListChatMembersRequest\x12$\n" +
+	"\achat_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06chatId\"h\n" +
 	"\x17ListChatMembersResponse\x12M\n" +
-	"\amembers\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\amembers\"A\n" +
-	"\x12SendMessageRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\"a\n" +
+	"\amembers\x18\x01 \x03(\v23.github.com.darialissi.msa_big_tech.chat.ChatMemberR\amembers\"Z\n" +
+	"\x12SendMessageRequest\x12$\n" +
+	"\achat_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06chatId\x12\x1e\n" +
+	"\x04text\x18\x02 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02\x10\x01R\x04text\"a\n" +
 	"\x13SendMessageResponse\x12J\n" +
-	"\amessage\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\amessage\"\\\n" +
-	"\x13ListMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\x14\n" +
+	"\amessage\x18\x01 \x01(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\amessage\"i\n" +
+	"\x13ListMessagesRequest\x12$\n" +
+	"\achat_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06chatId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
 	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"\x85\x01\n" +
 	"\x14ListMessagesResponse\x12L\n" +
 	"\bmessages\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\bmessages\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor\"T\n" +
-	"\x15StreamMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12\"\n" +
+	"nextCursor\"a\n" +
+	"\x15StreamMessagesRequest\x12$\n" +
+	"\achat_id\x18\x01 \x01(\tB\v\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06chatId\x12\"\n" +
 	"\rsince_unix_ms\x18\x02 \x01(\x03R\vsinceUnixMs\"b\n" +
 	"\x16StreamMessagesResponse\x12H\n" +
 	"\x06stream\x18\x01 \x03(\v20.github.com.darialissi.msa_big_tech.chat.MessageR\x06stream\">\n" +

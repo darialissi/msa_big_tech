@@ -24,14 +24,6 @@ func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.U
 	userID := row.UserID.String()
 	friendID := row.FriendID.String()
 
-	if userID == "" || friendID == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.FriendID=%s",
-			userID,
-			friendID,
-		)
-	}
-
 	// Сортируем ID
 	if userID > friendID {
 		row.UserID, row.FriendID = row.FriendID, row.UserID

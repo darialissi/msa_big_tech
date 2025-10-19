@@ -242,7 +242,7 @@ func RegisterUsersServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByID", runtime.WithHTTPPathPattern("/api/v1/profile/{user_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByID", runtime.WithHTTPPathPattern("/api/v1/profile/{user_id=str/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -374,7 +374,7 @@ func RegisterUsersServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByID", runtime.WithHTTPPathPattern("/api/v1/profile/{user_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.darialissi.msa_big_tech.users.UsersService/GetProfileByID", runtime.WithHTTPPathPattern("/api/v1/profile/{user_id=str/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -427,7 +427,7 @@ func RegisterUsersServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 var (
 	pattern_UsersService_CreateProfile_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.users.UsersService", "CreateProfile"}, ""))
 	pattern_UsersService_UpdateProfile_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.users.UsersService", "UpdateProfile"}, ""))
-	pattern_UsersService_GetProfileByID_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "profile", "user_id"}, ""))
+	pattern_UsersService_GetProfileByID_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 2, 5, 4}, []string{"api", "v1", "profile", "str", "user_id"}, ""))
 	pattern_UsersService_GetProfileByNickname_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.darialissi.msa_big_tech.users.UsersService", "GetProfileByNickname"}, ""))
 	pattern_UsersService_SearchByQuery_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "users", "search"}, ""))
 )
