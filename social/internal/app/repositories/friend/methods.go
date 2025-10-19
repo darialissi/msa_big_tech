@@ -5,9 +5,11 @@ import (
 	"strings"
 	"fmt"
 	"errors"
+	"time"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
+	"github.com/darialissi/msa_big_tech/lib/postgres"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 )
@@ -20,13 +22,21 @@ func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.U
 		return nil, err
 	}
 
-	if v1, v2 := row.UserID.String(), row.FriendID.String(); v1 == "" || v2 == "" {
+    userID := row.UserID.String()
+    friendID := row.FriendID.String()
+
+	if userID == "" || friendID == "" {
 		return nil, fmt.Errorf(
 			"invalid args: row.UserID=%s, rrow.FriendID=%s", 
-			v1,
-			v2,
+			userID,
+			friendID,
 		)
 	}
+
+    // Сортируем ID
+    if userID > friendID {
+        row.UserID, row.FriendID = row.FriendID, row.UserID
+    }
 
 	query := r.sb.
 		Insert(friendsTable).
@@ -37,8 +47,13 @@ func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.U
 		Values(row.UserID, row.FriendID).
 		Suffix("RETURNING " + strings.Join(friendsTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow FriendRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
+		if postgres.IsUniqueViolation(err) {
+			return nil, fmt.Errorf("friendship already exist")
+		}
 		return nil, err
 	}
 
@@ -52,28 +67,34 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 		return nil, err
 	}
 
-	if v1, v2 := row.UserID.String(), row.FriendID.String(); v1 == "" || v2 == "" {
+    userID := row.UserID.String()
+    friendID := row.FriendID.String()
+
+	if userID == "" || friendID == "" {
 		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, row.FriendID=%s", 
-			v1,
-			v2,
+			"invalid args: row.UserID=%s, rrow.FriendID=%s", 
+			userID,
+			friendID,
 		)
 	}
 
+    // Сортируем ID
+    if userID > friendID {
+        row.UserID, row.FriendID = row.FriendID, row.UserID
+    }
+
 	query := r.sb.
 		Delete(friendsTable).
-		Where(squirrel.Or{
+		Where(squirrel.And{
 			squirrel.Eq{friendsTableColumnUserID: row.UserID},
 			squirrel.Eq{friendsTableColumnFriendID: row.FriendID},
 		}).
-		Where(squirrel.Or{
-			squirrel.Eq{friendsTableColumnUserID: row.FriendID},
-			squirrel.Eq{friendsTableColumnFriendID: row.UserID},
-		}).
 		Suffix("RETURNING " + strings.Join(friendsTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow FriendRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
@@ -93,8 +114,10 @@ func (r *Repository) FetchManyByUserId(ctx context.Context, userId models.UserID
 			squirrel.Eq{friendsTableColumnFriendID: string(userId)},
 		})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []FriendRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, err // только ошибка БД
 	}
 
@@ -117,18 +140,20 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 			squirrel.Eq{friendsTableColumnFriendID: string(userId)},
 		})
 
-	// добавляем курсорную пагинацию
-	if cur := string(cursor.NextCursor); cur != "" {
-		query = query.Where(squirrel.Gt{friendsTableColumnUserID: cur})
-	}
+    // Курсорная пагинация по created_at
+    if cur := cursor.NextCursor; cur != "" {
+        query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cur})
+    }
 
-	query = query.
-        OrderBy(friendsTableColumnUserID).
+    query = query.
+        OrderBy(friendsTableColumnCreatedAt). // Сортируем по дате создания
         Limit(cursor.Limit)
 
-	// выполняем запрос и формируем результат
+	pool := r.db.GetQueryEngine(ctx)
+
+	// Выполняем запрос и формируем результат
 	var outRows []FriendRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, nil, err // только ошибка БД
 	}
 
@@ -138,9 +163,9 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 		res[i] = ToModel(&outRow)
 	}
 
-	// перезаписываем NextCursor
+	// Перезаписываем NextCursor
 	if len(res) > 0 {
-		cursor.NextCursor = res[len(res)-1].UserID
+		cursor.NextCursor = res[len(res)-1].CreatedAt.Format(time.RFC3339)
 	}
 
 	return res, cursor, nil

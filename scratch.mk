@@ -40,6 +40,9 @@ fast-generate: .buf-generate .tidy
 .migrate-up:
 	cd $(CURDIR) && goose -dir migrations up
 
+.migrate-down:
+	cd $(CURDIR) && goose -dir migrations down
+
 
 # Объявляем, что текущие команды не являются файлами и
 # инструментируем Makefile не искать изменения в файловой системе

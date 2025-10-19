@@ -11,41 +11,55 @@ import (
 
 func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
-	frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
+    // Проверка наличия FriendRequest
+    frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
 
-	if err != nil {
-		return nil, fmt.Errorf("AcceptFriendRequest: RepoFriendReq.FetchById: %w", err)
-	}
+    if err != nil {
+        return nil, fmt.Errorf("AcceptFriendRequest: RepoFriendReq.FetchById: %w", err)
+    }
+	
+    if frReq == nil {
+        return nil, ErrNoFriendRequest
+    }
 
-	if frReq == nil {
-		return nil, ErrNoFriendRequest
-	}
+	// Изменение статуса на Accepted возможно только из Pending
+    if frReq.Status != models.FriendRequestStatusPending {
+        return nil, ErrBadStatus
+    }
 
-	// изменение статуса на Accepted возможно только из Pending
-	if frReq.Status != models.FriendRequestStatusPending {
-		return nil, ErrBadStatus
-	}
+    var updated *models.FriendRequest
 
-	transition := &models.FriendRequest{
-		ID: frReq.ID,
-		Status: models.FriendRequestStatusAccepted,
-	}
+    // Операции изменения данных в транзакции
+    err = sc.TxMan.RunReadCommitted(ctx, func(txCtx context.Context) error {
+        transition := &models.FriendRequest{
+            ID:     frReq.ID,
+            Status: models.FriendRequestStatusAccepted,
+        }
+        
+        var err error
 
-	updated, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)
+		// Обновление статуса заявки
+        updated, err = sc.RepoFriendReq.UpdateStatus(txCtx, transition)
+        if err != nil {
+            return fmt.Errorf("AcceptFriendRequest: RepoFriendReq.UpdateStatus: %w", err)
+        }
 
-	if err != nil {
-		return nil, fmt.Errorf("AcceptFriendRequest: RepoFriendReq.UpdateStatus: %w", err)
-	}
+        friend := &models.UserFriend{
+            UserID:   frReq.FromUserID,
+            FriendID: frReq.ToUserID,
+        }
+        
+        // Сохранение Друга
+        if _, err := sc.RepoFriend.Save(txCtx, friend); err != nil {
+            return fmt.Errorf("AcceptFriendRequest: RepoFriend.Save: %w", err)
+        }
 
-	// добавление Друга
-	friend := &models.UserFriend{
-		UserID: frReq.FromUserID,
-		FriendID: frReq.ToUserID,
-	}
+        return nil
+    })
 
-	if _, err := sc.RepoFriend.Save(ctx, friend); err != nil {
-		return nil, fmt.Errorf("AcceptFriendRequest: RepoFriend.Save: %w", err)
-	}
+    if err != nil {
+        return nil, err
+    }
 
-	return updated, nil
+    return updated, nil
 }

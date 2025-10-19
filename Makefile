@@ -5,6 +5,9 @@ include vendor.proto.mk
 migrate: .bin-deps-migrate .migrate-up
 fast-migrate: .migrate-up
 
+migrate-down: .bin-deps-migrate .migrate-down
+fast-migrate-down: .migrate-down
+
 # Поднятие всех сервисов
 up:
 	docker compose up

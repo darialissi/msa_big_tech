@@ -1,3 +1,7 @@
+## Мессенджер Discord (только личные чаты)
+
+[Полное описание приложения](./description.md)
+
 ### Поднятие сервисов в одной сети 
 
 ```shell
@@ -100,7 +104,7 @@ grpcurl -plaintext -d '{"friend_request_id": "c7da8bee-3a8d-4a43-907d-0d4f7655ce
 ```
 
 ```shell
-grpcurl -plaintext -d '{"user_id": "ba209999-0c6c-11d2-97cf-00c04f8eea45"}' localhost:8085 github.com.darialissi.msa_big_tech.social.SocialService.ListFriends
+grpcurl -plaintext -d '{"user_id": "ba209999-0c6c-11d2-97cf-00c04f8eea45", "cursor": "2025-10-19T13:54:27+03:00"}' localhost:8085 github.com.darialissi.msa_big_tech.social.SocialService.ListFriends
 ```
 
 #### UsersService

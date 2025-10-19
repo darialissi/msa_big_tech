@@ -41,9 +41,14 @@ type FriendRepository interface {
 // Проверка реализации всех методов интерфейса при компиляции
 var _ SocialUsecases = (*SocialUsecase)(nil)
 
+type TxManager interface {
+	RunReadCommitted(ctx context.Context, f func(txCtx context.Context) error) error
+}
+
 type Deps struct {
     RepoFriendReq FriendRequestRepository
     RepoFriend FriendRepository
+    TxMan TxManager
 }
 
 type SocialUsecase struct {
@@ -56,6 +61,9 @@ func NewSocialUsecase(deps Deps) (*SocialUsecase, error) {
     }
     if deps.RepoFriend == nil {
         return nil, errors.New("FriendRepository is required")
+    }
+    if deps.TxMan == nil {
+        return nil, errors.New("TxMan is required")
     }
     
     return &SocialUsecase{deps}, nil

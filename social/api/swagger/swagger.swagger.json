@@ -336,10 +336,11 @@
     "socialListFriendsResponse": {
       "type": "object",
       "properties": {
-        "friendIds": {
+        "pairs": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "object",
+            "$ref": "#/definitions/socialUserFriend"
           }
         },
         "nextCursor": {
@@ -359,8 +360,8 @@
     "socialRemoveFriendResponse": {
       "type": "object",
       "properties": {
-        "friendId": {
-          "type": "string"
+        "pair": {
+          "$ref": "#/definitions/socialUserFriend"
         }
       }
     },
@@ -378,6 +379,20 @@
       "properties": {
         "friendRequest": {
           "$ref": "#/definitions/socialFriendRequest"
+        }
+      }
+    },
+    "socialUserFriend": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "friendId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     }

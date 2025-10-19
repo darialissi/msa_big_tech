@@ -11,6 +11,7 @@ import (
 
 func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.FriendRequestID) (*models.FriendRequest, error) {
 
+    // Проверка наличия FriendRequest
 	frReq, err := sc.RepoFriendReq.FetchById(ctx, models.FriendRequestID(reqId))
 
 	if err != nil {
@@ -21,7 +22,7 @@ func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.Fri
 		return nil, ErrNoFriendRequest
 	}
 
-	// изменение статуса на Declined возможно только из Pending
+	// Изменение статуса на Declined возможно только из Pending
 	if frReq.Status != models.FriendRequestStatusPending {
 		return nil, ErrBadStatus
 	}
@@ -31,11 +32,11 @@ func (sc *SocialUsecase) DeclineFriendRequest(ctx context.Context, reqId dto.Fri
 		Status: models.FriendRequestStatusDeclined,
 	}
 
-	res, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)
+	updated, err := sc.RepoFriendReq.UpdateStatus(ctx, transition)
 
 	if err != nil {
 		return nil, fmt.Errorf("DeclineFriendRequest: RepoFriendReq.UpdateStatus: %w", err)
 	}
 
-	return res, nil
+	return updated, nil
 }

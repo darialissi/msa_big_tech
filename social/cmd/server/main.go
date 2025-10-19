@@ -4,12 +4,14 @@ import (
 	"log"
 	"net"
 	"context"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	"github.com/darialissi/msa_big_tech/lib/config"
 	"github.com/darialissi/msa_big_tech/lib/postgres"
+	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases"
 	friend_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend"
@@ -29,20 +31,23 @@ func main() {
 	}
 
 	ctx := context.Background()
-
-	pool, err := postgres.NewPostgresConnection(ctx, dbEnvs)
+	conn, err := postgres.NewConnectionPool(ctx, dbEnvs.DSN(),
+		postgres.WithMaxConnIdleTime(time.Minute),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer pool.Close()
+	defer conn.Close()
 
-    friendRepo := friend_repo.NewRepository(pool)
-    friendReqRepo := friend_req_repo.NewRepository(pool)
+	txMngr := transaction_manager.New(conn)
+	friendRepo := friend_repo.NewRepository(txMngr)
+	friendReqRepo := friend_req_repo.NewRepository(txMngr)
     
     // DI
     deps := usecases.Deps{
         RepoFriend:  friendRepo,
         RepoFriendReq: friendReqRepo,
+		TxMan: txMngr,
     }
     
     socialUC, err := usecases.NewSocialUsecase(deps)

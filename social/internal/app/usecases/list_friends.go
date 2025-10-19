@@ -11,9 +11,18 @@ import (
 
 func (sc *SocialUsecase) ListFriends(ctx context.Context, lf *dto.ListFriends) ([]*models.UserFriend, *models.Cursor, error) {
 
+    if lf.Limit <= 0 {
+        lf.Limit = 10 // дефолтное значение
+    }
+    if lf.Limit > 10 {
+        lf.Limit = 50 // максимальное значение
+    }
+
 	cursor := &models.Cursor{
-		NextCursor: models.UserID(lf.Cursor),
+		Limit: lf.Limit,
+		NextCursor: lf.Cursor,
 	}
+
 	userId := models.UserID(lf.UserID)
 
 	friends, nextCursor, err := sc.RepoFriend.FetchManyByUserIdCursor(ctx, userId, cursor)

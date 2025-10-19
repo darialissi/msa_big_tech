@@ -424,7 +424,7 @@ func (x *RemoveFriendRequest) GetFriendId() string {
 
 type RemoveFriendResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FriendId      string                 `protobuf:"bytes,1,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
+	Pair          *UserFriend            `protobuf:"bytes,1,opt,name=pair,proto3" json:"pair,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -459,11 +459,11 @@ func (*RemoveFriendResponse) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *RemoveFriendResponse) GetFriendId() string {
+func (x *RemoveFriendResponse) GetPair() *UserFriend {
 	if x != nil {
-		return x.FriendId
+		return x.Pair
 	}
-	return ""
+	return nil
 }
 
 // Получение списка "Друзей"
@@ -529,7 +529,7 @@ func (x *ListFriendsRequest) GetCursor() string {
 
 type ListFriendsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FriendIds     []string               `protobuf:"bytes,1,rep,name=friend_ids,json=friendIds,proto3" json:"friend_ids,omitempty"`
+	Pairs         []*UserFriend          `protobuf:"bytes,1,rep,name=pairs,proto3" json:"pairs,omitempty"`
 	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -565,9 +565,9 @@ func (*ListFriendsResponse) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *ListFriendsResponse) GetFriendIds() []string {
+func (x *ListFriendsResponse) GetPairs() []*UserFriend {
 	if x != nil {
-		return x.FriendIds
+		return x.Pairs
 	}
 	return nil
 }
@@ -648,6 +648,66 @@ func (x *FriendRequest) GetToUserId() string {
 	return ""
 }
 
+type UserFriend struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	FriendId      string                 `protobuf:"bytes,2,opt,name=friend_id,json=friendId,proto3" json:"friend_id,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserFriend) Reset() {
+	*x = UserFriend{}
+	mi := &file_social_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserFriend) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserFriend) ProtoMessage() {}
+
+func (x *UserFriend) ProtoReflect() protoreflect.Message {
+	mi := &file_social_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserFriend.ProtoReflect.Descriptor instead.
+func (*UserFriend) Descriptor() ([]byte, []int) {
+	return file_social_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *UserFriend) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UserFriend) GetFriendId() string {
+	if x != nil {
+		return x.FriendId
+	}
+	return ""
+}
+
+func (x *UserFriend) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
 var File_social_proto protoreflect.FileDescriptor
 
 const file_social_proto_rawDesc = "" +
@@ -670,16 +730,15 @@ const file_social_proto_rawDesc = "" +
 	"\x1cDeclineFriendRequestResponse\x12_\n" +
 	"\x0efriend_request\x18\x01 \x01(\v28.github.com.darialissi.msa_big_tech.social.FriendRequestR\rfriendRequest\"2\n" +
 	"\x13RemoveFriendRequest\x12\x1b\n" +
-	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"3\n" +
-	"\x14RemoveFriendResponse\x12\x1b\n" +
-	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"[\n" +
+	"\tfriend_id\x18\x01 \x01(\tR\bfriendId\"a\n" +
+	"\x14RemoveFriendResponse\x12I\n" +
+	"\x04pair\x18\x01 \x01(\v25.github.com.darialissi.msa_big_tech.social.UserFriendR\x04pair\"[\n" +
 	"\x12ListFriendsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\x16\n" +
-	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"U\n" +
-	"\x13ListFriendsResponse\x12\x1d\n" +
-	"\n" +
-	"friend_ids\x18\x01 \x03(\tR\tfriendIds\x12\x1f\n" +
+	"\x06cursor\x18\x03 \x01(\tR\x06cursor\"\x83\x01\n" +
+	"\x13ListFriendsResponse\x12K\n" +
+	"\x05pairs\x18\x01 \x03(\v25.github.com.darialissi.msa_big_tech.social.UserFriendR\x05pairs\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
 	"nextCursor\"\x86\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
@@ -689,7 +748,13 @@ const file_social_proto_rawDesc = "" +
 	"\ffrom_user_id\x18\x03 \x01(\tR\n" +
 	"fromUserId\x12\x1c\n" +
 	"\n" +
-	"to_user_id\x18\x04 \x01(\tR\btoUserIdB\xb4\x02\n" +
+	"to_user_id\x18\x04 \x01(\tR\btoUserId\"a\n" +
+	"\n" +
+	"UserFriend\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1b\n" +
+	"\tfriend_id\x18\x02 \x01(\tR\bfriendId\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\tR\tcreatedAtB\xb4\x02\n" +
 	"-com.github.com.darialissi.msa_big_tech.socialB\vSocialProtoP\x01Z4github.com/darialissi/msa_big_tech/social/pkg;social\xa2\x02\x05GCDMS\xaa\x02'Github.Com.Darialissi.MsaBigTech.Social\xca\x02'Github\\Com\\Darialissi\\MsaBigTech\\Social\xe2\x023Github\\Com\\Darialissi\\MsaBigTech\\Social\\GPBMetadata\xea\x02+Github::Com::Darialissi::MsaBigTech::Socialb\x06proto3"
 
 var (
@@ -704,7 +769,7 @@ func file_social_proto_rawDescGZIP() []byte {
 	return file_social_proto_rawDescData
 }
 
-var file_social_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_social_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_social_proto_goTypes = []any{
 	(*SendFriendRequestRequest)(nil),     // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestRequest
 	(*SendFriendRequestResponse)(nil),    // 1: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse
@@ -719,17 +784,20 @@ var file_social_proto_goTypes = []any{
 	(*ListFriendsRequest)(nil),           // 10: github.com.darialissi.msa_big_tech.social.ListFriendsRequest
 	(*ListFriendsResponse)(nil),          // 11: github.com.darialissi.msa_big_tech.social.ListFriendsResponse
 	(*FriendRequest)(nil),                // 12: github.com.darialissi.msa_big_tech.social.FriendRequest
+	(*UserFriend)(nil),                   // 13: github.com.darialissi.msa_big_tech.social.UserFriend
 }
 var file_social_proto_depIdxs = []int32{
 	12, // 0: github.com.darialissi.msa_big_tech.social.SendFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	12, // 1: github.com.darialissi.msa_big_tech.social.ListFriendRequestsResponse.friend_requests:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	12, // 2: github.com.darialissi.msa_big_tech.social.AcceptFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
 	12, // 3: github.com.darialissi.msa_big_tech.social.DeclineFriendRequestResponse.friend_request:type_name -> github.com.darialissi.msa_big_tech.social.FriendRequest
-	4,  // [4:4] is the sub-list for method output_type
-	4,  // [4:4] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	13, // 4: github.com.darialissi.msa_big_tech.social.RemoveFriendResponse.pair:type_name -> github.com.darialissi.msa_big_tech.social.UserFriend
+	13, // 5: github.com.darialissi.msa_big_tech.social.ListFriendsResponse.pairs:type_name -> github.com.darialissi.msa_big_tech.social.UserFriend
+	6,  // [6:6] is the sub-list for method output_type
+	6,  // [6:6] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_social_proto_init() }
@@ -743,7 +811,7 @@ func file_social_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_social_proto_rawDesc), len(file_social_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

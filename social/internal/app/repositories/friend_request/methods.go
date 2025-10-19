@@ -40,8 +40,10 @@ func (r *Repository) Save(ctx context.Context, in *models.FriendRequest) (*model
 		Values(row.FromUserID, row.ToUserID, row.Status).
 		Suffix("RETURNING " + strings.Join(friendRequestsTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow FriendRequestRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -70,8 +72,10 @@ func (r *Repository) UpdateStatus(ctx context.Context, in *models.FriendRequest)
 		Where(squirrel.Eq{friendRequestsTableColumnID: row.ID}).
 		Suffix("RETURNING " + strings.Join(friendRequestsTableColumns, ","))
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow FriendRequestRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
@@ -85,8 +89,10 @@ func (r *Repository) FetchById(ctx context.Context, reqId models.FriendRequestID
 		From(friendRequestsTable).
 		Where(squirrel.Eq{friendRequestsTableColumnID: string(reqId)})
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRow FriendRequestRow
-	if err := r.pool.Getx(ctx, &outRow, query); err != nil {
+	if err := pool.Getx(ctx, &outRow, query); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) { // запись не найдена
 			return nil, nil
 		}
@@ -103,8 +109,10 @@ func (r *Repository) FetchManyByUserId(ctx context.Context, userId models.UserID
 		From(friendRequestsTable).
 		Where(squirrel.Eq{friendRequestsTableColumnToUserID: string(userId)}) // входящие запросы
 
+	pool := r.db.GetQueryEngine(ctx)
+
 	var outRows []FriendRequestRow
-	if err := r.pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
+	if err := pool.Selectx(ctx, &outRows, query); err != nil { // возвращает слайс
 		return nil, err // только ошибка БД
 	}
 

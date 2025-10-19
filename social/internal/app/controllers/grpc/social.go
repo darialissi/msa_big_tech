@@ -2,6 +2,7 @@ package social_grpc
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -103,13 +104,25 @@ func (s *service) RemoveFriend(ctx context.Context, req *social.RemoveFriendRequ
 		FriendID: dto.UserID(req.FriendId),
 	}
 
-	res, err := s.SocialUsecase.RemoveFriend(ctx, form)
+	deleted, err := s.SocialUsecase.RemoveFriend(ctx, form)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &social.RemoveFriendResponse{FriendId: string(res.FriendID)}, nil
+    userId, friendId := string(deleted.UserID), string(deleted.FriendID)
+	// меняем местами в зависимости от req.FriendId
+	if req.FriendId != friendId {
+		userId, friendId = friendId, userId
+	}
+
+    resp := &social.UserFriend{
+		UserId: userId,
+		FriendId: friendId,
+		CreatedAt: deleted.CreatedAt.Format(time.RFC3339),
+	}
+
+	return &social.RemoveFriendResponse{Pair: resp}, nil
 }
 
 func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsRequest) (*social.ListFriendsResponse, error) {
@@ -117,7 +130,7 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 	form := &dto.ListFriends{
 		UserID: dto.UserID(req.UserId),
 		Limit: req.Limit,
-		Cursor: dto.UserID(req.Cursor),
+		Cursor: req.Cursor,
 	}
 
 	friends, cursor, err := s.SocialUsecase.ListFriends(ctx, form)
@@ -126,11 +139,22 @@ func (s *service) ListFriends(ctx context.Context, req *social.ListFriendsReques
 		return nil, err
 	}
 
-    resp := make([]string, len(friends))
+    resp := make([]*social.UserFriend, len(friends))
 
     for i, v := range friends {
-        resp[i] = string(v.FriendID)
+
+		userId, friendId := string(v.UserID), string(v.FriendID)
+		// меняем местами в зависимости от req.UserId
+		if req.UserId != userId {
+			userId, friendId = friendId, userId
+		}
+
+        resp[i] = &social.UserFriend{
+			UserId: userId,
+			FriendId: friendId,
+			CreatedAt: v.CreatedAt.Format(time.RFC3339),
+		}
     }
 
-	return &social.ListFriendsResponse{FriendIds: resp, NextCursor: string(cursor.NextCursor)}, nil
+	return &social.ListFriendsResponse{Pairs: resp, NextCursor: string(cursor.NextCursor)}, nil
 }

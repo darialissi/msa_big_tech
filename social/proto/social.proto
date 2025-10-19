@@ -47,7 +47,7 @@ message RemoveFriendRequest {
 }
 
 message RemoveFriendResponse {
-  string friend_id = 1;
+  UserFriend pair = 1;
 }
 
 // Получение списка "Друзей"
@@ -58,7 +58,7 @@ message ListFriendsRequest {
 }
 
 message ListFriendsResponse {
-  repeated string friend_ids = 1;
+  repeated UserFriend pairs = 1;
   string next_cursor = 2;
 }
 
@@ -68,4 +68,10 @@ message FriendRequest {
   string status = 2;
   string from_user_id = 3;
   string to_user_id = 4;
+}
+
+message UserFriend {
+  string user_id = 1;
+  string friend_id = 2;
+  string created_at = 3;
 }

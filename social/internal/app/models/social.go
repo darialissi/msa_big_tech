@@ -25,7 +25,7 @@ type UserFriend struct {
 }
 
 type Cursor struct {
-	NextCursor UserID
+	NextCursor string
 	Limit uint64
 }
 
