@@ -173,7 +173,7 @@ func (s *service) ListMessages(ctx context.Context, req *chat.ListMessagesReques
 	form := &dto.ListMessages{
 		ChatID: dto.ChatID(req.ChatId),
 		Limit:  req.Limit,
-		Cursor: dto.MessageID(req.Cursor),
+		Cursor: req.Cursor,
 	}
 
 	messages, nextCur, err := s.ChatUsecase.ListMessages(ctx, form)

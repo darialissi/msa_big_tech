@@ -19,7 +19,7 @@ func (ch *ChatUsecase) ListMessages(ctx context.Context, lm *dto.ListMessages) (
 
 	cursor := &models.Cursor{
 		Limit:      lm.Limit,
-		NextCursor: models.MessageID(lm.Cursor),
+		NextCursor: lm.Cursor,
 	}
 
 	chatId := models.ChatID(lm.ChatID)

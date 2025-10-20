@@ -28,6 +28,6 @@ type Message struct {
 }
 
 type Cursor struct {
-	NextCursor MessageID
+	NextCursor string
 	Limit      uint64
 }

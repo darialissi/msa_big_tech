@@ -131,9 +131,13 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 			squirrel.Eq{friendsTableColumnFriendID: string(userId)},
 		})
 
-	// Курсорная пагинация по created_at
+	// Курсорная пагинация по created_at ASC
 	if cur := cursor.NextCursor; cur != "" {
-		query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cur})
+        cursorTime, err := time.Parse(time.RFC3339Nano, cur)
+        if err != nil {
+            return nil, nil, fmt.Errorf("invalid cursor: %w", err)
+        }
+		query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cursorTime})
 	}
 
 	query = query.
@@ -156,7 +160,7 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 
 	// Перезаписываем NextCursor
 	if len(res) > 0 {
-		cursor.NextCursor = res[len(res)-1].CreatedAt.Format(time.RFC3339)
+		cursor.NextCursor = res[len(res)-1].CreatedAt.Format(time.RFC3339Nano)
 	}
 
 	return res, cursor, nil

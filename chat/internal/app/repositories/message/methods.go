@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strings"
 	"time"
+	"fmt"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
@@ -66,13 +67,17 @@ func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.
 		From(messagesTable).
 		Where(squirrel.Eq{messagesTableColumnChatID: string(chatId)})
 
-	// Курсорная пагинация по MessageId
-	if cur := string(cursor.NextCursor); cur != "" {
-		query = query.Where(squirrel.Lt{messagesTableColumnID: cur})
+	// Курсорная пагинация по created_at DESC
+	if cur := cursor.NextCursor; cur != "" {
+        cursorTime, err := time.Parse(time.RFC3339Nano, cur)
+        if err != nil {
+            return nil, nil, fmt.Errorf("invalid cursor: %w", err)
+        }
+		query = query.Where(squirrel.Lt{messagesTableColumnCreatedAt: cursorTime})
 	}
 
 	query = query.
-		OrderBy(messagesTableColumnID + " DESC"). // Сортируем по MessageId DESC
+		OrderBy(messagesTableColumnCreatedAt + " DESC"). // Сортируем по дате DESC
 		Limit(cursor.Limit)
 
 	pool := r.db.GetQueryEngine(ctx)
@@ -91,7 +96,7 @@ func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.
 
 	// Перезаписываем NextCursor
 	if len(res) > 0 {
-		cursor.NextCursor = res[len(res)-1].ID
+		cursor.NextCursor = res[len(res)-1].CreatedAt.Format(time.RFC3339Nano)
 	}
 
 	return res, cursor, nil
