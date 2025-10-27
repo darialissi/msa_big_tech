@@ -1,4 +1,4 @@
-package usecases
+package tests
 
 import (
 	"context"
@@ -9,8 +9,9 @@ import (
 	"github.com/stretchr/testify/suite"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
+	uc "github.com/darialissi/msa_big_tech/social/internal/app/usecases"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
-	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/mocks"
+	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/tests/mocks"
 )
 
 type AcceptFriendRequestTestSuite struct {
@@ -20,7 +21,7 @@ type AcceptFriendRequestTestSuite struct {
 	RepoFriendReq *mocks.FriendRequestRepository
 	TxMan         *mocks.TxManager
 
-	Usecase *SocialUsecase
+	Usecase *uc.SocialUsecase
 }
 
 // SetupTest выполняется перед каждым тестом
@@ -30,8 +31,8 @@ func (s *AcceptFriendRequestTestSuite) SetupTest() {
 	s.TxMan = mocks.NewTxManager(s.T())
 
 	// Инициализируем Usecase перед установкой зависимостей
-	s.Usecase = &SocialUsecase{
-		Deps: Deps{
+	s.Usecase = &uc.SocialUsecase{
+		Deps: uc.Deps{
 			RepoFriendReq: s.RepoFriendReq,
 			RepoFriend:    s.RepoFriend,
 			TxMan:         s.TxMan,

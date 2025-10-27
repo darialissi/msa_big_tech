@@ -52,7 +52,7 @@ func main() {
 	deps := usecases.Deps{
 		RepoAuth:  authRepo,
 		RepoToken: tokenRepo,
-		TxMan: txMngr,
+		TxMan:     txMngr,
 	}
 
 	authUC, err := usecases.NewAuthUsecase(deps)

@@ -1,4 +1,4 @@
-package usecases
+package tests
 
 import (
 	"errors"
@@ -8,8 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
+	uc "github.com/darialissi/msa_big_tech/social/internal/app/usecases"
 	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/dto"
-	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/mocks"
+	"github.com/darialissi/msa_big_tech/social/internal/app/usecases/tests/mocks"
 )
 
 func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
@@ -28,7 +29,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 	tests := []struct {
 		name      string
 		args      args
-		mock      func(t *testing.T) Deps
+		mock      func(t *testing.T) uc.Deps
 		want      *models.FriendRequest
 		assertErr assert.ErrorAssertionFunc
 	}{
@@ -40,7 +41,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 					ToUserID:   dto.UserID(TO_USER_ID),
 				},
 			},
-			mock: func(t *testing.T) Deps {
+			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
@@ -59,7 +60,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				frMock := mocks.NewFriendRepository(t)
 
-				return Deps{
+				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
 				}
@@ -79,12 +80,12 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 					ToUserID:   dto.UserID(FROM_USER_ID),
 				},
 			},
-			mock: func(t *testing.T) Deps {
+			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frMock := mocks.NewFriendRepository(t)
 
-				return Deps{
+				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
 				}
@@ -100,7 +101,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 					ToUserID:   dto.UserID(TO_USER_ID),
 				},
 			},
-			mock: func(t *testing.T) Deps {
+			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 
 				frReqMock.EXPECT().
@@ -114,7 +115,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 
 				frMock := mocks.NewFriendRepository(t)
 
-				return Deps{
+				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
 				}
@@ -128,8 +129,8 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			t.Parallel()
 
 			// ARRANGE
-			deps := tt.mock(t)    // создаем мок объекты
-			uc := &SocialUsecase{ // инициализируем Usecase
+			deps := tt.mock(t)       // создаем мок объекты
+			uc := &uc.SocialUsecase{ // инициализируем Usecase
 				Deps: deps,
 			}
 

@@ -37,6 +37,10 @@ type FriendRepository interface {
 	FetchManyByUserIdCursor(ctx context.Context, userId models.UserID, cursor *models.Cursor) ([]*models.UserFriend, *models.Cursor, error)
 }
 
+type OutboxRepository interface {
+	SaveEvent(ctx context.Context, in *models.Event) error
+}
+
 // Проверка реализации всех методов интерфейса при компиляции
 var _ SocialUsecases = (*SocialUsecase)(nil)
 
@@ -47,6 +51,7 @@ type TxManager interface {
 type Deps struct {
 	RepoFriendReq FriendRequestRepository
 	RepoFriend    FriendRepository
+	RepoOutbox    OutboxRepository
 	TxMan         TxManager
 }
 
@@ -60,6 +65,9 @@ func NewSocialUsecase(deps Deps) (*SocialUsecase, error) {
 	}
 	if deps.RepoFriend == nil {
 		return nil, errors.New("FriendRepository is required")
+	}
+	if deps.RepoOutbox == nil {
+		return nil, errors.New("OutboxRepository is required")
 	}
 	if deps.TxMan == nil {
 		return nil, errors.New("TxMan is required")

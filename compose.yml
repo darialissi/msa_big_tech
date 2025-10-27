@@ -1,5 +1,22 @@
 services:
 
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: kafka
+    env_file:
+      - .env
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./docker/kafka:/bitnami/kafka
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-network
+
   auth:
     container_name: auth_service
     build:
@@ -12,6 +29,8 @@ services:
       - app-network
     depends_on:
       auth_postgres:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "grpc_health_probe", "-addr=:50053"]
@@ -47,6 +66,8 @@ services:
     depends_on:
       chat_postgres:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "grpc_health_probe", "-addr=:50054"]
       interval: 30s
@@ -81,6 +102,8 @@ services:
     depends_on:
       social_postgres:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "grpc_health_probe", "-addr=:50055"]
       interval: 30s
@@ -114,6 +137,8 @@ services:
       - app-network
     depends_on:
       users_postgres:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "grpc_health_probe", "-addr=:50056"]

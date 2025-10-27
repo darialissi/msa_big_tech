@@ -25,7 +25,7 @@ client:
 
 # Тестирование usecase отдельного сервиса
 test:
-	cd $(CURDIR) && go test -v ./internal/app/usecases
+	cd $(CURDIR) && go test -v ./internal/app/usecases/tests
 
 
 # Объявляем, что текущие команды не являются файлами и

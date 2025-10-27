@@ -3,9 +3,9 @@ package message
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
-	"fmt"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v5"
@@ -69,10 +69,10 @@ func (r *Repository) FetchManyByChatIdCursor(ctx context.Context, chatId models.
 
 	// Курсорная пагинация по created_at DESC
 	if cur := cursor.NextCursor; cur != "" {
-        cursorTime, err := time.Parse(time.RFC3339Nano, cur)
-        if err != nil {
-            return nil, nil, fmt.Errorf("invalid cursor: %w", err)
-        }
+		cursorTime, err := time.Parse(time.RFC3339Nano, cur)
+		if err != nil {
+			return nil, nil, fmt.Errorf("invalid cursor: %w", err)
+		}
 		query = query.Where(squirrel.Lt{messagesTableColumnCreatedAt: cursorTime})
 	}
 

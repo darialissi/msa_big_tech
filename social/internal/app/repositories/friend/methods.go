@@ -15,6 +15,8 @@ import (
 )
 
 func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.UserFriend, error) {
+	const api = "friend.Repository.Save"
+
 	row, err := FromModel(in)
 
 	if err != nil {
@@ -42,10 +44,7 @@ func (r *Repository) Save(ctx context.Context, in *models.UserFriend) (*models.U
 
 	var outRow FriendRow
 	if err := pool.Getx(ctx, &outRow, query); err != nil {
-		if postgres.IsUniqueViolation(err) {
-			return nil, fmt.Errorf("friendship already exist")
-		}
-		return nil, err
+		return nil, fmt.Errorf("%s: %w", api, postgres.ConvertPGError(err))
 	}
 
 	return ToModel(&outRow), nil
@@ -60,14 +59,6 @@ func (r *Repository) Delete(ctx context.Context, in *models.UserFriend) (*models
 
 	userID := row.UserID.String()
 	friendID := row.FriendID.String()
-
-	if userID == "" || friendID == "" {
-		return nil, fmt.Errorf(
-			"invalid args: row.UserID=%s, rrow.FriendID=%s",
-			userID,
-			friendID,
-		)
-	}
 
 	// Сортируем ID
 	if userID > friendID {
@@ -133,10 +124,10 @@ func (r *Repository) FetchManyByUserIdCursor(ctx context.Context, userId models.
 
 	// Курсорная пагинация по created_at ASC
 	if cur := cursor.NextCursor; cur != "" {
-        cursorTime, err := time.Parse(time.RFC3339Nano, cur)
-        if err != nil {
-            return nil, nil, fmt.Errorf("invalid cursor: %w", err)
-        }
+		cursorTime, err := time.Parse(time.RFC3339Nano, cur)
+		if err != nil {
+			return nil, nil, fmt.Errorf("invalid cursor: %w", err)
+		}
 		query = query.Where(squirrel.Gt{friendsTableColumnCreatedAt: cursorTime})
 	}
 
