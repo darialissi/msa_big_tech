@@ -38,7 +38,8 @@ type FriendRepository interface {
 }
 
 type OutboxRepository interface {
-	SaveEvent(ctx context.Context, in *models.Event) error
+	SaveFriendRequestCreatedID(ctx context.Context, id models.FriendRequestID) error
+	SaveFriendRequestUpdatedID(ctx context.Context, id models.FriendRequestID) error
 }
 
 // Проверка реализации всех методов интерфейса при компиляции

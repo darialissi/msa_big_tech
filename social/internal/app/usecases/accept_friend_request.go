@@ -26,16 +26,15 @@ func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.Frie
 		return nil, ErrBadStatus
 	}
 
+	transition := &models.FriendRequest{
+		ID:     frReq.ID,
+		Status: models.FriendRequestStatusAccepted,
+	}
+
 	var updated *models.FriendRequest
 
-	// Операции изменения данных в транзакции
+	// transaction scope
 	err = sc.TxMan.RunReadCommitted(ctx, func(txCtx context.Context) error {
-		transition := &models.FriendRequest{
-			ID:     frReq.ID,
-			Status: models.FriendRequestStatusAccepted,
-		}
-
-		var err error
 
 		// Обновление статуса заявки
 		updated, err = sc.RepoFriendReq.UpdateStatus(txCtx, transition)
@@ -51,6 +50,13 @@ func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.Frie
 		// Сохранение Друга
 		if _, err := sc.RepoFriend.Save(txCtx, friend); err != nil {
 			return fmt.Errorf("AcceptFriendRequest: RepoFriend.Save: %w", err)
+		}
+
+		// Сохранение Event
+		err = sc.RepoOutbox.SaveFriendRequestUpdatedID(txCtx, updated.ID)
+
+		if err != nil {
+			return fmt.Errorf("AcceptFriendRequest: RepoOutbox.SaveFriendRequestUpdatedID: %w", err)
 		}
 
 		return nil

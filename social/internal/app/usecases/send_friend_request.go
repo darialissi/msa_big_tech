@@ -22,11 +22,31 @@ func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFri
 		ToUserID:   models.UserID(req.ToUserID),
 	}
 
-	frReq, err := sc.RepoFriendReq.Save(ctx, reqFr)
+	var created *models.FriendRequest
+
+	// transaction scope
+	err := sc.TxMan.RunReadCommitted(ctx, func(txCtx context.Context) error {
+
+		// Сохранение FriendRequest
+		created, err := sc.RepoFriendReq.Save(ctx, reqFr)
+
+		if err != nil {
+			return fmt.Errorf("SendFriendRequest: RepoFriendReq.Save: %w", err)
+		}
+
+		// Сохранение Event
+		err = sc.RepoOutbox.SaveFriendRequestCreatedID(txCtx, created.ID)
+
+		if err != nil {
+			return fmt.Errorf("SendFriendRequest: RepoOutbox.SaveFriendRequestCreatedID: %w", err)
+		}
+
+		return nil
+	})
 
 	if err != nil {
-		return nil, fmt.Errorf("SendFriendRequest: RepoFriendReq.Save: %w", err)
+		return nil, err
 	}
 
-	return frReq, nil
+	return created, nil
 }

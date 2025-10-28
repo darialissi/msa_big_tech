@@ -40,6 +40,9 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
 					FetchById(mockCtx, REQ_ID).
@@ -64,11 +67,11 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 					}, nil).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
-
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want: &models.FriendRequest{
@@ -85,17 +88,20 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
 					FetchById(mockCtx, REQ_ID).
 					Return(nil, errors.New("RepoFriendReq.FetchById error")).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
-
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,
@@ -108,6 +114,9 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
 					FetchById(mockCtx, REQ_ID).
@@ -119,11 +128,11 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 					}, nil).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
-
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,
@@ -136,6 +145,9 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
 					FetchById(mockCtx, REQ_ID).
@@ -147,11 +159,11 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 					}, nil).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
-
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,
@@ -164,6 +176,9 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
 					FetchById(mockCtx, REQ_ID).
@@ -183,11 +198,11 @@ func Test_DeclineFriendRequest_whitebox_mockery(t *testing.T) {
 					Return(nil, errors.New("RepoFriendReq.UpdateStatus error")).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
-
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,

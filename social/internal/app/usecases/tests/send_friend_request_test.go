@@ -1,11 +1,13 @@
 package tests
 
 import (
-	"errors"
 	"testing"
+	"context"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/darialissi/msa_big_tech/social/internal/app/models"
 	uc "github.com/darialissi/msa_big_tech/social/internal/app/usecases"
@@ -17,6 +19,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 	t.Parallel()
 
 	mockCtx := &mocks.MockContext{}
+	mockTxCtx := &mocks.MockContext{}
 
 	REQ_ID := models.FriendRequestID(uuid.New().String())
 	FROM_USER_ID := models.UserID(uuid.New().String())
@@ -43,9 +46,21 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
+				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
+
+				txManMock.EXPECT().
+					RunReadCommitted(mockCtx, mock.AnythingOfType("func(context.Context) error")).
+					Run(func(ctx context.Context, fn func(context.Context) error) {
+						// Имитируем выполнение внутри транзакции
+						fn(mockTxCtx)
+					}).
+					Return(nil).
+					Once()
 
 				frReqMock.EXPECT().
-					Save(mockCtx, &models.FriendRequest{
+					Save(mockTxCtx, &models.FriendRequest{
 						Status:     models.FriendRequestStatusPending,
 						FromUserID: FROM_USER_ID,
 						ToUserID:   TO_USER_ID,
@@ -58,11 +73,16 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 					}, nil).
 					Once()
 
-				frMock := mocks.NewFriendRepository(t)
+				bxMock.EXPECT().
+					SaveFriendRequestCreatedID(mockTxCtx, REQ_ID).
+					Return(nil).
+					Once()
 
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want: &models.FriendRequest{
@@ -82,19 +102,22 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
-
 				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
 
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,
 			assertErr: assert.Error,
 		},
 		{
-			name: "Test 3. Negative: RepoFriendReq.Save error",
+			name: "Test 3. Negative: Transaction operation error",
 			args: args{
 				frReqInfo: &dto.SendFriendRequest{
 					FromUserID: dto.UserID(FROM_USER_ID),
@@ -103,21 +126,21 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 			},
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
-
-				frReqMock.EXPECT().
-					Save(mockCtx, &models.FriendRequest{
-						Status:     models.FriendRequestStatusPending,
-						FromUserID: FROM_USER_ID,
-						ToUserID:   TO_USER_ID,
-					}).
-					Return(nil, errors.New("RepoFriendReq.Save error")).
-					Once()
-
 				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
+				txManMock := mocks.NewTxManager(t)
+
+				// TxMan возвращает ошибку, которая имитирует ошибку внутри транзакции
+				txManMock.EXPECT().
+					RunReadCommitted(mockCtx, mock.AnythingOfType("func(context.Context) error")).
+					Return(errors.New("AcceptFriendRequest: any transaction error")).
+					Once()
 
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
+					TxMan:         txManMock,
 				}
 			},
 			want:      nil,

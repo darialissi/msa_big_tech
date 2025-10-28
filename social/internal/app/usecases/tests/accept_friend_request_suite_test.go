@@ -19,6 +19,7 @@ type AcceptFriendRequestTestSuite struct {
 
 	RepoFriend    *mocks.FriendRepository
 	RepoFriendReq *mocks.FriendRequestRepository
+	RepoOutbox *mocks.OutboxRepository
 	TxMan         *mocks.TxManager
 
 	Usecase *uc.SocialUsecase
@@ -28,6 +29,7 @@ type AcceptFriendRequestTestSuite struct {
 func (s *AcceptFriendRequestTestSuite) SetupTest() {
 	s.RepoFriendReq = mocks.NewFriendRequestRepository(s.T())
 	s.RepoFriend = mocks.NewFriendRepository(s.T())
+	s.RepoOutbox = mocks.NewOutboxRepository(s.T())
 	s.TxMan = mocks.NewTxManager(s.T())
 
 	// Инициализируем Usecase перед установкой зависимостей
@@ -35,6 +37,7 @@ func (s *AcceptFriendRequestTestSuite) SetupTest() {
 		Deps: uc.Deps{
 			RepoFriendReq: s.RepoFriendReq,
 			RepoFriend:    s.RepoFriend,
+			RepoOutbox: s.RepoOutbox,
 			TxMan:         s.TxMan,
 		},
 	}
@@ -45,6 +48,7 @@ func (s *AcceptFriendRequestTestSuite) SetupTest() {
 func (s *AcceptFriendRequestTestSuite) TearDownTest() {
 	s.RepoFriendReq.AssertExpectations(s.T())
 	s.RepoFriend.AssertExpectations(s.T())
+	s.RepoOutbox.AssertExpectations(s.T())
 	s.TxMan.AssertExpectations(s.T())
 	// деструктор
 }
@@ -84,7 +88,7 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 	// TxMan должен быть вызван первым в транзакции
 	s.TxMan.EXPECT().
 		RunReadCommitted(mockCtx, mock.MatchedBy(func(fn func(txCtx context.Context) error) bool {
-			// Внутри транзакции ожидаются вызовы UpdateStatus и Save
+			// Внутри транзакции ожидаются вызовы UpdateStatus, Save, SaveEvent
 			mockTxCtx := &mocks.MockContext{}
 
 			s.RepoFriendReq.EXPECT().
@@ -111,6 +115,11 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 				}, nil).
 				Once()
 
+			s.RepoOutbox.EXPECT().
+				SaveFriendRequestUpdatedID(mockTxCtx, REQ_ID).
+				Return(nil).
+				Once()
+
 			// Выполняем функцию транзакции
 			err := fn(mockTxCtx)
 			return err == nil
@@ -119,7 +128,6 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 		Once()
 
 	// ACT
-
 	got, err := s.Usecase.AcceptFriendRequest(mockCtx, dto.FriendRequestID(REQ_ID))
 
 	// ASSERT

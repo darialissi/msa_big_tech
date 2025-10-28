@@ -44,6 +44,7 @@ func Test_AcceptFriendRequest_whitebox_mockery(t *testing.T) {
 			mock: func(t *testing.T) uc.Deps {
 				frReqMock := mocks.NewFriendRequestRepository(t)
 				frMock := mocks.NewFriendRepository(t)
+				bxMock := mocks.NewOutboxRepository(t)
 				txManMock := mocks.NewTxManager(t)
 
 				frReqMock.EXPECT().
@@ -89,9 +90,15 @@ func Test_AcceptFriendRequest_whitebox_mockery(t *testing.T) {
 					}, nil).
 					Once()
 
+				bxMock.EXPECT().
+					SaveFriendRequestUpdatedID(mockTxCtx, REQ_ID).
+					Return(nil).
+					Once()
+
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
+					RepoOutbox: bxMock,
 					TxMan:         txManMock,
 				}
 			},
@@ -207,7 +214,7 @@ func Test_AcceptFriendRequest_whitebox_mockery(t *testing.T) {
 				// TxMan возвращает ошибку, которая имитирует ошибку внутри транзакции
 				txManMock.EXPECT().
 					RunReadCommitted(mockCtx, mock.AnythingOfType("func(context.Context) error")).
-					Return(errors.New("AcceptFriendRequest: RepoFriendReq.UpdateStatus | RepoFriend.Save error")).
+					Return(errors.New("AcceptFriendRequest: any transaction error")).
 					Once()
 
 				return uc.Deps{
