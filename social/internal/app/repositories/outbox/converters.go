@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/darialissi/msa_big_tech/social/internal/app/models"
+	"github.com/darialissi/msa_big_tech/social/internal/app/modules/outbox"
 )
 
 type outboxEventRow struct {
@@ -49,8 +49,32 @@ func (e *outboxEventRow) Values(columns ...string) []any {
 	return values
 }
 
+// ToModel конвертирует outboxEventRow (sql.Null*) в доменную модель models.Event (*string/*time.Time).
+func ToModel(r *outboxEventRow) *outbox.Event {
+	if r == nil {
+		return nil
+	}
+
+	var publishedAt *time.Time
+	if r.PublishedAt.Valid {
+		t := r.PublishedAt.V
+		publishedAt = &t
+	}
+
+	return &outbox.Event{
+		ID:            r.ID,
+		AggregateType: outbox.AggregateType(r.AggregateType),
+		AggregateID:   r.AggregateID,
+		EventType:     outbox.EventType(r.EventType),
+		Payload:       r.Payload,
+		CreatedAt:     r.CreatedAt,
+		PublishedAt:   publishedAt,
+		RetryCount:    r.RetryCount,
+	}
+}
+
 // FromModel конвертирует доменную модель в outboxEventRow для INSERT/UPDATE/DELETE
-func FromModel(e *models.Event) (outboxEventRow, error) {
+func FromModel(e *outbox.Event) (outboxEventRow, error) {
 	if e == nil {
 		return outboxEventRow{}, fmt.Errorf("model is nil")
 	}

@@ -19,7 +19,7 @@ type AcceptFriendRequestTestSuite struct {
 
 	RepoFriend    *mocks.FriendRepository
 	RepoFriendReq *mocks.FriendRequestRepository
-	RepoOutbox *mocks.OutboxRepository
+	RepoOutbox    *mocks.OutboxRepository
 	TxMan         *mocks.TxManager
 
 	Usecase *uc.SocialUsecase
@@ -37,7 +37,7 @@ func (s *AcceptFriendRequestTestSuite) SetupTest() {
 		Deps: uc.Deps{
 			RepoFriendReq: s.RepoFriendReq,
 			RepoFriend:    s.RepoFriend,
-			RepoOutbox: s.RepoOutbox,
+			RepoOutbox:    s.RepoOutbox,
 			TxMan:         s.TxMan,
 		},
 	}

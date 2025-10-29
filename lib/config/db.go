@@ -44,19 +44,19 @@ func (env *DbEnv) Validate() error {
 	}
 
 	if env.port == "" {
-		return errors.New("No defined DB host")
+		return errors.New("No defined DB hosportt")
 	}
 
 	if env.user == "" {
-		return errors.New("No defined DB host")
+		return errors.New("No defined DB user")
 	}
 
 	if env.password == "" {
-		return errors.New("No defined DB host")
+		return errors.New("No defined DB password")
 	}
 
 	if env.db == "" {
-		return errors.New("No defined DB host")
+		return errors.New("No defined DB db")
 	}
 
 	return nil

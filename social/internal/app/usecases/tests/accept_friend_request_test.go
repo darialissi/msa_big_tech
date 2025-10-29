@@ -98,7 +98,7 @@ func Test_AcceptFriendRequest_whitebox_mockery(t *testing.T) {
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
-					RepoOutbox: bxMock,
+					RepoOutbox:    bxMock,
 					TxMan:         txManMock,
 				}
 			},

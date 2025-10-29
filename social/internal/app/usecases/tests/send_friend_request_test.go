@@ -1,9 +1,9 @@
 package tests
 
 import (
-	"testing"
 	"context"
 	"errors"
+	"testing"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -81,7 +81,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
-					RepoOutbox: bxMock,
+					RepoOutbox:    bxMock,
 					TxMan:         txManMock,
 				}
 			},
@@ -109,7 +109,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
-					RepoOutbox: bxMock,
+					RepoOutbox:    bxMock,
 					TxMan:         txManMock,
 				}
 			},
@@ -139,7 +139,7 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 				return uc.Deps{
 					RepoFriendReq: frReqMock,
 					RepoFriend:    frMock,
-					RepoOutbox: bxMock,
+					RepoOutbox:    bxMock,
 					TxMan:         txManMock,
 				}
 			},
