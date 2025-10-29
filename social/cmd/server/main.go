@@ -29,7 +29,7 @@ func main() {
 
 	appEnvs := config.AppConfig()
 	dbEnvs := config.DbConfig(appEnvs.GetMode())
-	kfEnvs := config.DbConfig(appEnvs.GetMode())
+	kfEnvs := config.KfConfig(appEnvs.GetMode())
 
 	if appErr := appEnvs.Validate(); appErr != nil {
 		log.Fatalf("failed to load env: appErr=%v", appErr)

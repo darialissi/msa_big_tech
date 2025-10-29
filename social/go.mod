@@ -5,8 +5,9 @@ go 1.25.0
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
+	github.com/IBM/sarama v1.46.3
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/darialissi/msa_big_tech/lib v0.0.0-20251027210900-c8770edac79f
+	github.com/darialissi/msa_big_tech/lib v0.0.0-20251029212314-c00f3aa5709d
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	github.com/jackc/pgx/v5 v5.7.6
@@ -18,7 +19,6 @@ require (
 
 require (
 	cel.dev/expr v0.24.0 // indirect
-	github.com/IBM/sarama v1.46.3 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
