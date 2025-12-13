@@ -13,6 +13,7 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
+	errors_mw "github.com/darialissi/msa_big_tech/chat/internal/app/middleware/errors"
 	chat_grpc "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
 	chat_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat"
 	chat_member_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat_member"
@@ -66,7 +67,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			errors_mw.RecoveryUnaryInterceptor(), // сначала recovery для перехвата паник
+			errors_mw.ErrorsUnaryInterceptor(),   // затем errors для конвертации ошибок
+		),
+	)
 	chat.RegisterChatServiceServer(server, implementation) // регистрация обработчиков
 
 	reflection.Register(server) // регистрируем дополнительные обработчики

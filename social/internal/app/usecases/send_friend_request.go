@@ -28,7 +28,8 @@ func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFri
 	err := sc.TxMan.RunReadCommitted(ctx, func(txCtx context.Context) error {
 
 		// Сохранение FriendRequest
-		created, err := sc.RepoFriendReq.Save(ctx, reqFr)
+		var err error
+		created, err = sc.RepoFriendReq.Save(txCtx, reqFr)
 
 		if err != nil {
 			return fmt.Errorf("SendFriendRequest: RepoFriendReq.Save: %w", err)

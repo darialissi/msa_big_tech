@@ -13,6 +13,7 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
+	errors_mw "github.com/darialissi/msa_big_tech/users/internal/app/middleware/errors"
 	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
 	user_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/user"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
@@ -49,7 +50,13 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	server := grpc.NewServer()
+
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			errors_mw.RecoveryUnaryInterceptor(), // сначала recovery для перехвата паник
+			errors_mw.ErrorsUnaryInterceptor(),   // затем errors для конвертации ошибок
+		),
+	)
 	users.RegisterUsersServiceServer(server, implementation) // регистрация обработчиков
 
 	reflection.Register(server) // регистрируем дополнительные обработчики

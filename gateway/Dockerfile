@@ -1,5 +1,9 @@
 FROM golang:1.25-alpine AS builder
 
+# Configure Go proxy with direct fallback for better reliability
+ENV GOPROXY=https://proxy.golang.org,direct
+ENV GOSUMDB=sum.golang.org
+
 WORKDIR /build
 
 # Кэширование зависимостей

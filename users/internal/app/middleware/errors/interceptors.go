@@ -3,6 +3,8 @@ package errors
 import (
 	"context"
 	"errors"
+	"log"
+	"runtime/debug"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -40,3 +42,23 @@ func ErrorsUnaryInterceptor() grpc.UnaryServerInterceptor {
 		return
 	}
 }
+
+// RecoveryUnaryInterceptor - перехватывает паники и конвертирует их в gRPC ошибки
+func RecoveryUnaryInterceptor() grpc.UnaryServerInterceptor {
+	return func(
+		ctx context.Context,
+		req interface{},
+		info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (resp interface{}, err error) {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("panic recovered: %v\n%s", r, debug.Stack())
+				err = status.Error(codes.Internal, "internal server error")
+			}
+		}()
+		resp, err = handler(ctx, req)
+		return
+	}
+}
+

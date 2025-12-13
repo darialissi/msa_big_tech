@@ -17,6 +17,7 @@ import (
 
 	friend_req_event "github.com/darialissi/msa_big_tech/social/internal/app/adapters/friend_request_event_handler"
 	social_grpc "github.com/darialissi/msa_big_tech/social/internal/app/controllers/grpc"
+	errors_mw "github.com/darialissi/msa_big_tech/social/internal/app/middleware/errors"
 	outbox "github.com/darialissi/msa_big_tech/social/internal/app/modules/outbox"
 	friend_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend"
 	friend_req_repo "github.com/darialissi/msa_big_tech/social/internal/app/repositories/friend_request"
@@ -72,6 +73,7 @@ func main() {
 		outbox.WithMaxRetry(10),
 		outbox.WithRetryInterval(30*time.Second),
 		outbox.WithWindow(time.Hour),
+		outbox.WithPollInterval(10*time.Second), // явно задаем интервал опроса
 	)
 
 	go worker.Run(ctx)
@@ -100,7 +102,12 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			errors_mw.RecoveryUnaryInterceptor(), // сначала recovery для перехвата паник
+			errors_mw.ErrorsUnaryInterceptor(),   // затем errors для конвертации ошибок
+		),
+	)
 	social.RegisterSocialServiceServer(server, implementation) // регистрация обработчиков
 
 	reflection.Register(server) // регистрируем дополнительные обработчики

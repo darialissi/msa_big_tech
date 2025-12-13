@@ -120,6 +120,9 @@ func (w *OutboxFriendRequestWorker) Fetch(ctx context.Context) error {
 		from = now.Add(-w.window)
 	)
 
+	log.Printf("Searching events: window=[%v, %v], batchSize=%d, maxRetry=%d",
+		from, now, w.batchSize, w.maxRetry)
+
 	events := w.repo.SearchEvents(
 		ctx,
 		// 1-я ступень pruning
@@ -141,11 +144,15 @@ func (w *OutboxFriendRequestWorker) Fetch(ctx context.Context) error {
 		return nil
 	}
 
+	log.Printf("outbox: found %d events to process", len(events))
+
 	succeeded, failed, err := w.handler.HandleBatch(ctx, events)
 	if err != nil {
 		log.Printf("outbox batch handle error: %v", err)
 		return err
 	}
+
+	log.Printf("outbox: processed batch - succeeded=%d, failed=%d", len(succeeded), len(failed))
 
 	if len(succeeded) > 0 {
 		e := w.repo.UpdateEvents(
