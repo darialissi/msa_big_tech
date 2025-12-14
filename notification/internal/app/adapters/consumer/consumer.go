@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/darialissi/msa_big_tech/notification/internal/app/modules/inbox"
+
 	"github.com/IBM/sarama"
 )
 
@@ -23,7 +25,20 @@ func extractID(msg *sarama.ConsumerMessage) (string, bool) {
 	return "", false
 }
 
-func NewInboxConsumer(brokers []string, groupID string, consumerName string, dedup Deduper, h Handler) (*InboxConsumer, error) {
+type InboxHandler interface {
+	SaveMessage(ctx context.Context, msg *inbox.Message) error
+}
+
+type InboxConsumer struct {
+	group        sarama.ConsumerGroup
+	dedup        Deduper
+	inboxHandler InboxHandler
+	batchSize    int
+	batchTimeout time.Duration
+	consumerName string
+}
+
+func NewInboxConsumer(brokers []string, groupID string, consumerName string, dedup Deduper, h InboxHandler) (*InboxConsumer, error) {
 	cfg := sarama.NewConfig()
 	cfg.Version = sarama.V2_5_0_0
 	cfg.Consumer.Group.Rebalance.Strategy = sarama.NewBalanceStrategyRange()
@@ -38,7 +53,7 @@ func NewInboxConsumer(brokers []string, groupID string, consumerName string, ded
 	return &InboxConsumer{
 		group:        cg,
 		dedup:        dedup,
-		handler:      h,
+		inboxHandler: h,
 		batchSize:    128,
 		batchTimeout: 300 * time.Millisecond,
 		consumerName: consumerName,
@@ -105,8 +120,8 @@ func (h *consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, cl
 				continue
 			}
 
-			// бизнес-обработка (идемпотентная)
-			if err := h.c.handler.Handle(sess.Context(), msg); err != nil {
+			// сохраняем сообщение в inbox
+			if err := h.c.inboxHandler.SaveMessage(sess.Context(), toInboxMessage(id, msg)); err != nil {
 				// обработка упала: НЕ коммитим offset -> Kafka переотправит (at-least-once)
 				log.Printf("handle failed (will retry): id=%s topic=%s p=%d off=%d err=%v",
 					id, msg.Topic, msg.Partition, msg.Offset, err)

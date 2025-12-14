@@ -161,6 +161,37 @@ services:
       timeout: 10s
       retries: 5
 
+  notification:
+    container_name: notification_service
+    build:
+      context: ./notification
+    env_file:
+      - ./notification/.env
+    ports:
+      - "8087:50057"
+    networks:
+      - app-network
+    depends_on:
+      notification_postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  notification_postgres:
+    image: postgres:latest
+    container_name: notification_postgres
+    env_file:
+      - ./notification/.env
+    ports:
+      - 5437:5432
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   gateway:
     container_name: gateway_service
     build:
@@ -177,6 +208,8 @@ services:
       social:
         condition: service_healthy
       users:
+        condition: service_healthy
+      notification:
         condition: service_healthy
 
 

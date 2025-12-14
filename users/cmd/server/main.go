@@ -13,8 +13,8 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
-	errors_mw "github.com/darialissi/msa_big_tech/users/internal/app/middleware/errors"
 	users_grpc "github.com/darialissi/msa_big_tech/users/internal/app/controllers/grpc"
+	errors_mw "github.com/darialissi/msa_big_tech/users/internal/app/middleware/errors"
 	user_repo "github.com/darialissi/msa_big_tech/users/internal/app/repositories/user"
 	"github.com/darialissi/msa_big_tech/users/internal/app/usecases"
 	users "github.com/darialissi/msa_big_tech/users/pkg"
@@ -49,7 +49,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-
 
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(

@@ -91,7 +91,7 @@ func FromModel(e *outbox.Event) (outboxEventRow, error) {
 				return sql.Null[time.Time]{V: *e.PublishedAt, Valid: true}
 			}
 			return sql.Null[time.Time]{}
-		}(&e.CreatedAt),
+		}(e.PublishedAt),
 		RetryCount: e.RetryCount,
 	}, nil
 }

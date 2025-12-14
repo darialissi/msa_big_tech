@@ -86,7 +86,7 @@ func (r *Repository) SearchEvents(ctx context.Context, opts ...outbox.SearchEven
 	}
 
 	// Маппинг в доменную модель
-	events := make([]*outbox.Event, 0, len(rows))
+	events := make([]*outbox.Event, len(rows))
 
 	for i, outRow := range rows {
 		events[i] = ToModel(&outRow)

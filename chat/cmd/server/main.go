@@ -13,8 +13,8 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
-	errors_mw "github.com/darialissi/msa_big_tech/chat/internal/app/middleware/errors"
 	chat_grpc "github.com/darialissi/msa_big_tech/chat/internal/app/controllers/grpc"
+	errors_mw "github.com/darialissi/msa_big_tech/chat/internal/app/middleware/errors"
 	chat_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat"
 	chat_member_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/chat_member"
 	message_repo "github.com/darialissi/msa_big_tech/chat/internal/app/repositories/message"

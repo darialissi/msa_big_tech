@@ -13,8 +13,8 @@ import (
 	"github.com/darialissi/msa_big_tech/lib/postgres"
 	"github.com/darialissi/msa_big_tech/lib/postgres/transaction_manager"
 
-	errors_mw "github.com/darialissi/msa_big_tech/auth/internal/app/middleware/errors"
 	auth_grpc "github.com/darialissi/msa_big_tech/auth/internal/app/controllers/grpc"
+	errors_mw "github.com/darialissi/msa_big_tech/auth/internal/app/middleware/errors"
 	auth_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/auth"
 	token_repo "github.com/darialissi/msa_big_tech/auth/internal/app/repositories/token"
 	"github.com/darialissi/msa_big_tech/auth/internal/app/usecases"
