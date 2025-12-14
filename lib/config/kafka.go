@@ -4,9 +4,15 @@ import (
 	"errors"
 )
 
+type consumer struct {
+	group string
+	name string
+}
+
 type KfEnv struct {
 	brokers      string
 	fr_req_topic string
+	consumer
 }
 
 func KfConfig(mode string) *KfEnv {
@@ -14,11 +20,19 @@ func KfConfig(mode string) *KfEnv {
 		return &KfEnv{
 			brokers:      getEnv("KAFKA_BROKERS_DEV", ""),
 			fr_req_topic: getEnv("KAFKA_FR_REQ_EVENTS_TOPIC_NAME_DEV", ""),
+			consumer: consumer{
+				group: getEnv("KAFKA_CONSUMER_GROUP_DEV", ""),
+				name: getEnv("KAFKA_CONSUMER_NAME_DEV", ""),
+			},
 		}
 	}
 	return &KfEnv{
 		brokers:      getEnv("KAFKA_BROKERS", ""),
 		fr_req_topic: getEnv("KAFKA_FR_EVENTS_TOPIC_NAME", ""),
+		consumer: consumer{
+			group: getEnv("KAFKA_CONSUMER_GROUP", ""),
+			name: getEnv("KAFKA_CONSUMER_NAME", ""),
+		},
 	}
 }
 
@@ -40,4 +54,12 @@ func (env *KfEnv) GetBrokers() string {
 
 func (env *KfEnv) GetFrReqTopic() string {
 	return env.fr_req_topic
+}
+
+func (env *KfEnv) GetConsumerGroup() string {
+	return env.consumer.group
+}
+
+func (env *KfEnv) GetConsumerName() string {
+	return env.consumer.name
 }
