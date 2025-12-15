@@ -28,7 +28,7 @@ func KfConfig(mode string) *KfEnv {
 	}
 	return &KfEnv{
 		brokers:      getEnv("KAFKA_BROKERS", ""),
-		fr_req_topic: getEnv("KAFKA_FR_EVENTS_TOPIC_NAME", ""),
+		fr_req_topic: getEnv("KAFKA_FR_REQ_EVENTS_TOPIC_NAME", ""),
 		consumer: consumer{
 			group: getEnv("KAFKA_CONSUMER_GROUP", ""),
 			name: getEnv("KAFKA_CONSUMER_NAME", ""),
@@ -39,10 +39,6 @@ func KfConfig(mode string) *KfEnv {
 func (env *KfEnv) Validate() error {
 	if env.brokers == "" {
 		return errors.New("No defined KAFKA brokers")
-	}
-
-	if env.fr_req_topic == "" {
-		return errors.New("No defined KAFKA fr_req_topic")
 	}
 
 	return nil
