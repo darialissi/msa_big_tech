@@ -27,8 +27,8 @@ func (t *Transaction) Selectx(ctx context.Context, dest interface{}, sqlizer Sql
 	if err != nil {
 		return err
 	}
-
-	return pgxscan.Select(ctx, t.Tx, dest, query, args)
+	
+	return pgxscan.Select(ctx, t.Tx, dest, query, args...)
 }
 
 func (t *Transaction) Execx(ctx context.Context, sqlizer Sqlizer) (pgconn.CommandTag, error) {
