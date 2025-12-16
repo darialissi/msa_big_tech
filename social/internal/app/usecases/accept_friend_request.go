@@ -53,7 +53,7 @@ func (sc *SocialUsecase) AcceptFriendRequest(ctx context.Context, reqId dto.Frie
 		}
 
 		// Сохранение Event
-		err = sc.RepoOutbox.SaveFriendRequestUpdatedID(txCtx, updated.ID)
+		err = sc.RepoOutbox.SaveFriendRequestUpdated(txCtx, updated)
 
 		if err != nil {
 			return fmt.Errorf("AcceptFriendRequest: RepoOutbox.SaveFriendRequestUpdatedID: %w", err)

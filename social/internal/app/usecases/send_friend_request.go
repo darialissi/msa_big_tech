@@ -36,7 +36,7 @@ func (sc *SocialUsecase) SendFriendRequest(ctx context.Context, req *dto.SendFri
 		}
 
 		// Сохранение Event
-		err = sc.RepoOutbox.SaveFriendRequestCreatedID(txCtx, created.ID)
+		err = sc.RepoOutbox.SaveFriendRequestCreated(txCtx, created)
 
 		if err != nil {
 			return fmt.Errorf("SendFriendRequest: RepoOutbox.SaveFriendRequestCreatedID: %w", err)

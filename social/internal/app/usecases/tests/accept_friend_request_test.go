@@ -91,7 +91,12 @@ func Test_AcceptFriendRequest_whitebox_mockery(t *testing.T) {
 					Once()
 
 				bxMock.EXPECT().
-					SaveFriendRequestUpdatedID(mockTxCtx, REQ_ID).
+					SaveFriendRequestUpdated(mockTxCtx, &models.FriendRequest{
+						ID:         REQ_ID,
+						Status:     models.FriendRequestStatusAccepted,
+						FromUserID: FROM_USER_ID,
+						ToUserID:   TO_USER_ID,
+					}).
 					Return(nil).
 					Once()
 

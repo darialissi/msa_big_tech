@@ -74,7 +74,12 @@ func Test_SendFriendRequest_whitebox_mockery(t *testing.T) {
 					Once()
 
 				bxMock.EXPECT().
-					SaveFriendRequestCreatedID(mockTxCtx, REQ_ID).
+					SaveFriendRequestCreated(mockTxCtx, &models.FriendRequest{
+						ID:         REQ_ID,
+						Status:     models.FriendRequestStatusPending,
+						FromUserID: FROM_USER_ID,
+						ToUserID:   TO_USER_ID,
+					}).
 					Return(nil).
 					Once()
 

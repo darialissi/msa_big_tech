@@ -116,7 +116,12 @@ func (s *AcceptFriendRequestTestSuite) Test_AcceptFriendRequest_Positive() {
 				Once()
 
 			s.RepoOutbox.EXPECT().
-				SaveFriendRequestUpdatedID(mockTxCtx, REQ_ID).
+				SaveFriendRequestUpdated(mockTxCtx, &models.FriendRequest{
+					ID:         REQ_ID,
+					Status:     models.FriendRequestStatusAccepted,
+					FromUserID: FROM_USER_ID,
+					ToUserID:   TO_USER_ID,
+				}).
 				Return(nil).
 				Once()
 

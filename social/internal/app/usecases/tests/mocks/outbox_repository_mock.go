@@ -22,17 +22,17 @@ func (_m *OutboxRepository) EXPECT() *OutboxRepository_Expecter {
 	return &OutboxRepository_Expecter{mock: &_m.Mock}
 }
 
-// SaveFriendRequestCreatedID provides a mock function with given fields: ctx, id
-func (_m *OutboxRepository) SaveFriendRequestCreatedID(ctx context.Context, id models.FriendRequestID) error {
-	ret := _m.Called(ctx, id)
+// SaveFriendRequestCreated provides a mock function with given fields: ctx, req
+func (_m *OutboxRepository) SaveFriendRequestCreated(ctx context.Context, req *models.FriendRequest) error {
+	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
-		panic("no return value specified for SaveFriendRequestCreatedID")
+		panic("no return value specified for SaveFriendRequestCreated")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, models.FriendRequestID) error); ok {
-		r0 = rf(ctx, id)
+	if rf, ok := ret.Get(0).(func(context.Context, *models.FriendRequest) error); ok {
+		r0 = rf(ctx, req)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -40,46 +40,46 @@ func (_m *OutboxRepository) SaveFriendRequestCreatedID(ctx context.Context, id m
 	return r0
 }
 
-// OutboxRepository_SaveFriendRequestCreatedID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SaveFriendRequestCreatedID'
-type OutboxRepository_SaveFriendRequestCreatedID_Call struct {
+// OutboxRepository_SaveFriendRequestCreated_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SaveFriendRequestCreated'
+type OutboxRepository_SaveFriendRequestCreated_Call struct {
 	*mock.Call
 }
 
-// SaveFriendRequestCreatedID is a helper method to define mock.On call
+// SaveFriendRequestCreated is a helper method to define mock.On call
 //   - ctx context.Context
-//   - id models.FriendRequestID
-func (_e *OutboxRepository_Expecter) SaveFriendRequestCreatedID(ctx interface{}, id interface{}) *OutboxRepository_SaveFriendRequestCreatedID_Call {
-	return &OutboxRepository_SaveFriendRequestCreatedID_Call{Call: _e.mock.On("SaveFriendRequestCreatedID", ctx, id)}
+//   - req *models.FriendRequest
+func (_e *OutboxRepository_Expecter) SaveFriendRequestCreated(ctx interface{}, req interface{}) *OutboxRepository_SaveFriendRequestCreated_Call {
+	return &OutboxRepository_SaveFriendRequestCreated_Call{Call: _e.mock.On("SaveFriendRequestCreated", ctx, req)}
 }
 
-func (_c *OutboxRepository_SaveFriendRequestCreatedID_Call) Run(run func(ctx context.Context, id models.FriendRequestID)) *OutboxRepository_SaveFriendRequestCreatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestCreated_Call) Run(run func(ctx context.Context, req *models.FriendRequest)) *OutboxRepository_SaveFriendRequestCreated_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(models.FriendRequestID))
+		run(args[0].(context.Context), args[1].(*models.FriendRequest))
 	})
 	return _c
 }
 
-func (_c *OutboxRepository_SaveFriendRequestCreatedID_Call) Return(_a0 error) *OutboxRepository_SaveFriendRequestCreatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestCreated_Call) Return(_a0 error) *OutboxRepository_SaveFriendRequestCreated_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *OutboxRepository_SaveFriendRequestCreatedID_Call) RunAndReturn(run func(context.Context, models.FriendRequestID) error) *OutboxRepository_SaveFriendRequestCreatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestCreated_Call) RunAndReturn(run func(context.Context, *models.FriendRequest) error) *OutboxRepository_SaveFriendRequestCreated_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// SaveFriendRequestUpdatedID provides a mock function with given fields: ctx, id
-func (_m *OutboxRepository) SaveFriendRequestUpdatedID(ctx context.Context, id models.FriendRequestID) error {
-	ret := _m.Called(ctx, id)
+// SaveFriendRequestUpdated provides a mock function with given fields: ctx, req
+func (_m *OutboxRepository) SaveFriendRequestUpdated(ctx context.Context, req *models.FriendRequest) error {
+	ret := _m.Called(ctx, req)
 
 	if len(ret) == 0 {
-		panic("no return value specified for SaveFriendRequestUpdatedID")
+		panic("no return value specified for SaveFriendRequestUpdated")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, models.FriendRequestID) error); ok {
-		r0 = rf(ctx, id)
+	if rf, ok := ret.Get(0).(func(context.Context, *models.FriendRequest) error); ok {
+		r0 = rf(ctx, req)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -87,31 +87,31 @@ func (_m *OutboxRepository) SaveFriendRequestUpdatedID(ctx context.Context, id m
 	return r0
 }
 
-// OutboxRepository_SaveFriendRequestUpdatedID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SaveFriendRequestUpdatedID'
-type OutboxRepository_SaveFriendRequestUpdatedID_Call struct {
+// OutboxRepository_SaveFriendRequestUpdated_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SaveFriendRequestUpdated'
+type OutboxRepository_SaveFriendRequestUpdated_Call struct {
 	*mock.Call
 }
 
-// SaveFriendRequestUpdatedID is a helper method to define mock.On call
+// SaveFriendRequestUpdated is a helper method to define mock.On call
 //   - ctx context.Context
-//   - id models.FriendRequestID
-func (_e *OutboxRepository_Expecter) SaveFriendRequestUpdatedID(ctx interface{}, id interface{}) *OutboxRepository_SaveFriendRequestUpdatedID_Call {
-	return &OutboxRepository_SaveFriendRequestUpdatedID_Call{Call: _e.mock.On("SaveFriendRequestUpdatedID", ctx, id)}
+//   - req *models.FriendRequest
+func (_e *OutboxRepository_Expecter) SaveFriendRequestUpdated(ctx interface{}, req interface{}) *OutboxRepository_SaveFriendRequestUpdated_Call {
+	return &OutboxRepository_SaveFriendRequestUpdated_Call{Call: _e.mock.On("SaveFriendRequestUpdated", ctx, req)}
 }
 
-func (_c *OutboxRepository_SaveFriendRequestUpdatedID_Call) Run(run func(ctx context.Context, id models.FriendRequestID)) *OutboxRepository_SaveFriendRequestUpdatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestUpdated_Call) Run(run func(ctx context.Context, req *models.FriendRequest)) *OutboxRepository_SaveFriendRequestUpdated_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(context.Context), args[1].(models.FriendRequestID))
+		run(args[0].(context.Context), args[1].(*models.FriendRequest))
 	})
 	return _c
 }
 
-func (_c *OutboxRepository_SaveFriendRequestUpdatedID_Call) Return(_a0 error) *OutboxRepository_SaveFriendRequestUpdatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestUpdated_Call) Return(_a0 error) *OutboxRepository_SaveFriendRequestUpdated_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *OutboxRepository_SaveFriendRequestUpdatedID_Call) RunAndReturn(run func(context.Context, models.FriendRequestID) error) *OutboxRepository_SaveFriendRequestUpdatedID_Call {
+func (_c *OutboxRepository_SaveFriendRequestUpdated_Call) RunAndReturn(run func(context.Context, *models.FriendRequest) error) *OutboxRepository_SaveFriendRequestUpdated_Call {
 	_c.Call.Return(run)
 	return _c
 }
