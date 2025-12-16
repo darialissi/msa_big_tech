@@ -8,6 +8,10 @@ github.com/darialissi/msa_big_tech/lib v0.0.0-20251029212314-c00f3aa5709d h1:iP6
 github.com/darialissi/msa_big_tech/lib v0.0.0-20251029212314-c00f3aa5709d/go.mod h1:yzsjAz52eUzcQKZgAZpLLhkkDWwiv/X1c1xlhupHAQ0=
 github.com/darialissi/msa_big_tech/lib v0.0.0-20251214192406-6a12ffce3ab3 h1:zxl57hZHBrCVlad/JlDWwYo6xxa5jN2nRl8DQypWdS0=
 github.com/darialissi/msa_big_tech/lib v0.0.0-20251214192406-6a12ffce3ab3/go.mod h1:4YT2wLHyM+25W/UN7nsSvKTB6AGqXXlfYUwjmDliOdU=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251215202831-b6eaaa3e7791 h1:wl+wlLMzUNXKBHpk3dgxZsUKU4sHFNNGxn/ISnbzG0Q=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251215202831-b6eaaa3e7791/go.mod h1:4YT2wLHyM+25W/UN7nsSvKTB6AGqXXlfYUwjmDliOdU=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251215211629-6782884568b6 h1:KivsB7v4NFAQjs+90maSPJ4uRIAHy8VlacdjrB21NFY=
+github.com/darialissi/msa_big_tech/lib v0.0.0-20251215211629-6782884568b6/go.mod h1:4YT2wLHyM+25W/UN7nsSvKTB6AGqXXlfYUwjmDliOdU=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
